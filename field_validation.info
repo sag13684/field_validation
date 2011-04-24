@@ -1,0 +1,11 @@
+name = Field Validation
+description = "Add validation rules to fields"
+core = 7.x
+dependencies[] = field
+dependencies[] = field_ui
+files[] = field_validation.admin.inc
+files[] = field_validation.install
+files[] = field_validation.module
+files[] = field_validation.rules.inc
+files[] = field_validation.validators.inc
+
