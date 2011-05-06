@@ -1,5 +1,5 @@
 name = Field Validation
-description = "Add validation rules to fields"
+description = "Add validation rules to fields."
 core = 7.x
 dependencies[] = field
 dependencies[] = field_ui
