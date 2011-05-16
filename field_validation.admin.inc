@@ -9,17 +9,15 @@
  * Menu callback function to show an overview of the existing validation rules, and the option to add a rule
  */
 function field_validation_manage($instance) {
-  $rules = field_validation_get_field_rules($instance);
   $output = '';
+  $rules = field_validation_get_field_rules($instance);
   $output .= theme('field_validation_manage_overview', array('rules' => $rules, 'instance' => $instance));
   $output .= theme('field_validation_manage_add_rule', array('instance' => $instance));
-	$output .= '123456';
-	//debug($instance);
   return $output;
 }
 
 /**
- * Themable function to list the rules assigned to a webform
+ * Themable function to list the rules assigned to a field instance
  */
 function theme_field_validation_manage_overview($variables) {
   $rules = $variables['rules'];

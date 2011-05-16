@@ -8,4 +8,3 @@ files[] = field_validation.install
 files[] = field_validation.module
 files[] = field_validation.rules.inc
 files[] = field_validation.validators.inc
-
