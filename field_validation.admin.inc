@@ -158,7 +158,7 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
 
   $form['rule']['submit'] = array(
     '#type' => 'submit',
-    '#value' => (isset($rule['ruleid'])) ? t('Edit rule') : t('Add rule'),
+    '#value' => (isset($rule['ruleid'])) ? t('Save rule') : t('Add rule'),
     '#weight' => 25,
   );
 
