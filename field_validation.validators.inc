@@ -40,6 +40,7 @@ function field_validation_field_validation_validators() {
       'component_types' => array(
         'textfield',
       ),
+			'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against.') . ' ' . t('Usage') . ':'
@@ -73,6 +74,30 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
         }
 
         break;
+				
+			case "numeric":
+			  $num_range = _field_validation_numeric_check_data($rule['data']);
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != ''){
+					  $error_flag = FALSE;
+						if(!is_numeric($item['value'])){
+						  $error_flag = TRUE;
+						}
+						if(isset($num_range['min']) && $item['value'] < $num_range['min']){
+						  $error_flag = TRUE;
+						}
+            if(isset($num_range['max']) && $item['value'] > $num_range['max']){
+						  $error_flag = TRUE;
+						}
+						if($error_flag){
+						  $errors[$rule['field_name']][$langcode][$delta][] = array(
+							  'error' => 'numeric_'.$rule['ruleid'],
+								'message' => t($rule['error_message']),
+							);
+						}
+					}
+				}
+			  break;
     }
   }
 }
@@ -109,4 +134,31 @@ function field_validation_get_validators_selection() {
 function field_validation_get_validator_info($validator_key) {
   $validators = field_validation_get_validators();
   return $validators[$validator_key];
+}
+
+/**
+ * Process the numeric value validation range that was provided in the numeric validator options
+ */
+function _field_validation_numeric_check_data($data) {
+  $range = array('min' => NULL, 'max' => NULL);
+  // if no value was specified, don't validate
+  if ($data == '') {
+    return $range;
+  }
+
+  // If only one numeric value was specified, this is the min value
+  if (is_numeric($data)) {
+    $range['min'] = (int) $data;
+  }
+
+  if (strpos($data, '|') !== FALSE) {
+    list($min, $max) = explode('|', $data);
+    if ($min != '' && is_numeric($min)) {
+      $range['min'] = (int) $min;
+    }
+    if ($max != '' && is_numeric($max)) {
+      $range['max'] = (int) $max;
+    }
+  }
+  return $range;
 }
