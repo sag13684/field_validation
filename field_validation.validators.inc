@@ -25,8 +25,6 @@ function field_validation_field_validation_validators() {
       'component_types' => array(
         'textfield',
         'textarea',
-        'email',
-        'hidden',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
