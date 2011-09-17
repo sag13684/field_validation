@@ -84,7 +84,19 @@ function field_validation_field_validation_validators() {
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of words'),
     ),		
-		
+    'max_words' => array(
+      'name' => "Maximum number of words",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Maximum number of words'),
+        'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+      ),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of words'),
+    ),		
   );
 }
 
@@ -161,6 +173,17 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) < $min_words)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_words_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
+			case "max_words":
+			  $max_words = $rule['data'];
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) > $max_words)) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'max_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
