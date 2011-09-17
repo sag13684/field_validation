@@ -113,6 +113,19 @@ function field_validation_field_validation_validators() {
       ),
 			'custom_error' => TRUE,
       'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
+    ),
+    'blacklist' => array(
+      'name' => "Words blacklist",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Blacklisted words'),
+        'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
+      ),
+      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),		
   );
 }
@@ -221,6 +234,19 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value']) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'must_be_empty_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
+			case "blacklist":
+			  $blacklist = explode(',', $rule['data']);
+				$blacklist = array_map('trim', $blacklist);
+				$blacklist_regex = implode('|', $blacklist);
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (preg_match("/$blacklist_regex/i", $item['value']))) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'blacklist_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
