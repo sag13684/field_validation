@@ -189,13 +189,20 @@ function field_validation_manage_rule_submit($form, &$form_state) {
 /**
  * Confirmation form to delete a rule
  */
-function field_validation_delete_rule($form, &$form_state, $rule) {
-  if (isset($rule['ruleid'])) {
+function field_validation_delete_rule($form, &$form_state, $ruleid) {
+  $rule = array();
+  if (isset($ruleid) && $ruleid > 0) {
+	  $rule = field_validation_get_rule($ruleid);
     $form['ruleid'] = array(
-      '#type' => 'value',
-      '#value' => $rule['ruleid'],
+      '#type' => 'hidden',
+      '#value' => $ruleid,
     );
   }
+	
+	if(empty($rule)){
+	  $source_path = isset($_GET['destination']) ? $_GET['destination']:"";
+		drupal_goto($source_path);
+	}
 
   return confirm_form($form,
     t('Are you sure you want to delete the rule %name?', array('%name' => $rule['rulename'])),

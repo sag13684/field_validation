@@ -77,7 +77,7 @@ function field_validation_menu() {
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
             'title' => 'Delete rule',
 						'page callback' => 'drupal_get_form',
-						'page arguments' => array('field_validation_delete_rule', $field_position+3),
+						'page arguments' => array('field_validation_delete_rule'),
             'type' => MENU_CALLBACK,
             'file' => 'field_validation.admin.inc',
           ) + $access;
