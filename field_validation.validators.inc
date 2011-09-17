@@ -57,6 +57,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
+    ),
+    'max_length' => array(
+      'name' => "Maximum length",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Maximum number of characters'),
+        'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
+      ),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
     ),		
 		
   );
@@ -113,6 +126,17 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value'] != '' && (drupal_strlen($item['value']) < $min_length)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_length_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;				
+      case "max_length":
+			  $max_length = $rule['data'];
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (drupal_strlen($item['value']) > $max_length)) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'max_length_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
