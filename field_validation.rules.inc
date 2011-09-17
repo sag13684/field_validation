@@ -46,7 +46,7 @@ function field_validation_get_bundle_rules($entity_type, $bundle) {
 /**
  * Delete a rule and dependencies
  */
-function field_dynamic_delete_rule($ruleid) {
+function field_validation_dynamic_delete_rule($ruleid) {
   // delete rule
   db_delete('field_validation_rule')
   ->condition('ruleid', $ruleid)

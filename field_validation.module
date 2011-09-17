@@ -176,7 +176,7 @@ function field_validation_field_delete($entity_type, $entity, $field, $instance,
   $rules = field_validation_get_field_rules($instance);
   if ($rules) {
     foreach (array_keys($rules) as $ruleid) {
-      field_dynamic_delete_rule($ruleid);
+      field_validation_dynamic_delete_rule($ruleid);
     }
   }
 }

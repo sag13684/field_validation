@@ -218,6 +218,6 @@ function field_validation_delete_rule($form, &$form_state, $ruleid) {
  */
 function field_validation_delete_rule_submit($form, &$form_state) {
   $ruleid = $form_state['values']['ruleid'];
-  field_dynamic_delete_rule($ruleid);
+  field_validation_dynamic_delete_rule($ruleid);
   module_invoke_all('field_validation', 'rule', 'delete', $ruleid);
 }
