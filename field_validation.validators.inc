@@ -105,6 +105,14 @@ function field_validation_field_validation_validators() {
       ),
 			'custom_error' => TRUE,
       'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
+    ),
+    'must_be_empty' => array(
+      'name' => "Must be empty",
+      'field_types' => array(
+        'textfield',
+      ),
+			'custom_error' => TRUE,
+      'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
     ),		
   );
 }
@@ -203,6 +211,16 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value'] != '' && (strcmp($item['value'], strip_tags($item['value'])))) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'plain_text_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
+			case "must_be_empty":
+				foreach ($items as $delta => $item) {
+				  if ($item['value']) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'must_be_empty_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
