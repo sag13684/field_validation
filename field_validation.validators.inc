@@ -70,6 +70,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
+    ),
+    'min_words' => array(
+      'name' => "Minimum number of words",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Minimum number of words'),
+        'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+      ),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of words'),
     ),		
 		
   );
@@ -137,6 +150,17 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value'] != '' && (drupal_strlen($item['value']) > $max_length)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_length_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
+      case "min_words":
+			  $min_words = $rule['data'];
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) < $min_words)) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'min_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
