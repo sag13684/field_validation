@@ -11,18 +11,16 @@
  * This function returns an array of validators, in the validator key => options array form.
  * Possible options:
  * - name (required): name of the validator
- * - component types (required): defines which component types can be validated by this validator. Specify 'all' to allow all types
+ * - field types (required): defines which field types can be validated by this validator. Specify 'all' to allow all types
  * - custom_error (optional): define whether a user can specify a custom error message upon creating the validation rule.
  * - custom_data (optional): define whether custom data can be added to the validation rule
- * - min_components (optional): define the minimum number of components to be selected for creating a validation rule
- * - max_components (optional): define the maximum number of components to be selected for creating a validation rule
  * - description (optional): provide a descriptive explanation about the validator
  */
 function field_validation_field_validation_validators() {
   return array(
     'regex' => array(
       'name' => "Regular expression",
-      'component_types' => array(
+      'field_types' => array(
         'textfield',
         'textarea',
       ),
@@ -35,7 +33,7 @@ function field_validation_field_validation_validators() {
     ),
     'numeric' => array(
       'name' => "Numeric values",
-      'component_types' => array(
+      'field_types' => array(
         'textfield',
       ),
 			'custom_error' => TRUE,
