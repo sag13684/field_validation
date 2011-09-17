@@ -155,7 +155,7 @@ function theme_field_validation_manage_add_rule($variables) {
       $item = '';
 			$path = isset($_GET['q']) ? $_GET['q'] : '';
       $url = $path.'/add/' . $validator_key;
-      $components = ' (' . implode(', ', $validator_info['component_types']) . ')';
+      $components = ' (' . implode(', ', $validator_info['field_types']) . ')';
       $item = '<dt>' . l($validator_info['name'], $url, array("query" => drupal_get_destination())) . '</dt>';
       $item .= '<dd>';
       if ($validator_info['description']) {
