@@ -96,6 +96,15 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of words'),
+    ),
+    'plain_text' => array(
+      'name' => "Plain text (disallow tags)",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+			'custom_error' => TRUE,
+      'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
     ),		
   );
 }
@@ -184,6 +193,16 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) > $max_words)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_words_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
+			case "plain_text":
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (strcmp($item['value'], strip_tags($item['value'])))) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'plain_text_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
 					}
