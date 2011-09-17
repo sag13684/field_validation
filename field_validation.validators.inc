@@ -44,6 +44,19 @@ function field_validation_field_validation_validators() {
         'required' => FALSE,
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
+    ),
+    'min_length' => array(
+      'name' => "Minimum length",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Minimum number of characters'),
+        'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
+      ),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
     ),		
 		
   );
@@ -94,6 +107,17 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 					}
 				}
 			  break;
+      case "min_length":
+			  $min_length = $rule['data'];
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '' && (drupal_strlen($item['value']) < $min_length)) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'min_length_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
     }
   }
 }
