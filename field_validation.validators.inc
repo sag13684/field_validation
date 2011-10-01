@@ -126,7 +126,20 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
       ),
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
-    ),		
+    ),
+    'select_min' => array(
+      'name' => "Minimum number of selections required",
+      'field_types' => array(
+        'list_integer',
+				'list_float',
+				'list_text',
+      ),
+      'custom_data' => array(
+        'label' => t('Minimum number of selections'),
+        'description' => t('Specify the minimum number of options a user should select.'),
+      ),
+      'description' => t('Forces the user to select at least a defined number of options from the specified list field'),
+    ),			
   );
 }
 
