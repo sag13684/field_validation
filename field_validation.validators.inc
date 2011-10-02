@@ -134,6 +134,7 @@ function field_validation_field_validation_validators() {
 				'list_float',
 				'list_text',
       ),
+			'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Minimum number of selections'),
         'description' => t('Specify the minimum number of options a user should select.'),
@@ -263,6 +264,22 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 							'message' => t($rule['error_message']),
 						);
 					}
+				}
+				break;
+			case "select_min":
+			  $min_selections = $rule['data'];
+				$selected = 0;
+				$total_items = count($items);
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '') {
+					  $selected ++;							
+					}
+				}
+				if($total_items >= $min_selections && $selected < $min_selections){
+				  $errors[$rule['field_name']][$langcode][0][] = array(
+					  'error' => 'select_min_'.$rule['ruleid'],
+						'message' => t($rule['error_message']),
+					);
 				}
 				break;
     }
