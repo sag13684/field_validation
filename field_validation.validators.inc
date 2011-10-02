@@ -168,7 +168,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify how many options a user can select.'),
       ),
       'description' => t('Forces the user to select exactly the defined number of options from the specified list field'),
-    ),			
+    ),
+    'unique' => array(
+      'name' => "Unique values",
+      'field_types' => array(
+        'textfield',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Scope of Unique values'),
+        'description' => t('Specify the scope of Unique values, support: entity, bundle.'),
+      ),
+      'description' => t('Verifies that all values are unique in current entity or bundle.'),
+    ),		
   );
 }
 
