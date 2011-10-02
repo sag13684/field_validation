@@ -154,7 +154,7 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the maximum number of options a user can select.'),
       ),
       'description' => t('Forces the user to select at most a defined number of options from the specified list field'),
-    ),		
+    ),	
   );
 }
 
@@ -292,6 +292,22 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				if($total_items >= $min_selections && $selected < $min_selections){
 				  $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'select_min_'.$rule['ruleid'],
+						'message' => t($rule['error_message']),
+					);
+				}
+				break;
+			case "select_max":
+			  $max_selections = $rule['data'];
+				$selected = 0;
+				$total_items = count($items);
+				foreach ($items as $delta => $item) {
+				  if ($item['value'] != '') {
+					  $selected ++;							
+					}
+				}
+				if($total_items >= $max_selections && $selected > $max_selections){
+				  $errors[$rule['field_name']][$langcode][0][] = array(
+					  'error' => 'select_max_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
 					);
 				}
