@@ -140,7 +140,21 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the minimum number of options a user should select.'),
       ),
       'description' => t('Forces the user to select at least a defined number of options from the specified list field'),
-    ),			
+    ),
+    'select_max' => array(
+      'name' => "Maximum number of selections allowed",
+      'field_types' => array(
+        'list_integer',
+				'list_float',
+				'list_text',
+      ),
+			'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Maximum number of selections'),
+        'description' => t('Specify the maximum number of options a user can select.'),
+      ),
+      'description' => t('Forces the user to select at most a defined number of options from the specified list field'),
+    ),		
   );
 }
 
