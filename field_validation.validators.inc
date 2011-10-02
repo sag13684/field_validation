@@ -296,14 +296,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				break;
 			case "select_min":
 			  $min_selections = $rule['data'];
-				$selected = 0;
+				//$selected = 0;
 				$total_items = count($items);
+				/*
 				foreach ($items as $delta => $item) {
 				  if ($item['value'] != '') {
 					  $selected ++;							
 					}
-				}
-				if($total_items >= $min_selections && $selected < $min_selections){
+				}*/
+				if($total_items < $min_selections){
 				  $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'select_min_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
@@ -312,14 +313,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				break;
 			case "select_max":
 			  $max_selections = $rule['data'];
-				$selected = 0;
+				//$selected = 0;
 				$total_items = count($items);
+				/*
 				foreach ($items as $delta => $item) {
 				  if ($item['value'] != '') {
 					  $selected ++;							
 					}
-				}
-				if($total_items >= $max_selections && $selected > $max_selections){
+				}*/
+				if($total_items > $max_selections){
 				  $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'select_max_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
@@ -328,15 +330,16 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 				break;
 			case "select_exact":
 			  $allowed_selections = $rule['data'];
-				$selected = 0;
+				//$selected = 0;
 				$total_items = count($items);
+				/*
 				foreach ($items as $delta => $item) {
 				  if ($item['value'] != '') {
 					  $selected ++;							
 					}
 				}
-				//drupal_set_message('total_items:'.$total_items);
-				if($total_items >= $allowed_selections && $selected != $allowed_selections){
+				*/
+				if($total_items != $allowed_selections){
 				  $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'select_exact_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
