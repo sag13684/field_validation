@@ -176,10 +176,22 @@ function field_validation_field_validation_validators() {
       ),
 			'custom_error' => TRUE,
       'custom_data' => array(
-        'label' => t('Scope of Unique values'),
+        'label' => t('Scope of unique values'),
         'description' => t('Specify the scope of Unique values, support: global, entity, bundle.'),
       ),
       'description' => t('Verifies that all values are unique in current entity or bundle.'),
+    ),
+   'match_another_field' => array(
+      'name' => "Must match another field",
+      'field_types' => array(
+        'textfield',
+      ),
+			'custom_error' => TRUE,
+			'custom_data' => array(
+        'label' => t('Arguments of another field'),
+        'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE'),
+      ),
+      'description' => t("Validates that user-entered data matches another field or entity property"),
     ),		
   );
 }
