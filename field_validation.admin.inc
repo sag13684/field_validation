@@ -4,6 +4,31 @@
  * @file
  * Manages validation rules administration UI
  */
+ 
+/**
+ * Menu callback function using to dispatch.
+ */
+function field_validation_callback_dispatch($instance, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL) {
+  $output = '';
+	if(empty($arg1)){
+	  drupal_set_title(t('Validation'));
+		$output .= field_validation_manage($instance);
+	}elseif($arg1 == 'add'){
+	  drupal_set_title(t('Add validation'));
+		$output .= drupal_render(drupal_get_form('field_validation_manage_rule', $instance, 'add', $arg2));
+	}elseif($arg1 == 'edit'){
+		drupal_set_title(t('Edit rule'));
+		$output .= drupal_render(drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3));
+	}elseif($arg1 == 'delete'){
+		drupal_set_title(t('Delete rule'));
+		$output .= drupal_render(drupal_get_form('field_validation_delete_rule', $arg2));
+	}else{
+	  drupal_set_title(t('Validation'));
+		$output .= field_validation_manage($instance);	
+	}
+
+  return $output;
+}
 
 /**
  * Menu callback function to show an overview of the existing validation rules, and the option to add a rule
