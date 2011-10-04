@@ -358,6 +358,46 @@ function field_validation_field_validation_validate($validator_name, $rule, $lan
 					);
 				}
 				break;
+			case "unique":
+			  $scope = $rule['data'];
+				$total_items = count($items);
+				foreach ($items as $delta => $item) {
+				  $flag = FALSE;
+					
+				  foreach ($items as $delta1 => $item1) {
+					  if($delta != $delta1){
+						  if($item['value'] == $item1['value']){
+							  $flag = TRUE;
+								break;
+							}
+						}
+					}
+					
+					if(!$flag){
+					  $query = new EntityFieldQuery();
+						if($scope == 'globle'){
+						}elseif($scope == 'entity'){
+						  $query->entityCondition('entity_type', $rule['entity_type']);
+						}elseif($scope == 'bundle'){
+						  $query->entityCondition('entity_type', $rule['entity_type']);
+							$query->entityCondition('bundle', $rule['bundle']);
+						}
+						
+						$flag = (bool)$query->fieldCondition($rule['field_name'],'value',$item['value'])
+						                    ->range(0, 1)
+																->count()
+																->execute();
+						
+					}
+					
+				  if ($flag) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'unique_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+            );						
+					}
+				}
+				break;
     }
   }
 }
