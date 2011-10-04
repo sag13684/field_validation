@@ -422,14 +422,14 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			  $arguments = $rule['data'];
 				$arguments = explode('&',$rule['data']);
 				$arg_array = array();
-				debug($arguments);
+				//debug($arguments);
 				foreach($arguments as $arg){
 				  $argument = explode('=',$arg);
 					$name = trim($argument[0]);
 					$value = trim($argument[1]);
 					$arg_array[$name] = $value;
 				}
-				debug($arg_array);
+				//debug($arg_array);
 				foreach ($items as $delta => $item) {
 				  if(empty($item['value'])){
 					  continue;
