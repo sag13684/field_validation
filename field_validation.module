@@ -130,7 +130,7 @@ function field_validation_field_attach_validate($entity_type, $entity, &$errors)
 				foreach (module_implements("field_validation_validate") as $module) {
 				  $function = $module . '_' . "field_validation_validate";
 					if (function_exists($function)) {
-					  $function($rule['validator'], $rule, $langcode, $items,  $errors);
+					  $function($rule['validator'], $rule, $entity, $langcode, $items,  $errors);
           }
 				}
 

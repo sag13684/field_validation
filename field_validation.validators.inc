@@ -187,7 +187,7 @@ function field_validation_field_validation_validators() {
 /**
  * Implements hook_field_validation_validate().
  */
-function field_validation_field_validation_validate($validator_name, $rule, $langcode, $items, &$errors) {
+function field_validation_field_validation_validate($validator_name, $rule, $entity, $langcode, $items, &$errors) {
   if (!empty($items)) {
     switch ($validator_name) {
      
