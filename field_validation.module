@@ -49,7 +49,7 @@ function field_validation_menu() {
           $items["$path/fields/%field_ui_menu/validation"] = array(
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
             'title' => 'Validation',
-            'page callback' => 'field_validation_manage',
+            'page callback' => 'field_validation_callback_dispatch',
             'page arguments' => array($field_position),
             'type' => MENU_LOCAL_TASK,
             'file' => 'field_validation.admin.inc',
