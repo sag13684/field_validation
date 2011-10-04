@@ -189,7 +189,7 @@ function field_validation_field_validation_validators() {
 			'custom_error' => TRUE,
 			'custom_data' => array(
         'label' => t('Arguments of another field'),
-        'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE'),
+        'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE, entity_type=user&column=name&is_property=TRUE.'),
       ),
       'description' => t("Validates that user-entered data matches another field or entity property"),
     ),		
@@ -414,6 +414,48 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						  'error' => 'unique_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
             );						
+					}
+				}
+				break;
+				
+			case "match_another_field":
+			  $arguments = $rule['data'];
+				$arguments = explode('&',$rule['data']);
+				$arg_array = array();
+				debug($arguments);
+				foreach($arguments as $arg){
+				  $argument = explode('=',$arg);
+					$name = trim($argument[0]);
+					$value = trim($argument[1]);
+					$arg_array[$name] = $value;
+				}
+				debug($arg_array);
+				foreach ($items as $delta => $item) {
+				  if(empty($item['value'])){
+					  continue;
+					}
+				  $query = new EntityFieldQuery();
+					if(!empty($arg_array['entity_type'])){
+					  $query->entityCondition('entity_type', $arg_array['entity_type']);
+					}
+					if(!empty($arg_array['bundle'])){
+					  $query->entityCondition('bundle', $arg_array['bundle']);
+					}
+					if(!empty($arg_array['is_property'])){
+					  if(!empty($arg_array['column'])){
+					    $query->propertyCondition($arg_array['column'],$item['value']);
+						}	
+					}else{
+					  if(!empty($arg_array['field_name']) && !empty($arg_array['column'])){
+						  $query->fieldCondition($arg_array['field_name'], $arg_array['column'], $item['value']);
+						}
+					}
+					$flag = (bool)$query->range(0, 1)->count()->execute();
+					if (!$flag) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'match_another_field_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
 					}
 				}
 				break;
