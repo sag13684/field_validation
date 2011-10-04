@@ -383,6 +383,13 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 							$query->entityCondition('bundle', $rule['bundle']);
 						}
 						
+						list($id, $vid, $bundle) = entity_extract_ids($rule['entity_type'], $entity);
+						if($rule['entity_type'] == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)){
+						  $id = arg(1);
+						}
+						if(!empty($id)){
+						  $query->entityCondition('entity_id', $id, '!=');
+						}
 						$flag = (bool)$query->fieldCondition($rule['field_name'],'value',$item['value'])
 						                    ->range(0, 1)
 																->count()
