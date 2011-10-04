@@ -177,7 +177,7 @@ function field_validation_field_validation_validators() {
 			'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Scope of Unique values'),
-        'description' => t('Specify the scope of Unique values, support: entity, bundle.'),
+        'description' => t('Specify the scope of Unique values, support: global, entity, bundle.'),
       ),
       'description' => t('Verifies that all values are unique in current entity or bundle.'),
     ),		
@@ -375,7 +375,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					
 					if(!$flag){
 					  $query = new EntityFieldQuery();
-						if($scope == 'globle'){
+						if($scope == 'global'){
 						}elseif($scope == 'entity'){
 						  $query->entityCondition('entity_type', $rule['entity_type']);
 						}elseif($scope == 'bundle'){
