@@ -204,6 +204,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the specific value(s) you want the field to contain. Separate multiple options by a comma. For fields that have keys, use the key value instead.'),
       ),
       'description' => t('Verifies that the specified field contains a defined value'),
+    ),
+    'oneofseveral' => array(
+      'name' => "Require at least one of several fields",
+      'field_types' => array(
+        'textfield',
+        'textarea',
+      ),
+      'custom_error' => TRUE,
+			'custom_data' => array(
+        'label' => t('group name'),
+        'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
+      ),
+      'description' => t('Forces the user to specify / select at least one of several fields'),
     ),		
   );
 }
