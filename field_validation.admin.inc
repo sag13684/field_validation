@@ -154,11 +154,11 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#weight' => 1,
   );
 	
-	$form['rule']['column'] = array(
+	$form['rule']['col'] = array(
     '#type' => 'textfield',
     '#title' => t('Column'),
 		'#description' => t('A column defined in the hook_field_schema() of this field.'),
-    '#default_value' => (isset($rule['column'])) ? $rule['column'] : 'value',
+    '#default_value' => (isset($rule['col'])) ? $rule['col'] : 'value',
     '#required' => TRUE,
     '#size' => 60,
     '#maxlength' => 255,

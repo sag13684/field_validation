@@ -31,7 +31,7 @@ function field_validation_schema() {
         'not null' => TRUE,
         'default' => ''
       ),
-			'column' => array(
+			'col' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
@@ -79,14 +79,14 @@ function field_validation_schema() {
 }
 
 /**
- * add 'column' to schema.
+ * add 'col' to schema.
  */
 function field_validation_update_7000(&$sandbox) {
-	$column = array(
+	$col = array(
     'type' => 'varchar',
     'length' => 32,
     'not null' => TRUE,
     'default' => 'value'
   );
-  db_add_field('field_validation_rule', 'column', $column);
+  db_add_field('field_validation_rule', 'col', $col);
 }
