@@ -257,7 +257,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         $regex = $rule['data'];
 				
         foreach ($items as $delta => $item) {
-          if ($item['value'] != '' && (!mb_ereg("$regex", $item['value']))) {
+          if ($item[$rule['col']] != '' && (!mb_ereg("$regex", $item[$rule['col']]))) {
 				    $errors[$rule['field_name']][$langcode][$delta][] = array(
               'error' => 'regex_'.$rule['ruleid'], 
               'message' => t($rule['error_message']),
@@ -270,15 +270,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			case "numeric":
 			  $num_range = _field_validation_numeric_check_data($rule['data']);
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != ''){
+				  if ($item[$rule['col']] != ''){
 					  $error_flag = FALSE;
-						if(!is_numeric($item['value'])){
+						if(!is_numeric($item[$rule['col']])){
 						  $error_flag = TRUE;
 						}
-						if(isset($num_range['min']) && $item['value'] < $num_range['min']){
+						if(isset($num_range['min']) && $item[$rule['col']] < $num_range['min']){
 						  $error_flag = TRUE;
 						}
-            if(isset($num_range['max']) && $item['value'] > $num_range['max']){
+            if(isset($num_range['max']) && $item[$rule['col']] > $num_range['max']){
 						  $error_flag = TRUE;
 						}
 						if($error_flag){
@@ -293,7 +293,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "min_length":
 			  $min_length = $rule['data'];
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (drupal_strlen($item['value']) < $min_length)) {
+				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) < $min_length)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_length_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -304,7 +304,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "max_length":
 			  $max_length = $rule['data'];
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (drupal_strlen($item['value']) > $max_length)) {
+				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) > $max_length)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_length_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -315,7 +315,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "min_words":
 			  $min_words = $rule['data'];
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) < $min_words)) {
+				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -326,7 +326,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			case "max_words":
 			  $max_words = $rule['data'];
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (count(preg_split("/[\s]+/", trim($item['value']))) > $max_words)) {
+				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -336,7 +336,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				break;
 			case "plain_text":
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (strcmp($item['value'], strip_tags($item['value'])))) {
+				  if ($item[$rule['col']] != '' && (strcmp($item[$rule['col']], strip_tags($item[$rule['col']])))) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'plain_text_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -346,7 +346,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				break;
 			case "must_be_empty":
 				foreach ($items as $delta => $item) {
-				  if ($item['value']) {
+				  if ($item[$rule['col']]) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'must_be_empty_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -359,7 +359,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$blacklist = array_map('trim', $blacklist);
 				$blacklist_regex = implode('|', $blacklist);
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '' && (preg_match("/$blacklist_regex/i", $item['value']))) {
+				  if ($item[$rule['col']] != '' && (preg_match("/$blacklist_regex/i", $item[$rule['col']]))) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'blacklist_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -373,7 +373,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$total_items = count($items);
 				/*
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '') {
+				  if ($item[$rule['col']] != '') {
 					  $selected ++;							
 					}
 				}*/
@@ -390,7 +390,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$total_items = count($items);
 				/*
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '') {
+				  if ($item[$rule['col']] != '') {
 					  $selected ++;							
 					}
 				}*/
@@ -407,7 +407,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$total_items = count($items);
 				/*
 				foreach ($items as $delta => $item) {
-				  if ($item['value'] != '') {
+				  if ($item[$rule['col']] != '') {
 					  $selected ++;							
 					}
 				}
@@ -427,7 +427,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					
 				  foreach ($items as $delta1 => $item1) {
 					  if($delta != $delta1){
-						  if($item['value'] == $item1['value']){
+						  if($item[$rule['col']] == $item1[$rule['col']]){
 							  $flag = TRUE;
 								break;
 							}
@@ -451,7 +451,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						if(!empty($id)){
 						  $query->entityCondition('entity_id', $id, '!=');
 						}
-						$flag = (bool)$query->fieldCondition($rule['field_name'],'value',$item['value'])
+						$flag = (bool)$query->fieldCondition($rule['field_name'],$rule['col'],$item[$rule['col']])
 						                    ->range(0, 1)
 																->count()
 																->execute();
@@ -480,7 +480,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				}
 				//debug($arg_array);
 				foreach ($items as $delta => $item) {
-				  if(empty($item['value'])){
+				  if(empty($item[$rule['col']])){
 					  continue;
 					}
 				  $query = new EntityFieldQuery();
@@ -492,11 +492,11 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 					if(!empty($arg_array['is_property'])){
 					  if(!empty($arg_array['column'])){
-					    $query->propertyCondition($arg_array['column'],$item['value']);
+					    $query->propertyCondition($arg_array['column'],$item[$rule['col']]);
 						}	
 					}else{
 					  if(!empty($arg_array['field_name']) && !empty($arg_array['column'])){
-						  $query->fieldCondition($arg_array['field_name'], $arg_array['column'], $item['value']);
+						  $query->fieldCondition($arg_array['field_name'], $arg_array['column'], $item[$rule['col']]);
 						}
 					}
 					$flag = (bool)$query->range(0, 1)->count()->execute();
@@ -512,10 +512,10 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$specific_values = explode(',',$rule['data']);
 				$specific_values = array_map('trim', $specific_values);
 				foreach ($items as $delta => $item) {
-				  if(empty($item['value'])){
+				  if(empty($item[$rule['col']])){
 					  continue;
 					}
-					if (!in_array($item['value'], $specific_values)) {
+					if (!in_array($item[$rule['col']], $specific_values)) {
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'specific_value_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
@@ -526,7 +526,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			case "oneofseveral":
 			  $flag = FALSE;
 				$group_name = $rule['data'];
-				$field_values = _field_validation_get_field_column_value($items, 'value');
+				$field_values = _field_validation_get_field_column_value($items, $rule['col']);
 				$field_values = array_flip($field_values);
 				if(count($field_values) > 0){
 				  $flag = TRUE;
