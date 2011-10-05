@@ -596,6 +596,48 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					);
 				}
 
+				break;
+			case "unique_values":
+			  $flag = FALSE;
+				$group_name = $rule['data'];
+				$total_items = count($items);
+				$field_values = _field_validation_get_field_column_value1($items, 'value');
+				$field_values = array_flip($field_values);
+				if(count($field_values) < $total_items){
+				  $flag = TRUE;
+				}
+				if(!$flag){
+				  $other_group_rules = db_select('field_validation_rule','fvr')
+					                ->fields('fvr')
+					                ->condition('fvr.entity_type',$rule['entity_type'])
+					                ->condition('fvr.bundle',$rule['bundle'])
+					                ->condition('fvr.validator',$rule['validator'])
+					                ->condition('fvr.data',$group_name)
+													->condition('fvr.ruleid',$rule['ruleid'],'!=')
+					                ->execute()
+					                ->fetchAll();
+				  foreach($other_group_rules as $other_group_rule){
+					  if(isset($entity->{$other_group_rule->field_name}[$langcode])){
+						  $other_items = $entity->{$other_group_rule->field_name}[$langcode];
+							$other_field_values = _field_validation_get_field_column_value1($other_items, 'value');
+							$other_field_values = array_flip($other_field_values);
+							$total_items = $total_items + count($other_items);
+							
+							$field_values = $field_values + $other_field_values;
+							if(count($field_values) < $total_items){
+							  $flag = TRUE;
+								break;
+							} 
+						}
+					}
+				}
+				if($flag){
+          $errors[$rule['field_name']][$langcode][0][] = array(
+					  'error' => 'unique_values_'.$rule['ruleid'],
+						'message' => t($rule['error_message']),
+					);
+				}
+
 				break;				
     }
   }
@@ -669,6 +711,19 @@ function _field_validation_get_field_column_value($items, $column ='value') {
   $field_values = array();
 	foreach($items as $delta => $item){
 	  if(isset($item[$column]) && $item[$column] !=''){
+	    $field_values[] = $item[$column];
+		}
+	}
+  return $field_values;
+}
+
+/**
+ * helper function to get field value include empty string.
+ */
+function _field_validation_get_field_column_value1($items, $column ='value') {
+  $field_values = array();
+	foreach($items as $delta => $item){
+	  if(isset($item[$column])){
 	    $field_values[] = $item[$column];
 		}
 	}
