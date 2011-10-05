@@ -499,6 +499,42 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 				}
 				break;
+			case "oneofseveral":
+			  $flag = FALSE;
+				$group_name = $rule['data'];
+				$field_values = _field_validation_get_field_column_value($items, 'value');
+				$field_values = array_flip($field_values);
+				if(count($field_values) > 0){
+				  $flag = TRUE;
+				}
+				if(!$flag){
+				  $other_fields = db_select('field_validation_rule','fvr')
+					                ->fields('fvr',array('field_name'))
+					                ->condition('fvr.entity_type',$rule['entity_type'])
+					                ->condition('fvr.bundle',$rule['bundle'])
+					                ->condition('fvr.validator',$rule['validator'])
+					                ->condition('fvr.data',$group_name)
+					                ->execute()
+					                ->fetchCol();
+					
+					foreach($other_fields as $other_field){
+					  $other_items = isset($entity->{$other_field}[$langcode])?$entity->{$other_field}[$langcode]: array();
+						$other_field_values = _field_validation_get_field_column_value($other_items, 'value');
+						$other_field_values = array_flip($other_field_values);
+						if(count($other_field_values) > 0){
+						  $flag = TRUE;
+							break;
+						}
+					}
+				}
+
+				if(!$flag){
+				  $errors[$rule['field_name']][$langcode][0][] = array(
+					  'error' => 'oneofseveral_'.$rule['ruleid'],
+						'message' => t($rule['error_message']),
+					);
+				}
+				break;				
     }
   }
 }
@@ -562,4 +598,17 @@ function _field_validation_numeric_check_data($data) {
     }
   }
   return $range;
+}
+
+/**
+ * helper function to get field value
+ */
+function _field_validation_get_field_column_value($items, $column ='value') {
+  $field_values = array();
+	foreach($items as $delta => $item){
+	  if(isset($item[$column]) && $item[$column] !=''){
+	    $field_values[] = $item[$column];
+		}
+	}
+  return $field_values;
 }
