@@ -471,6 +471,21 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 				}
 				break;
+			case "specific_value":
+				$specific_values = explode(',',$rule['data']);
+				$specific_values = array_map('trim', $specific_values);
+				foreach ($items as $delta => $item) {
+				  if(empty($item['value'])){
+					  continue;
+					}
+					if (!in_array($item['value'], $specific_values)) {
+					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+						  'error' => 'specific_value_'.$rule['ruleid'],
+							'message' => t($rule['error_message']),
+						);
+					}
+				}
+				break;
     }
   }
 }
