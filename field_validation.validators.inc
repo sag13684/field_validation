@@ -192,6 +192,18 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE, entity_type=user&column=name&is_property=TRUE.'),
       ),
       'description' => t("Validates that user-entered data matches another field or entity property"),
+    ),
+    'specific_value' => array(
+      'name' => "Specific value(s)",
+      'field_types' => array(
+        'textfield',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('(Key) value'),
+        'description' => t('Specify the specific value(s) you want the field to contain. Separate multiple options by a comma. For fields that have keys, use the key value instead.'),
+      ),
+      'description' => t('Verifies that the specified field contains a defined value'),
     ),		
   );
 }
