@@ -153,6 +153,17 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#maxlength' => 255,
     '#weight' => 1,
   );
+	
+	$form['rule']['column'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Column'),
+		'#description' => t('A column defined in the hook_field_schema() of this field.'),
+    '#default_value' => (isset($rule['column'])) ? $rule['column'] : 'value',
+    '#required' => TRUE,
+    '#size' => 60,
+    '#maxlength' => 255,
+    '#weight' => 2,
+  );
 
   if (isset($rule_validator['custom_data']) && is_array($rule_validator['custom_data'])) {
     $required = isset($rule_validator['custom_data']['required']) ? $rule_validator['custom_data']['required'] : TRUE;
