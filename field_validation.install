@@ -82,7 +82,7 @@ function field_validation_schema() {
  * add 'column' to schema.
  */
 function field_validation_update_7000(&$sandbox) {
-	$column => array(
+	$column = array(
     'type' => 'varchar',
     'length' => 32,
     'not null' => TRUE,
