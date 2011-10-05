@@ -229,7 +229,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
       ),
       'description' => t('Verifies that all specified fields contain equal values'),
-    ),		
+    ),
+    'unique_values' => array(
+      'name' => "Unique values",
+      'field_types' => array(
+        'textfield',
+      ),
+      'custom_error' => TRUE,
+			'custom_data' => array(
+        'label' => t('group name'),
+        'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
+      ),
+      'description' => t('Verifies that all specified fields contain unique values'),
+    ),			
   );
 }
 
