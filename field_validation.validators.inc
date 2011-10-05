@@ -526,6 +526,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					                ->condition('fvr.bundle',$rule['bundle'])
 					                ->condition('fvr.validator',$rule['validator'])
 					                ->condition('fvr.data',$group_name)
+													->condition('fvr.ruleid',$rule['ruleid'],'!=')
 					                ->execute()
 					                ->fetchCol();
 					
@@ -546,6 +547,43 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						'message' => t($rule['error_message']),
 					);
 				}
+				break;
+			case "equal_values":
+			  $flag = FALSE;
+				$group_name = $rule['data'];
+				$other_group_rules = db_select('field_validation_rule','fvr')
+					                ->fields('fvr')
+					                ->condition('fvr.entity_type',$rule['entity_type'])
+					                ->condition('fvr.bundle',$rule['bundle'])
+					                ->condition('fvr.validator',$rule['validator'])
+					                ->condition('fvr.data',$group_name)
+													->condition('fvr.ruleid',$rule['ruleid'],'!=')
+					                ->execute()
+					                ->fetchAll();
+				foreach ($items as $delta => $item) {
+				  foreach($other_group_rules as $other_group_rule){
+					  if(isset($entity->{$other_group_rule->field_name}[$langcode][$delta])){
+						  if($item['value'] == $entity->{$other_group_rule->field_name}[$langcode][$delta]['value']){	
+							}else{
+							  $flag = TRUE;
+								break;
+							}
+						}else{
+						  $flag = TRUE;
+							break;
+						}
+					}
+					if($flag){
+					  break;
+					}
+				}
+				if($flag){
+          $errors[$rule['field_name']][$langcode][0][] = array(
+					  'error' => 'equal_values_'.$rule['ruleid'],
+						'message' => t($rule['error_message']),
+					);
+				}
+
 				break;				
     }
   }
