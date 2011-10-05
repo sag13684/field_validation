@@ -77,3 +77,16 @@ function field_validation_schema() {
 
   return $schema;
 }
+
+/**
+ * add 'column' to schema.
+ */
+function field_validation_update_7000(&$sandbox) {
+	$column => array(
+    'type' => 'varchar',
+    'length' => 32,
+    'not null' => TRUE,
+    'default' => 'value'
+  );
+  db_add_field('field_validation_rule', 'column', $column);
+}
