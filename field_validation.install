@@ -31,6 +31,12 @@ function field_validation_schema() {
         'not null' => TRUE,
         'default' => ''
       ),
+			'column' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'value'
+      ),			
       'entity_type' => array(
         'type' => 'varchar',
         'length' => 32,
