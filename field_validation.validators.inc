@@ -241,7 +241,19 @@ function field_validation_field_validation_validators() {
         'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
       ),
       'description' => t('Verifies that all specified fields contain unique values'),
-    ),			
+    ),
+    'custom' => array(
+      'name' => "Custom PHP function",
+      'field_types' => array(
+        'textfield',
+      ),
+      'custom_error' => TRUE,
+			'custom_data' => array(
+        'label' => t('Function name'),
+        'description' => t('Specify the custom PHP function name for this field. It contains two arguments, $variable, $entity, for example, mymodule_custom_validate_myfield($variable, $entity).'),
+      ),
+      'description' => t('Validate current field using custom PHP function'),
+    ),		
   );
 }
 
