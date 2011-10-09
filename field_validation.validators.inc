@@ -650,7 +650,33 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					);
 				}
 
-				break;				
+				break;
+				
+      case "custom":
+        $custom_function_name = $rule['data'];	
+        if (function_exists($custom_function_name)) {				
+          foreach ($items as $delta => $item) {
+					  $flag = TRUE;
+						$variable = array();
+						$variable['value'] = $item[$rule['col']];
+						$variable['item'] = $item;
+						$variable['delta'] = $delta;
+						$variable['items'] = $items;
+						$variable['rule'] = $rule;
+						$variable['validator_name'] = $validator_name;
+						$variable['langcode'] = $langcode;
+						
+						$flag = $custom_function_name($variable,$entity);
+            if (!$flag) {
+				      $errors[$rule['field_name']][$langcode][$delta][] = array(
+                'error' => 'custom_'.$rule['ruleid'], 
+                'message' => t($rule['error_message']),
+              );
+            }
+          }
+				}
+
+        break;				
     }
   }
 }
