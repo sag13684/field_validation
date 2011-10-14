@@ -250,7 +250,7 @@ function field_validation_field_validation_validators() {
       'custom_error' => TRUE,
 			'custom_data' => array(
         'label' => t('Function name'),
-        'description' => t('Specify the custom PHP function name for this field. It contains two arguments, $variables, $entity, for example, mymodule_custom_validate_myfield($variables, $entity).'),
+        'description' => t('Specify the custom PHP function name for this field. It contains one argument, $variables, for example, mymodule_validate_myfield($variables). Then you could enter its name at here: mymodule_validate_myfield'),
       ),
       'description' => t('Validate current field using custom PHP function'),
     ),		
@@ -665,8 +665,9 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						$variables['rule'] = $rule;
 						$variables['validator_name'] = $validator_name;
 						$variables['langcode'] = $langcode;
+						$variables['entity'] = $entity;
 						
-						$flag = $custom_function_name($variables,$entity);
+						$flag = $custom_function_name($variables);
             if (!$flag) {
 				      $errors[$rule['field_name']][$langcode][$delta][] = array(
                 'error' => 'custom_'.$rule['ruleid'], 
