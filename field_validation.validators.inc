@@ -250,7 +250,7 @@ function field_validation_field_validation_validators() {
       'custom_error' => TRUE,
 			'custom_data' => array(
         'label' => t('Function name'),
-        'description' => t('Specify the custom PHP function name for this field. It contains two arguments, $variable, $entity, for example, mymodule_custom_validate_myfield($variable, $entity).'),
+        'description' => t('Specify the custom PHP function name for this field. It contains two arguments, $variables, $entity, for example, mymodule_custom_validate_myfield($variables, $entity).'),
       ),
       'description' => t('Validate current field using custom PHP function'),
     ),		
@@ -657,16 +657,16 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         if (function_exists($custom_function_name)) {				
           foreach ($items as $delta => $item) {
 					  $flag = TRUE;
-						$variable = array();
-						$variable['value'] = $item[$rule['col']];
-						$variable['item'] = $item;
-						$variable['delta'] = $delta;
-						$variable['items'] = $items;
-						$variable['rule'] = $rule;
-						$variable['validator_name'] = $validator_name;
-						$variable['langcode'] = $langcode;
+						$variables = array();
+						$variables['value'] = $item[$rule['col']];
+						$variables['item'] = $item;
+						$variables['delta'] = $delta;
+						$variables['items'] = $items;
+						$variables['rule'] = $rule;
+						$variables['validator_name'] = $validator_name;
+						$variables['langcode'] = $langcode;
 						
-						$flag = $custom_function_name($variable,$entity);
+						$flag = $custom_function_name($variables,$entity);
             if (!$flag) {
 				      $errors[$rule['field_name']][$langcode][$delta][] = array(
                 'error' => 'custom_'.$rule['ruleid'], 
