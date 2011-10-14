@@ -219,7 +219,7 @@ function field_validation_field_validation_validators() {
       'description' => t('Forces the user to specify / select at least one of several fields'),
     ),
     'equal_values' => array(
-      'name' => "Equal values",
+      'name' => "Equal values on multiple fields",
       'field_types' => array(
         'textfield',
       ),
@@ -231,7 +231,7 @@ function field_validation_field_validation_validators() {
       'description' => t('Verifies that all specified fields contain equal values'),
     ),
     'unique_values' => array(
-      'name' => "Unique values",
+      'name' => "Unique values on multiple fields",
       'field_types' => array(
         'textfield',
       ),
