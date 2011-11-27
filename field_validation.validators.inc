@@ -379,20 +379,30 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			case "plain_text":
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (strcmp($item[$rule['col']], strip_tags($item[$rule['col']])))) {
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+					  /*
+						$errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'plain_text_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;
 			case "must_be_empty":
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']]) {
+					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'must_be_empty_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;
@@ -402,10 +412,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				$blacklist_regex = implode('|', $blacklist);
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (preg_match("/$blacklist_regex/i", $item[$rule['col']]))) {
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+					  /*
+						$errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'blacklist_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;
