@@ -270,10 +270,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				
         foreach ($items as $delta => $item) {
           if ($item[$rule['col']] != '' && (!mb_ereg("$regex", $item[$rule['col']]))) {
+					/*
 				    $errors[$rule['field_name']][$langcode][$delta][] = array(
               'error' => 'regex_'.$rule['ruleid'], 
               'message' => t($rule['error_message']),
             );
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
           }
         }
 
@@ -294,10 +299,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						  $error_flag = TRUE;
 						}
 						if($error_flag){
+						/*
 						  $errors[$rule['field_name']][$langcode][$delta][] = array(
 							  'error' => 'numeric_'.$rule['ruleid'],
 								'message' => t($rule['error_message']),
 							);
+							*/
+						  $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						  $message = t($rule['error_message']);
+						  form_set_error($error,$message);
 						}
 					}
 				}
@@ -306,10 +316,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			  $min_length = $rule['data'];
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) < $min_length)) {
+					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_length_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;				
