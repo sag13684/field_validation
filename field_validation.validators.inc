@@ -516,10 +516,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 					
 				  if ($flag) {
+					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'unique_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
-            );						
+            );
+            */
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);						
 					}
 				}
 				break;
@@ -558,10 +563,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 					$flag = (bool)$query->range(0, 1)->count()->execute();
 					if (!$flag) {
+					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'match_another_field_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);	
 					}
 				}
 				break;
@@ -573,10 +583,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					  continue;
 					}
 					if (!in_array($item[$rule['col']], $specific_values)) {
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+					  /*
+						$errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'specific_value_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;
