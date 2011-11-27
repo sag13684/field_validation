@@ -626,10 +626,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				}
 
 				if(!$flag){
+				  /*
 				  $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'oneofseveral_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
 					);
+					*/
+					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+					$message = t($rule['error_message']);
+					form_set_error($error,$message);
 				}
 				break;
 			case "equal_values":
@@ -662,10 +667,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 				}
 				if($flag){
+				  /*
           $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'equal_values_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
 					);
+					*/
+					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+					$message = t($rule['error_message']);
+					form_set_error($error,$message);
 				}
 
 				break;
@@ -704,10 +714,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 					}
 				}
 				if($flag){
+				  /*
           $errors[$rule['field_name']][$langcode][0][] = array(
 					  'error' => 'unique_values_'.$rule['ruleid'],
 						'message' => t($rule['error_message']),
 					);
+					*/
+					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+					$message = t($rule['error_message']);
+					form_set_error($error,$message);					
 				}
 
 				break;
@@ -729,10 +744,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						
 						$flag = $custom_function_name($variables);
             if (!$flag) {
+						  /*
 				      $errors[$rule['field_name']][$langcode][$delta][] = array(
                 'error' => 'custom_'.$rule['ruleid'], 
                 'message' => t($rule['error_message']),
               );
+							*/
+						  $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						  $message = t($rule['error_message']);
+						  form_set_error($error,$message);							
             }
           }
 				}
