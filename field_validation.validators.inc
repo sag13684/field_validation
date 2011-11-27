@@ -332,10 +332,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			  $max_length = $rule['data'];
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) > $max_length)) {
+					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_length_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);
 					}
 				}
 				break;
@@ -343,10 +348,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			  $min_words = $rule['data'];
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)) {
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+					  /*
+						$errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'min_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);						
 					}
 				}
 				break;
@@ -354,10 +364,15 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 			  $max_words = $rule['data'];
 				foreach ($items as $delta => $item) {
 				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)) {
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
+					  /*
+						$errors[$rule['field_name']][$langcode][$delta][] = array(
 						  'error' => 'max_words_'.$rule['ruleid'],
 							'message' => t($rule['error_message']),
 						);
+						*/
+						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+						$message = t($rule['error_message']);
+						form_set_error($error,$message);							
 					}
 				}
 				break;
