@@ -109,6 +109,21 @@ function field_validation_theme() {
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ * 
+ * Ensures the call to field_validation_form_field_ui_field_overview_form_alter()
+ * function runs after any invocation of the form_alter() by other modules, e.g.
+ * Field Group module.
+ */
+function field_validation_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'form_alter' && array_key_exists('field_validation', $implementations)) {
+    $group = $implementations['field_validation'];
+    unset($implementations['field_validation']);
+    $implementations['field_validation'] = $group;
+  }
+}
+
+/**
  * Implements hook_field_attach_validate().
  */
 function field_validation_field_attach_validate($entity_type, $entity, &$errors) {
@@ -218,14 +233,20 @@ function field_validation_form_field_ui_field_overview_form_alter(&$form, &$form
   $table = &$form['fields'];
 	$table['#header'][6]['colspan'] = 3;
 	$instances = field_info_instances($entity_type, $bundle);
-	foreach ($instances as $name => $instance) {
-	  $field = field_info_field($instance['field_name']);
-		$admin_field_path = $admin_path . '/fields/' . $instance['field_name'];
-		$table[$name]['validation'] = array(
-		  '#type' => 'link',
-			'#title' => t('validate'),
-			'#href' => $admin_field_path . '/validation',
-			'#options' => array('attributes' => array('title' => t('Manage validation rules.'))),
-		);
-	}
+	
+  foreach (element_children($table) as $key) {
+    if (array_key_exists($key, $instances)) {
+      $field = field_info_field($instances[$key]['field_name']);
+      $admin_field_path = $admin_path . '/fields/' . $instances[$key]['field_name'];
+      $table[$key]['validation'] = array(
+        '#type' => 'link',
+        '#title' => t('validate'),
+        '#href' => $admin_field_path . '/validation',
+        '#options' => array('attributes' => array('title' => t('Manage validation rules.'))),
+      );
+    }
+    else {
+      $table[$key]['validation'] = array('#markup' => '');
+    }
+  }
 }
