@@ -22,7 +22,7 @@ function date_validation_field_validation_validators() {
       'name' => "Date range",
       'field_types' => array(
         'textfield',
-        'textarea',
+        'date',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
