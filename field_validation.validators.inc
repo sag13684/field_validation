@@ -189,7 +189,7 @@ function field_validation_field_validation_validators() {
 			'custom_error' => TRUE,
 			'custom_data' => array(
         'label' => t('Arguments of another field'),
-        'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE, entity_type=user&column=name&is_property=TRUE.'),
+        'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE, entity_type=user&column=name&is_property=TRUE.').t('It also support argument "reverse", which means must not match the field if you set this argument.'),
       ),
       'description' => t("Validates that user-entered data matches another field or entity property"),
     ),
@@ -562,6 +562,9 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 						}
 					}
 					$flag = (bool)$query->range(0, 1)->count()->execute();
+					if(!empty($arg_array['reverse'])){
+					  $flag = $flag ? FALSE : TRUE;
+					}
 					if (!$flag) {
 					  /*
 					  $errors[$rule['field_name']][$langcode][$delta][] = array(
