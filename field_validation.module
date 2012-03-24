@@ -58,26 +58,26 @@ function field_validation_menu() {
           $items[$path.'/fields/%field_ui_menu/validation/add'] = array(
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
             'title' => 'Add validation',
-						'page callback' => 'drupal_get_form',
-						'page arguments' => array('field_validation_manage_rule', $field_position, 'add'),
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('field_validation_manage_rule', $field_position, 'add'),
             'type' => MENU_CALLBACK,
             'file' => 'field_validation.admin.inc',
           ) + $access;
 					
-					$items["$path/fields/%field_ui_menu/validation/edit"] = array(
+          $items["$path/fields/%field_ui_menu/validation/edit"] = array(
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
             'title' => 'Edit rule',
-						'page callback' => 'drupal_get_form',
-						'page arguments' => array('field_validation_manage_rule', $field_position, 'edit'),
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('field_validation_manage_rule', $field_position, 'edit'),
             'type' => MENU_CALLBACK,
             'file' => 'field_validation.admin.inc',
           ) + $access;
 					
-					$items["$path/fields/%field_ui_menu/validation/delete"] = array(
+          $items["$path/fields/%field_ui_menu/validation/delete"] = array(
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
             'title' => 'Delete rule',
-						'page callback' => 'drupal_get_form',
-						'page arguments' => array('field_validation_delete_rule'),
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('field_validation_delete_rule'),
             'type' => MENU_CALLBACK,
             'file' => 'field_validation.admin.inc',
           ) + $access;
@@ -127,31 +127,29 @@ function field_validation_module_implements_alter(&$implementations, $hook) {
  * Implements hook_field_attach_validate().
  */
 function field_validation_field_attach_validate($entity_type, $entity, &$errors) {
-	list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
-
-	$rules = field_validation_get_bundle_rules($entity_type, $bundle);
-	if($rules){
-		foreach ($rules as $rule) {
-			$field_name = $rule['field_name'];
+  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
+  
+  $rules = field_validation_get_bundle_rules($entity_type, $bundle);
+  if($rules){
+    foreach ($rules as $rule) {
+      $field_name = $rule['field_name'];
       $field = field_info_field($field_name);
-		  $languages = field_available_languages($entity_type, $field);
-			foreach ($languages as $langcode) {
-			  //debug($errors);
-			  $items = isset($entity->{$field_name}[$langcode]) ? $entity->{$field_name}[$langcode] : array();
-				//$errors[$rule['field_name']][$langcode] = module_invoke_all("field_validation_validate", $rule['validator'], $items, $rule, $errors);
-				//module_invoke_all("field_validation_validate", $rule['validator'], $rule, $langcode, $items,  $errors);
-				//field_validation_field_validation_validate($rule['validator'], $rule, $langcode, $items,  $errors);
-				//module_invoke_all does not work here, so i call it directly.
-				foreach (module_implements("field_validation_validate") as $module) {
-				  $function = $module . '_' . "field_validation_validate";
-					if (function_exists($function)) {
-					  $function($rule['validator'], $rule, $entity, $langcode, $items,  $errors);
+      $languages = field_available_languages($entity_type, $field);
+      foreach ($languages as $langcode) {
+        //debug($errors);
+        $items = isset($entity->{$field_name}[$langcode]) ? $entity->{$field_name}[$langcode] : array();
+        //$errors[$rule['field_name']][$langcode] = module_invoke_all("field_validation_validate", $rule['validator'], $items, $rule, $errors);
+        //module_invoke_all("field_validation_validate", $rule['validator'], $rule, $langcode, $items,  $errors);
+        //field_validation_field_validation_validate($rule['validator'], $rule, $langcode, $items,  $errors);
+        //module_invoke_all does not work here, so i call it directly.
+        foreach(module_implements("field_validation_validate") as $module){
+          $function = $module . '_' . "field_validation_validate";
+          if (function_exists($function)) {
+            $function($rule['validator'], $rule, $entity, $langcode, $items,  $errors);
           }
-				}
-
-			}
-			
-		}
+        }
+      }			
+    }
   }
 }
 
@@ -168,7 +166,7 @@ function theme_field_validation_manage_add_rule($variables) {
     $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
       $item = '';
-			$path = isset($_GET['q']) ? $_GET['q'] : '';
+      $path = isset($_GET['q']) ? $_GET['q'] : '';
       $url = $path.'/add/' . $validator_key;
       $components = ' (' . implode(', ', $validator_info['field_types']) . ')';
       $item = '<dt>' . l($validator_info['name'], $url, array("query" => drupal_get_destination())) . '</dt>';
@@ -202,7 +200,7 @@ function field_validation_field_delete($entity_type, $entity, $field, $instance,
  */
 function field_validation_rule_save($values) {
   // save rules data
-  if ($values['action'] == 'add') {
+  if($values['action'] == 'add'){
     drupal_write_record('field_validation_rule', $values);
     $ruleid = $values['ruleid'];
     if ($ruleid) {
@@ -210,7 +208,7 @@ function field_validation_rule_save($values) {
     }
   }
 
-  if ($values['action'] == 'edit') {
+  if($values['action'] == 'edit'){
     drupal_write_record('field_validation_rule', $values, 'ruleid');
     $ruleid = $values['ruleid'];
     if ($ruleid) {
@@ -225,17 +223,17 @@ function field_validation_rule_save($values) {
  */
 function field_validation_form_field_ui_field_overview_form_alter(&$form, &$form_state) {
   $entity_type = $form['#entity_type'];
-	$bundle = $form['#bundle'];
+  $bundle = $form['#bundle'];
 
   $bundle = field_extract_bundle($entity_type, $bundle);
-	$admin_path = _field_ui_bundle_admin_path($entity_type, $bundle);
+  $admin_path = _field_ui_bundle_admin_path($entity_type, $bundle);
 	
   $table = &$form['fields'];
-	$table['#header'][6]['colspan'] = 3;
-	$instances = field_info_instances($entity_type, $bundle);
+  $table['#header'][6]['colspan'] = 3;
+  $instances = field_info_instances($entity_type, $bundle);
 	
-  foreach (element_children($table) as $key) {
-    if (array_key_exists($key, $instances)) {
+  foreach(element_children($table) as $key){
+    if(array_key_exists($key, $instances)){
       $field = field_info_field($instances[$key]['field_name']);
       $admin_field_path = $admin_path . '/fields/' . $instances[$key]['field_name'];
       $table[$key]['validation'] = array(

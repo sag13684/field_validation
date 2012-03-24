@@ -25,13 +25,13 @@ function field_validation_schema() {
         'default' => '',
         'length' => 255,
       ),
-			'field_name' => array(
+      'field_name' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
         'default' => ''
       ),
-			'col' => array(
+      'col' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
@@ -82,7 +82,7 @@ function field_validation_schema() {
  * add 'col' to schema.
  */
 function field_validation_update_7000(&$sandbox) {
-	$col = array(
+  $col = array(
     'type' => 'varchar',
     'length' => 32,
     'not null' => TRUE,

@@ -36,7 +36,7 @@ function field_validation_field_validation_validators() {
       'field_types' => array(
         'textfield',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against.') . ' ' . t('Usage') . ':'
@@ -51,7 +51,7 @@ function field_validation_field_validation_validators() {
         'textfield',
         'textarea',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Minimum number of characters'),
         'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
@@ -64,7 +64,7 @@ function field_validation_field_validation_validators() {
         'textfield',
         'textarea',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Maximum number of characters'),
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
@@ -77,7 +77,7 @@ function field_validation_field_validation_validators() {
         'textfield',
         'textarea',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Minimum number of words'),
         'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
@@ -90,7 +90,7 @@ function field_validation_field_validation_validators() {
         'textfield',
         'textarea',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Maximum number of words'),
         'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
@@ -103,7 +103,7 @@ function field_validation_field_validation_validators() {
         'textfield',
         'textarea',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
     ),
     'must_be_empty' => array(
@@ -111,7 +111,7 @@ function field_validation_field_validation_validators() {
       'field_types' => array(
         'textfield',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
     ),
     'blacklist' => array(
@@ -131,10 +131,10 @@ function field_validation_field_validation_validators() {
       'name' => "Minimum number of selections required",
       'field_types' => array(
         'list_integer',
-				'list_float',
-				'list_text',
+        'list_float',
+        'list_text',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Minimum number of selections'),
         'description' => t('Specify the minimum number of options a user should select.'),
@@ -145,10 +145,10 @@ function field_validation_field_validation_validators() {
       'name' => "Maximum number of selections allowed",
       'field_types' => array(
         'list_integer',
-				'list_float',
-				'list_text',
+        'list_float',
+        'list_text',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Maximum number of selections'),
         'description' => t('Specify the maximum number of options a user can select.'),
@@ -159,10 +159,10 @@ function field_validation_field_validation_validators() {
       'name' => "Exact number of selections required",
       'field_types' => array(
         'list_integer',
-				'list_float',
-				'list_text',
+        'list_float',
+        'list_text',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Number of selections'),
         'description' => t('Specify how many options a user can select.'),
@@ -174,7 +174,7 @@ function field_validation_field_validation_validators() {
       'field_types' => array(
         'textfield',
       ),
-			'custom_error' => TRUE,
+      'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Scope of unique values'),
         'description' => t('Specify the scope of Unique values, support: global, entity, bundle.'),
@@ -186,8 +186,8 @@ function field_validation_field_validation_validators() {
       'field_types' => array(
         'textfield',
       ),
-			'custom_error' => TRUE,
-			'custom_data' => array(
+      'custom_error' => TRUE,
+      'custom_data' => array(
         'label' => t('Arguments of another field'),
         'description' => t('Specify the arguments of another field, support: entity_type, field_name, bundle, column, is_property. for example,entity_type=node&bundle=article&column=title&is_property=TRUE, entity_type=user&column=name&is_property=TRUE.').t('It also support argument "reverse", which means must not match the field if you set this argument.'),
       ),
@@ -212,7 +212,7 @@ function field_validation_field_validation_validators() {
         'textarea',
       ),
       'custom_error' => TRUE,
-			'custom_data' => array(
+      'custom_data' => array(
         'label' => t('group name'),
         'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
       ),
@@ -224,7 +224,7 @@ function field_validation_field_validation_validators() {
         'textfield',
       ),
       'custom_error' => TRUE,
-			'custom_data' => array(
+      'custom_data' => array(
         'label' => t('group name'),
         'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
       ),
@@ -236,7 +236,7 @@ function field_validation_field_validation_validators() {
         'textfield',
       ),
       'custom_error' => TRUE,
-			'custom_data' => array(
+      'custom_data' => array(
         'label' => t('group name'),
         'description' => t('Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together.'),
       ),
@@ -248,7 +248,7 @@ function field_validation_field_validation_validators() {
         'textfield',
       ),
       'custom_error' => TRUE,
-			'custom_data' => array(
+      'custom_data' => array(
         'label' => t('Function name'),
         'description' => t('Specify the custom PHP function name for this field. It contains one argument, $variables, for example, mymodule_validate_myfield($variables). Then you could enter its name at here: mymodule_validate_myfield'),
       ),
@@ -783,7 +783,7 @@ function field_validation_get_validators_selection() {
   $selection = array();
   $validators = field_validation_get_validators();
   if ($validators) {
-    foreach ($validators as $validator_key => $validator_info) {
+    foreach($validators as $validator_key => $validator_info){
       $selection[$validator_key] = $validator_info['name'];
     }
   }
@@ -805,21 +805,21 @@ function field_validation_get_validator_info($validator_key) {
 function _field_validation_numeric_check_data($data) {
   $range = array('min' => NULL, 'max' => NULL);
   // if no value was specified, don't validate
-  if ($data == '') {
+  if($data == ''){
     return $range;
   }
 
   // If only one numeric value was specified, this is the min value
-  if (is_numeric($data)) {
+  if(is_numeric($data)){
     $range['min'] = (int) $data;
   }
 
-  if (strpos($data, '|') !== FALSE) {
+  if(strpos($data, '|') !== FALSE){
     list($min, $max) = explode('|', $data);
     if ($min != '' && is_numeric($min)) {
       $range['min'] = (int) $min;
     }
-    if ($max != '' && is_numeric($max)) {
+    if($max != '' && is_numeric($max)){
       $range['max'] = (int) $max;
     }
   }
@@ -834,7 +834,7 @@ function _field_validation_get_field_column_value($items, $column ='value') {
 	foreach($items as $delta => $item){
 	  if(isset($item[$column]) && $item[$column] !=''){
 	    $field_values[] = $item[$column];
-		}
+      }
 	}
   return $field_values;
 }
@@ -847,7 +847,7 @@ function _field_validation_get_field_column_value1($items, $column ='value') {
 	foreach($items as $delta => $item){
 	  if(isset($item[$column])){
 	    $field_values[] = $item[$column];
-		}
+      }
 	}
   return $field_values;
 }
