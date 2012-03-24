@@ -261,7 +261,7 @@ function field_validation_field_validation_validators() {
  * Implements hook_field_validation_validate().
  */
 function field_validation_field_validation_validate($validator_name, $rule, $entity, $langcode, $items, &$errors) {
-  if (!empty($items)) {
+  if(!empty($items)){
     switch ($validator_name) {
      
       case "regex":
@@ -269,143 +269,95 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         $regex = $rule['data'];
 				
         foreach ($items as $delta => $item) {
-          if ($item[$rule['col']] != '' && (!mb_ereg("$regex", $item[$rule['col']]))) {
-					/*
-				    $errors[$rule['field_name']][$langcode][$delta][] = array(
-              'error' => 'regex_'.$rule['ruleid'], 
-              'message' => t($rule['error_message']),
-            );
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
+          if($item[$rule['col']] != '' && (!mb_ereg("$regex", $item[$rule['col']]))){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
           }
         }
 
         break;
 				
-			case "numeric":
-			  $num_range = _field_validation_numeric_check_data($rule['data']);
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != ''){
-					  $error_flag = FALSE;
-						if(!is_numeric($item[$rule['col']])){
-						  $error_flag = TRUE;
-						}
-						if(isset($num_range['min']) && $item[$rule['col']] < $num_range['min']){
-						  $error_flag = TRUE;
-						}
+      case "numeric":
+        $num_range = _field_validation_numeric_check_data($rule['data']);
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != ''){
+            $error_flag = FALSE;
+            if(!is_numeric($item[$rule['col']])){
+              $error_flag = TRUE;
+            }
+            if(isset($num_range['min']) && $item[$rule['col']] < $num_range['min']){
+              $error_flag = TRUE;
+            }
             if(isset($num_range['max']) && $item[$rule['col']] > $num_range['max']){
-						  $error_flag = TRUE;
-						}
-						if($error_flag){
-						/*
-						  $errors[$rule['field_name']][$langcode][$delta][] = array(
-							  'error' => 'numeric_'.$rule['ruleid'],
-								'message' => t($rule['error_message']),
-							);
-							*/
-						  $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						  $message = t($rule['error_message']);
-						  form_set_error($error,$message);
-						}
-					}
-				}
-			  break;
+              $error_flag = TRUE;
+            }
+            if($error_flag){
+              $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+              $message = t($rule['error_message']);
+              form_set_error($error,$message);
+            }
+          }
+        }
+        break;
       case "min_length":
-			  $min_length = $rule['data'];
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) < $min_length)) {
-					  /*
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'min_length_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;				
+        $min_length = $rule['data'];
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) < $min_length)){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+        break;				
       case "max_length":
-			  $max_length = $rule['data'];
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) > $max_length)) {
-					  /*
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'max_length_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;
+        $max_length = $rule['data'];
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) > $max_length)){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+        break;
       case "min_words":
-			  $min_words = $rule['data'];
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)) {
-					  /*
-						$errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'min_words_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);						
-					}
-				}
-				break;
-			case "max_words":
-			  $max_words = $rule['data'];
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)) {
-					  /*
-						$errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'max_words_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);							
-					}
-				}
-				break;
-			case "plain_text":
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (strcmp($item[$rule['col']], strip_tags($item[$rule['col']])))) {
-					  /*
-						$errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'plain_text_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;
-			case "must_be_empty":
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']]) {
-					  /*
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'must_be_empty_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;
+        $min_words = $rule['data'];
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);						
+          }
+        }
+		break;
+      case "max_words":
+        $max_words = $rule['data'];
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);							
+          }
+        }
+        break;
+      case "plain_text":
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']] != '' && (strcmp($item[$rule['col']], strip_tags($item[$rule['col']])))){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+        break;
+      case "must_be_empty":
+        foreach ($items as $delta => $item) {
+          if($item[$rule['col']]){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+        break;
 			case "blacklist":
 			  $blacklist = explode(',', $rule['data']);
 				$blacklist = array_map('trim', $blacklist);
