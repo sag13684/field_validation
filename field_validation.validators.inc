@@ -268,7 +268,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         mb_regex_encoding('UTF-8');
         $regex = $rule['data'];
 				
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (!mb_ereg("$regex", $item[$rule['col']]))){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -280,7 +280,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 				
       case "numeric":
         $num_range = _field_validation_numeric_check_data($rule['data']);
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != ''){
             $error_flag = FALSE;
             if(!is_numeric($item[$rule['col']])){
@@ -302,7 +302,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         break;
       case "min_length":
         $min_length = $rule['data'];
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) < $min_length)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -312,7 +312,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         break;				
       case "max_length":
         $max_length = $rule['data'];
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (drupal_strlen($item[$rule['col']]) > $max_length)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -322,7 +322,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         break;
       case "min_words":
         $min_words = $rule['data'];
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -332,7 +332,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
 		break;
       case "max_words":
         $max_words = $rule['data'];
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -341,7 +341,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         }
         break;
       case "plain_text":
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']] != '' && (strcmp($item[$rule['col']], strip_tags($item[$rule['col']])))){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -350,7 +350,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         }
         break;
       case "must_be_empty":
-        foreach ($items as $delta => $item) {
+        foreach($items as $delta => $item){
           if($item[$rule['col']]){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
@@ -358,76 +358,54 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
           }
         }
         break;
-			case "blacklist":
-			  $blacklist = explode(',', $rule['data']);
-				$blacklist = array_map('trim', $blacklist);
-				$blacklist_regex = implode('|', $blacklist);
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '' && (preg_match("/$blacklist_regex/i", $item[$rule['col']]))) {
-					  /*
-						$errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'blacklist_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;
-			case "select_min":
-			  $min_selections = $rule['data'];
-				//$selected = 0;
-				$total_items = count($items);
-				/*
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '') {
-					  $selected ++;							
-					}
-				}*/
-				if($total_items < $min_selections){
-				  $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'select_min_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-				}
-				break;
-			case "select_max":
-			  $max_selections = $rule['data'];
-				//$selected = 0;
-				$total_items = count($items);
-				/*
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '') {
-					  $selected ++;							
-					}
-				}*/
-				if($total_items > $max_selections){
-				  $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'select_max_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-				}
-				break;
-			case "select_exact":
-			  $allowed_selections = $rule['data'];
-				//$selected = 0;
-				$total_items = count($items);
-				/*
-				foreach ($items as $delta => $item) {
-				  if ($item[$rule['col']] != '') {
-					  $selected ++;							
-					}
-				}
-				*/
-				if($total_items != $allowed_selections){
-				  $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'select_exact_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-				}
-				break;
+      case "blacklist":
+        $blacklist = explode(',', $rule['data']);
+        $blacklist = array_map('trim', $blacklist);
+        $blacklist_regex = implode('|', $blacklist);
+        foreach($items as $delta => $item){
+          if ($item[$rule['col']] != '' && (preg_match("/$blacklist_regex/i", $item[$rule['col']]))) {
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+		break;
+      case "select_min":
+        $min_selections = $rule['data'];
+        //$selected = 0;
+        $total_items = count($items);
+
+        if($total_items < $min_selections){
+          $errors[$rule['field_name']][$langcode][0][] = array(
+            'error' => 'select_min_'.$rule['ruleid'],
+            'message' => t($rule['error_message']),
+          );
+        }
+        break;
+      case "select_max":
+        $max_selections = $rule['data'];
+        //$selected = 0;
+        $total_items = count($items);
+
+        if($total_items > $max_selections){
+          $errors[$rule['field_name']][$langcode][0][] = array(
+            'error' => 'select_max_'.$rule['ruleid'],
+            'message' => t($rule['error_message']),
+          );
+        }
+        break;
+      case "select_exact":
+        $allowed_selections = $rule['data'];
+        //$selected = 0;
+        $total_items = count($items);
+
+        if($total_items != $allowed_selections){
+          $errors[$rule['field_name']][$langcode][0][] = array(
+            'error' => 'select_exact_'.$rule['ruleid'],
+            'message' => t($rule['error_message']),
+          );
+        }
+        break;
 			case "unique":
 			  $scope = $rule['data'];
 				$total_items = count($items);
@@ -686,32 +664,25 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
         $custom_function_name = $rule['data'];	
         if (function_exists($custom_function_name)) {				
           foreach ($items as $delta => $item) {
-					  $flag = TRUE;
-						$variables = array();
-						$variables['value'] = $item[$rule['col']];
-						$variables['item'] = $item;
-						$variables['delta'] = $delta;
-						$variables['items'] = $items;
-						$variables['rule'] = $rule;
-						$variables['validator_name'] = $validator_name;
-						$variables['langcode'] = $langcode;
-						$variables['entity'] = $entity;
+            $flag = TRUE;
+            $variables = array();
+            $variables['value'] = $item[$rule['col']];
+            $variables['item'] = $item;
+            $variables['delta'] = $delta;
+            $variables['items'] = $items;
+            $variables['rule'] = $rule;
+            $variables['validator_name'] = $validator_name;
+            $variables['langcode'] = $langcode;
+            $variables['entity'] = $entity;
 						
-						$flag = $custom_function_name($variables);
-            if (!$flag) {
-						  /*
-				      $errors[$rule['field_name']][$langcode][$delta][] = array(
-                'error' => 'custom_'.$rule['ruleid'], 
-                'message' => t($rule['error_message']),
-              );
-							*/
-						  $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						  $message = t($rule['error_message']);
-						  form_set_error($error,$message);							
+            $flag = $custom_function_name($variables);
+            if(!$flag){
+              $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+              $message = t($rule['error_message']);
+              form_set_error($error,$message);							
             }
           }
-				}
-
+        }
         break;				
     }
   }
