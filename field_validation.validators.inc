@@ -323,7 +323,9 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "min_words":
         $min_words = $rule['data'];
         foreach($items as $delta => $item){
-          if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) < $min_words)){
+          $value = $item[$rule['col']];  
+          $count = count(explode(' ', trim(preg_replace('/\s+/', ' ', str_replace('&nbsp;', ' ', (strip_tags(str_replace('<', ' <', $value))))))));		
+          if($value != '' && ($count < $min_words)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
             form_set_error($error,$message);						
@@ -333,7 +335,9 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "max_words":
         $max_words = $rule['data'];
         foreach($items as $delta => $item){
-          if($item[$rule['col']] != '' && (count(preg_split("/[\s]+/", trim($item[$rule['col']]))) > $max_words)){
+          $value = $item[$rule['col']];  
+          $count = count(explode(' ', trim(preg_replace('/\s+/', ' ', str_replace('&nbsp;', ' ', (strip_tags(str_replace('<', ' <', $value))))))));
+          if($value != '' && ($count > $max_words)){
             $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
             $message = t($rule['error_message']);
             form_set_error($error,$message);							
