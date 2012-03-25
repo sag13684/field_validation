@@ -406,259 +406,222 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
           );
         }
         break;
-			case "unique":
-			  $scope = $rule['data'];
-				$total_items = count($items);
-				foreach ($items as $delta => $item) {
-				  $flag = FALSE;
+      case "unique":
+        $scope = $rule['data'];
+        $total_items = count($items);
+        foreach($items as $delta => $item){
+          $flag = FALSE;
 					
-				  foreach ($items as $delta1 => $item1) {
-					  if($delta != $delta1){
-						  if($item[$rule['col']] == $item1[$rule['col']]){
-							  $flag = TRUE;
-								break;
-							}
-						}
-					}
+          foreach ($items as $delta1 => $item1) {
+            if($delta != $delta1){
+              if($item[$rule['col']] == $item1[$rule['col']]){
+                $flag = TRUE;
+                break;
+              }
+            }
+          }
 					
-					if(!$flag){
-					  $query = new EntityFieldQuery();
-						if($scope == 'global'){
-						}elseif($scope == 'entity'){
-						  $query->entityCondition('entity_type', $rule['entity_type']);
-						}elseif($scope == 'bundle'){
-						  $query->entityCondition('entity_type', $rule['entity_type']);
-							$query->entityCondition('bundle', $rule['bundle']);
-						}
+          if(!$flag){
+            $query = new EntityFieldQuery();
+            if($scope == 'global'){
+            }elseif($scope == 'entity'){
+              $query->entityCondition('entity_type', $rule['entity_type']);
+            }elseif($scope == 'bundle'){
+              $query->entityCondition('entity_type', $rule['entity_type']);
+              $query->entityCondition('bundle', $rule['bundle']);
+            }
 						
-						list($id, $vid, $bundle) = entity_extract_ids($rule['entity_type'], $entity);
-						if($rule['entity_type'] == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)){
-						  $id = arg(1);
-						}
-						if(!empty($id)){
-						  $query->entityCondition('entity_id', $id, '!=');
-						}
-						$flag = (bool)$query->fieldCondition($rule['field_name'],$rule['col'],$item[$rule['col']])
-						                    ->range(0, 1)
-																->count()
-																->execute();
+            list($id, $vid, $bundle) = entity_extract_ids($rule['entity_type'], $entity);
+            if($rule['entity_type'] == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)){
+              $id = arg(1);
+            }
+            if(!empty($id)){
+              $query->entityCondition('entity_id', $id, '!=');
+            }
+            $flag = (bool)$query->fieldCondition($rule['field_name'],$rule['col'],$item[$rule['col']])
+                                ->range(0, 1)
+                                ->count()
+                                ->execute();
 						
-					}
+          }
 					
-				  if ($flag) {
-					  /*
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'unique_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-            );
-            */
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);						
-					}
-				}
-				break;
+          if($flag){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);						
+          }
+        }
+        break;
 				
-			case "match_another_field":
-			  $arguments = $rule['data'];
-				$arguments = explode('&',$rule['data']);
-				$arg_array = array();
-				//debug($arguments);
-				foreach($arguments as $arg){
-				  $argument = explode('=',$arg);
-					$name = trim($argument[0]);
-					$value = trim($argument[1]);
-					$arg_array[$name] = $value;
-				}
-				//debug($arg_array);
-				foreach ($items as $delta => $item) {
-				  if(empty($item[$rule['col']])){
-					  continue;
-					}
-				  $query = new EntityFieldQuery();
-					if(!empty($arg_array['entity_type'])){
-					  $query->entityCondition('entity_type', $arg_array['entity_type']);
-					}
-					if(!empty($arg_array['bundle'])){
-					  $query->entityCondition('bundle', $arg_array['bundle']);
-					}
-					if(!empty($arg_array['is_property'])){
-					  if(!empty($arg_array['column'])){
-					    $query->propertyCondition($arg_array['column'],$item[$rule['col']]);
-						}	
-					}else{
-					  if(!empty($arg_array['field_name']) && !empty($arg_array['column'])){
-						  $query->fieldCondition($arg_array['field_name'], $arg_array['column'], $item[$rule['col']]);
-						}
-					}
-					$flag = (bool)$query->range(0, 1)->count()->execute();
-					if(!empty($arg_array['reverse'])){
-					  $flag = $flag ? FALSE : TRUE;
-					}
-					if (!$flag) {
-					  /*
-					  $errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'match_another_field_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);	
-					}
-				}
-				break;
-			case "specific_value":
-				$specific_values = explode(',',$rule['data']);
-				$specific_values = array_map('trim', $specific_values);
-				foreach ($items as $delta => $item) {
-				  if(empty($item[$rule['col']])){
-					  continue;
-					}
-					if (!in_array($item[$rule['col']], $specific_values)) {
-					  /*
-						$errors[$rule['field_name']][$langcode][$delta][] = array(
-						  'error' => 'specific_value_'.$rule['ruleid'],
-							'message' => t($rule['error_message']),
-						);
-						*/
-						$error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
-						$message = t($rule['error_message']);
-						form_set_error($error,$message);
-					}
-				}
-				break;
-			case "oneofseveral":
-			  $flag = FALSE;
-				$group_name = $rule['data'];
-				$field_values = _field_validation_get_field_column_value($items, $rule['col']);
-				$field_values = array_flip($field_values);
-				if(count($field_values) > 0){
-				  $flag = TRUE;
-				}
-				if(!$flag){
-				  $other_group_rules = db_select('field_validation_rule','fvr')
-					                ->fields('fvr')
-					                ->condition('fvr.entity_type',$rule['entity_type'])
-					                ->condition('fvr.bundle',$rule['bundle'])
-					                ->condition('fvr.validator',$rule['validator'])
-					                ->condition('fvr.data',$group_name)
-													->condition('fvr.ruleid',$rule['ruleid'],'!=')
-					                ->execute()
-					                ->fetchAll();
+      case "match_another_field":
+        $arguments = $rule['data'];
+        $arguments = explode('&',$rule['data']);
+        $arg_array = array();
+        //debug($arguments);
+        foreach($arguments as $arg){
+          $argument = explode('=',$arg);
+          $name = trim($argument[0]);
+          $value = trim($argument[1]);
+          $arg_array[$name] = $value;
+        }
+        //debug($arg_array);
+        foreach ($items as $delta => $item) {
+          if(empty($item[$rule['col']])){
+            continue;
+          }
+          $query = new EntityFieldQuery();
+          if(!empty($arg_array['entity_type'])){
+            $query->entityCondition('entity_type', $arg_array['entity_type']);
+          }
+          if(!empty($arg_array['bundle'])){
+            $query->entityCondition('bundle', $arg_array['bundle']);
+          }
+          if(!empty($arg_array['is_property'])){
+            if(!empty($arg_array['column'])){
+              $query->propertyCondition($arg_array['column'],$item[$rule['col']]);
+            }	
+          }else{
+            if(!empty($arg_array['field_name']) && !empty($arg_array['column'])){
+              $query->fieldCondition($arg_array['field_name'], $arg_array['column'], $item[$rule['col']]);
+            }
+          }
+          $flag = (bool)$query->range(0, 1)->count()->execute();
+          if(!empty($arg_array['reverse'])){
+            $flag = $flag ? FALSE : TRUE;
+          }
+          if(!$flag){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);	
+          }
+        }
+        break;
+      case "specific_value":
+        $specific_values = explode(',',$rule['data']);
+        $specific_values = array_map('trim', $specific_values);
+        foreach ($items as $delta => $item) {
+          if(empty($item[$rule['col']])){
+            continue;
+          }
+          if(!in_array($item[$rule['col']], $specific_values)){
+            $error = $rule['field_name'].']['.$langcode.']['.$delta.']['.$rule['col'];
+            $message = t($rule['error_message']);
+            form_set_error($error,$message);
+          }
+        }
+        break;
+      case "oneofseveral":
+        $flag = FALSE;
+        $group_name = $rule['data'];
+        $field_values = _field_validation_get_field_column_value($items, $rule['col']);
+        $field_values = array_flip($field_values);
+        if(count($field_values) > 0){
+          $flag = TRUE;
+        }
+        if(!$flag){
+          $other_group_rules = db_select('field_validation_rule','fvr')
+                                 ->fields('fvr')
+                                 ->condition('fvr.entity_type',$rule['entity_type'])
+                                 ->condition('fvr.bundle',$rule['bundle'])
+                                 ->condition('fvr.validator',$rule['validator'])
+                                 ->condition('fvr.data',$group_name)
+                                 ->condition('fvr.ruleid',$rule['ruleid'],'!=')
+                                 ->execute()
+                                 ->fetchAll();
 					
-					foreach($other_group_rules as $other_group_rule){
-					  $other_items = isset($entity->{$other_group_rule->field_name}[$langcode])?$entity->{$other_group_rule->field_name}[$langcode]: array();
-						$other_field_values = _field_validation_get_field_column_value($other_items, $other_group_rule->col);
-						$other_field_values = array_flip($other_field_values);
-						if(count($other_field_values) > 0){
-						  $flag = TRUE;
-							break;
-						}
-					}
-				}
+          foreach($other_group_rules as $other_group_rule){
+            $other_items = isset($entity->{$other_group_rule->field_name}[$langcode])?$entity->{$other_group_rule->field_name}[$langcode]: array();
+            $other_field_values = _field_validation_get_field_column_value($other_items, $other_group_rule->col);
+            $other_field_values = array_flip($other_field_values);
+            if(count($other_field_values) > 0){
+              $flag = TRUE;
+              break;
+            }
+          }
+        }
 
-				if(!$flag){
-				  /*
-				  $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'oneofseveral_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-					*/
-					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
-					$message = t($rule['error_message']);
-					form_set_error($error,$message);
-				}
-				break;
-			case "equal_values":
-			  $flag = FALSE;
-				$group_name = $rule['data'];
-				$other_group_rules = db_select('field_validation_rule','fvr')
-					                ->fields('fvr')
-					                ->condition('fvr.entity_type',$rule['entity_type'])
-					                ->condition('fvr.bundle',$rule['bundle'])
-					                ->condition('fvr.validator',$rule['validator'])
-					                ->condition('fvr.data',$group_name)
-													->condition('fvr.ruleid',$rule['ruleid'],'!=')
-					                ->execute()
-					                ->fetchAll();
-				foreach ($items as $delta => $item) {
-				  foreach($other_group_rules as $other_group_rule){
-					  if(isset($entity->{$other_group_rule->field_name}[$langcode][$delta])){
-						  if($item[$rule['col']] == $entity->{$other_group_rule->field_name}[$langcode][$delta][$other_group_rule->col]){	
-							}else{
-							  $flag = TRUE;
-								break;
-							}
-						}else{
-						  $flag = TRUE;
-							break;
-						}
-					}
-					if($flag){
-					  break;
-					}
-				}
-				if($flag){
-				  /*
-          $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'equal_values_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-					*/
-					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
-					$message = t($rule['error_message']);
-					form_set_error($error,$message);
-				}
+        if(!$flag){
+          $error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+          $message = t($rule['error_message']);
+          form_set_error($error,$message);
+        }
+        break;
+      case "equal_values":
+        $flag = FALSE;
+        $group_name = $rule['data'];
+        $other_group_rules = db_select('field_validation_rule','fvr')
+                               ->fields('fvr')
+                               ->condition('fvr.entity_type',$rule['entity_type'])
+                               ->condition('fvr.bundle',$rule['bundle'])
+                               ->condition('fvr.validator',$rule['validator'])
+                               ->condition('fvr.data',$group_name)
+                               ->condition('fvr.ruleid',$rule['ruleid'],'!=')
+                               ->execute()
+                               ->fetchAll();
+        foreach ($items as $delta => $item) {
+          foreach($other_group_rules as $other_group_rule){
+            if(isset($entity->{$other_group_rule->field_name}[$langcode][$delta])){
+              if($item[$rule['col']] == $entity->{$other_group_rule->field_name}[$langcode][$delta][$other_group_rule->col]){	
+              }else{
+                $flag = TRUE;
+                break;
+              }
+            }else{
+              $flag = TRUE;
+              break;
+            }
+          }
+          if($flag){
+            break;
+          }
+        }
+        if($flag){
+          $error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+          $message = t($rule['error_message']);
+          form_set_error($error,$message);
+        }
 
-				break;
-			case "unique_values":
-			  $flag = FALSE;
-				$group_name = $rule['data'];
-				$total_items = count($items);
-				$field_values = _field_validation_get_field_column_value1($items, $rule['col']);
-				$field_values = array_flip($field_values);
-				if(count($field_values) < $total_items){
-				  $flag = TRUE;
-				}
-				if(!$flag){
-				  $other_group_rules = db_select('field_validation_rule','fvr')
-					                ->fields('fvr')
-					                ->condition('fvr.entity_type',$rule['entity_type'])
-					                ->condition('fvr.bundle',$rule['bundle'])
-					                ->condition('fvr.validator',$rule['validator'])
-					                ->condition('fvr.data',$group_name)
-													->condition('fvr.ruleid',$rule['ruleid'],'!=')
-					                ->execute()
-					                ->fetchAll();
-				  foreach($other_group_rules as $other_group_rule){
-					  if(isset($entity->{$other_group_rule->field_name}[$langcode])){
-						  $other_items = $entity->{$other_group_rule->field_name}[$langcode];
-							$other_field_values = _field_validation_get_field_column_value1($other_items, $other_group_rule->col);
-							$other_field_values = array_flip($other_field_values);
-							$total_items = $total_items + count($other_items);
+        break;
+      case "unique_values":
+        $flag = FALSE;
+        $group_name = $rule['data'];
+        $total_items = count($items);
+        $field_values = _field_validation_get_field_column_value1($items, $rule['col']);
+        $field_values = array_flip($field_values);
+        if(count($field_values) < $total_items){
+          $flag = TRUE;
+        }
+        if(!$flag){
+          $other_group_rules = db_select('field_validation_rule','fvr')
+                                 ->fields('fvr')
+                                 ->condition('fvr.entity_type',$rule['entity_type'])
+                                 ->condition('fvr.bundle',$rule['bundle'])
+                                 ->condition('fvr.validator',$rule['validator'])
+                                 ->condition('fvr.data',$group_name)
+                                 ->condition('fvr.ruleid',$rule['ruleid'],'!=')
+                                 ->execute()
+                                 ->fetchAll();
+          foreach($other_group_rules as $other_group_rule){
+            if(isset($entity->{$other_group_rule->field_name}[$langcode])){
+              $other_items = $entity->{$other_group_rule->field_name}[$langcode];
+              $other_field_values = _field_validation_get_field_column_value1($other_items, $other_group_rule->col);
+              $other_field_values = array_flip($other_field_values);
+              $total_items = $total_items + count($other_items);
 							
-							$field_values = $field_values + $other_field_values;
-							if(count($field_values) < $total_items){
-							  $flag = TRUE;
-								break;
-							} 
-						}
-					}
-				}
-				if($flag){
-				  /*
-          $errors[$rule['field_name']][$langcode][0][] = array(
-					  'error' => 'unique_values_'.$rule['ruleid'],
-						'message' => t($rule['error_message']),
-					);
-					*/
-					$error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
-					$message = t($rule['error_message']);
-					form_set_error($error,$message);					
-				}
-
-				break;
+              $field_values = $field_values + $other_field_values;
+              if(count($field_values) < $total_items){
+                $flag = TRUE;
+                break;
+              } 
+            }
+          }
+        }
+        if($flag){
+          $error = $rule['field_name'].']['.$langcode.'][0]['.$rule['col'];
+          $message = t($rule['error_message']);
+          form_set_error($error,$message);					
+        }
+        break;
 				
       case "custom":
         $custom_function_name = $rule['data'];	
