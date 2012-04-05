@@ -248,3 +248,20 @@ function field_validation_form_field_ui_field_overview_form_alter(&$form, &$form
     }
   }
 }
+
+/**
+ * Load a validation rule.
+ *
+ * @param $name
+ *   This validation rule's name value.
+ * @return
+ *   An array of options for the specified validation rule.
+ */
+function field_validation_rule_load($name) {
+  // Use Ctools export API to fetch this rule.
+  ctools_include('export');
+  $result = ctools_export_load_object('field_validation_rule', 'names', array($name));
+  if (isset($result[$name])) {
+    return $result[$name];
+  }
+}
