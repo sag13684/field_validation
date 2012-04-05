@@ -49,7 +49,7 @@ function field_validation_manage($instance) {
   $field_name = $instance['field_name'];
   ctools_include('export');
   $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type'=>$entity_type, 'bundle' => $bundle, 'field_name' => $field_name));
-  
+
   $output .= theme('field_validation_manage_overview', array('rules' => $rules, 'instance' => $instance));
   $output .= theme('field_validation_manage_add_rule', array('instance' => $instance));
   return $output;

@@ -43,3 +43,4 @@ function field_validation_get_bundle_rules($entity_type, $bundle) {
   return $rules;
 }
 
+
