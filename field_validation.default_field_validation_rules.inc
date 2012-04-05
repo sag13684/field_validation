@@ -15,17 +15,16 @@ function field_validation_default_field_validation_rule() {
 
   $rule = new stdClass;
   $rule->api_version = 1;
-  $rule->name = 'min_words_comment_for_comment_body';
-  $rule->rulename = 'Min words for comment body';
-  $rule->field_name = 'comment_body';
+  $rule->name = 'body_min_words';
+  $rule->rulename = 'Body Min words';
+  $rule->field_name = 'body';
   $rule->col = 'value';
-  $rule->entity_type = 'comment';
-  $rule->bundle = 'comment_node_article';
+  $rule->entity_type = 'node';
+  $rule->bundle = 'page';
   $rule->validator = 'min_words';
   $rule->data = '2';
   $rule->error_message = t('You should enter at least two words.');
-  $rule->status = 1;
-  $export['min-words-comment'] = $rule;
+  $export['body_min_words'] = $rule;
 	
   return $export;
 }
