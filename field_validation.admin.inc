@@ -35,7 +35,14 @@ function field_validation_callback_dispatch($instance, $arg1 = NULL, $arg2 = NUL
  */
 function field_validation_manage($instance) {
   $output = '';
-  $rules = field_validation_get_field_rules($instance);
+  //$rules = field_validation_get_field_rules($instance);
+
+  $bundle = $instance['bundle'];
+  $entity_type = $instance['entity_type'];
+  $field_name = $instance['field_name'];
+  ctools_include('export');
+  $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type'=>$entity_type, 'bundle' => $bundle, 'field_name' => $field_name));  
+  
   $output .= theme('field_validation_manage_overview', array('rules' => $rules, 'instance' => $instance));
   $output .= theme('field_validation_manage_add_rule', array('instance' => $instance));
   return $output;
@@ -57,18 +64,25 @@ function theme_field_validation_manage_overview($variables) {
     foreach ($rules as $rule) {
       $row = array();
       $row[] = array(
-        'data' => $rule['rulename'],
+        'data' => $rule->rulename,
       );
       $row[] = array(
-        'data' => $validators[$rule['validator']],
+        'data' => $validators[$rule->validator],
       );
-			$path = isset($_GET['q']) ? $_GET['q'] : '';
-      $row[] = array(
-        'data' => l(t('Edit'), $path.'/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => drupal_get_destination())),
-      );
-      $row[] = array(
-        'data' => l(t('Delete'), $path.'/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
-      );
+      $path = isset($_GET['q']) ? $_GET['q'] : '';
+	  if(!empty($rule->ruleid)){
+        $row[] = array(
+          'data' => l(t('Edit'), $path.'/edit/' . $rule->validator . '/' . $rule->ruleid, array("query" => drupal_get_destination())),
+        );
+        $row[] = array(
+          'data' => l(t('Delete'), $path.'/delete/' . $rule->ruleid, array("query" => drupal_get_destination())),
+        );
+	  }else{
+        $row[] = array(
+          'data' => l(t('Overwrite'), $path.'/overwrite/' . $rule->validator . '/' . $rule->name, array("query" => drupal_get_destination())),
+		  'colspan' => 2,
+        );	  
+	  }
       $rows[] = $row;
     }
   }
@@ -153,8 +167,17 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#maxlength' => 255,
     '#weight' => 1,
   );
-	
-	$form['rule']['col'] = array(
+
+  $form['rule']['name'] = array(
+    '#type' => 'machine_name',
+    '#default_value' => (isset($rule['name'])) ? $rule['name'] : '',
+	'#machine_name' => array(
+	  'exists' => 'field_validation_rule_load',
+	  'source' => array('rulename'),
+	),
+    '#weight' => 2,
+  );  
+  $form['rule']['col'] = array(
     '#type' => 'textfield',
     '#title' => t('Column'),
 		'#description' => t('A column defined in the hook_field_schema() of this field.'),
@@ -162,7 +185,7 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#required' => TRUE,
     '#size' => 60,
     '#maxlength' => 255,
-    '#weight' => 2,
+    '#weight' => 3,
   );
 
   if (isset($rule_validator['custom_data']) && is_array($rule_validator['custom_data'])) {
