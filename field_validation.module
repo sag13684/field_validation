@@ -146,6 +146,9 @@ function field_validation_field_attach_validate($entity_type, $entity, &$errors)
     foreach ($rules as $rule_obj) {
 	  //Convert object to array. There are a lot validators using array now, in the future we will change them to object.
 	  $rule = (array)$rule_obj;
+	  if(!empty($rule['disabled'])){
+	    continue;
+	  }
       $field_name = $rule['field_name'];
       $field = field_info_field($field_name);
       $languages = field_available_languages($entity_type, $field);
