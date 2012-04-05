@@ -163,7 +163,7 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   $field = field_info_field($default_field_name);
   //print debug($field);
   $col_options = array(
-    '' => 'Choose a column',
+    '' => t('Choose a column'),
   );
   $columns = !empty($field['columns']) ? $field['columns'] : array();
   foreach ($columns as $key => $column) {
@@ -278,7 +278,7 @@ function field_validation_ctools_export_ui_form_submit($form, &$form_state) {
   $form_state['values']['ffmpeg_wrapper'] = serialize(_ffmpeg_converter_array_flatten($form_state['values']['ffmpeg_wrapper']));
 */
 $values = $form_state['values'];
-print debug($values);
+//print debug($values);
 }
 
 function field_validation_entity_type_callback($form,&$form_state){

@@ -11,17 +11,24 @@
 function field_validation_callback_dispatch($instance, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL) {
   $output = '';
 	if(empty($arg1)){
-	  drupal_set_title(t('Validation'));
-		$output .= field_validation_manage($instance);
+      drupal_set_title(t('Validation'));
+      $output .= field_validation_manage($instance);
 	}elseif($arg1 == 'add'){
 	  drupal_set_title(t('Add validation'));
-		$output .= drupal_render(drupal_get_form('field_validation_manage_rule', $instance, 'add', $arg2));
+	  $form = drupal_get_form('field_validation_manage_rule', $instance, 'add', $arg2);
+		$output .= drupal_render($form);
 	}elseif($arg1 == 'edit'){
 		drupal_set_title(t('Edit rule'));
-		$output .= drupal_render(drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3));
+		$form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
+		$output .= drupal_render($form);
 	}elseif($arg1 == 'delete'){
 		drupal_set_title(t('Delete rule'));
-		$output .= drupal_render(drupal_get_form('field_validation_delete_rule', $arg2));
+		$form = drupal_get_form('field_validation_delete_rule', $arg2);
+		$output .= drupal_render($form);
+	}elseif($arg1 == 'overwrite'){
+		drupal_set_title(t('Overwrite rule'));
+		$form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
+		$output .= drupal_render($form);
 	}else{
 	  drupal_set_title(t('Validation'));
 		$output .= field_validation_manage($instance);	
@@ -36,12 +43,12 @@ function field_validation_callback_dispatch($instance, $arg1 = NULL, $arg2 = NUL
 function field_validation_manage($instance) {
   $output = '';
   //$rules = field_validation_get_field_rules($instance);
-
+  
   $bundle = $instance['bundle'];
   $entity_type = $instance['entity_type'];
   $field_name = $instance['field_name'];
   ctools_include('export');
-  $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type'=>$entity_type, 'bundle' => $bundle, 'field_name' => $field_name));  
+  $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type'=>$entity_type, 'bundle' => $bundle, 'field_name' => $field_name));
   
   $output .= theme('field_validation_manage_overview', array('rules' => $rules, 'instance' => $instance));
   $output .= theme('field_validation_manage_add_rule', array('instance' => $instance));
@@ -102,7 +109,12 @@ function theme_field_validation_manage_overview($variables) {
 function field_validation_manage_rule($form, $form_state, $instance, $action = 'add', $validator = 'regex', $ruleid = NULL) {
   $form = array();
   $rule_validator = field_validation_get_validator_info($validator);
-  $rule = field_validation_get_rule($ruleid);
+  if($action == 'overwrite'){
+	$rule = field_validation_rule_load($ruleid);
+	$rule = (array)$rule;
+  }else{
+    $rule = field_validation_get_rule($ruleid);
+  }
   $form['rule'] = array(
     '#type' => 'fieldset',
     '#title' => ($action == 'edit') ? t('Edit rule') : t('Add rule'),
@@ -167,7 +179,6 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#maxlength' => 255,
     '#weight' => 1,
   );
-
   $form['rule']['name'] = array(
     '#type' => 'machine_name',
     '#default_value' => (isset($rule['name'])) ? $rule['name'] : '',
@@ -176,15 +187,22 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
 	  'source' => array('rulename'),
 	),
     '#weight' => 2,
-  );  
+  );
+  $field = field_info_field($instance['field_name']);
+  $col_options = array(
+    '' => t('Choose a column'),
+  );
+  $columns = !empty($field['columns']) ? $field['columns'] : array();
+  foreach ($columns as $key => $column) {
+    $col_options[$key] = $key;  
+  }  
   $form['rule']['col'] = array(
-    '#type' => 'textfield',
+    '#type' => 'select',
+	'#options' => $col_options,
     '#title' => t('Column'),
-		'#description' => t('A column defined in the hook_field_schema() of this field.'),
-    '#default_value' => (isset($rule['col'])) ? $rule['col'] : 'value',
+    '#description' => t('A column defined in the hook_field_schema() of this field.'),
+    '#default_value' => (isset($rule['col'])) ? $rule['col'] : '',
     '#required' => TRUE,
-    '#size' => 60,
-    '#maxlength' => 255,
     '#weight' => 3,
   );
 
@@ -220,6 +238,10 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#value' => (isset($rule['ruleid'])) ? t('Save rule') : t('Add rule'),
     '#weight' => 25,
   );
+  
+  if($action == 'overwrite'){
+    $form['rule']['submit']['#value'] = t('Overwrite rule');
+  }
 
   return $form;
 }

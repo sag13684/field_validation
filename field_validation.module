@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Add validation rules to field instance
+ * Add validation rules to field instance.
  */
 
 include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'field_validation') . '/' . 'field_validation.validators.inc';
@@ -72,6 +72,15 @@ function field_validation_menu() {
             'type' => MENU_CALLBACK,
             'file' => 'field_validation.admin.inc',
           ) + $access;
+		  
+          $items["$path/fields/%field_ui_menu/validation/overwrite"] = array(
+            'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
+            'title' => 'Overwrite rule',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('field_validation_manage_rule', $field_position, 'overwrite'),
+            'type' => MENU_CALLBACK,
+            'file' => 'field_validation.admin.inc',
+          ) + $access;		  
 					
           $items["$path/fields/%field_ui_menu/validation/delete"] = array(
             'load arguments' => array($entity_type, $bundle_arg, $bundle_pos, '%map'),
@@ -205,7 +214,7 @@ function field_validation_field_delete($entity_type, $entity, $field, $instance,
  */
 function field_validation_rule_save($values) {
   // save rules data
-  if($values['action'] == 'add'){
+  if($values['action'] == 'add' || $values['action'] == 'overwrite'){
     drupal_write_record('field_validation_rule', $values);
     $ruleid = $values['ruleid'];
     if ($ruleid) {
