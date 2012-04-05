@@ -30,6 +30,7 @@ function field_validation_schema() {
         'description' => 'Unique identifier of the validation rule',
         'unsigned' => TRUE,
         'not null' => TRUE,
+		'no export' => TRUE,
       ),
       'rulename' => array(
         'type' => 'varchar',
