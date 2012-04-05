@@ -4,6 +4,7 @@ package = Fields
 core = 7.x
 dependencies[] = field
 dependencies[] = field_ui
+dependencies[] = ctools
 files[] = field_validation.admin.inc
 files[] = field_validation.install
 files[] = field_validation.module

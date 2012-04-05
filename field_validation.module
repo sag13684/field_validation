@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Add validation rules to webforms
+ * Add validation rules to field instance
  */
 
 include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'field_validation') . '/' . 'field_validation.validators.inc';
