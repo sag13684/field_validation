@@ -123,4 +123,10 @@ function field_validation_update_7001(&$sandbox) {
     'length' => 32,
   );
   db_add_field('field_validation_rule', 'name', $name);
+  
+  $result = db_query("SELECT ruleid FROM {field_validation_rule}");
+  foreach($result as $record){
+    //Just use ruleid as machine name, to make it works. You could change the machine name later.
+    db_query("UPDATE {field_validation_rule} SET name = :name WHERE ruleid = :ruleid", array(':name' => $record->ruleid, ':ruleid' => $record->ruleid));
+  } 
 }
