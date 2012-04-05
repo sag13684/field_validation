@@ -265,3 +265,12 @@ function field_validation_rule_load($name) {
     return $result[$name];
   }
 }
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function field_validation_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && $plugin == 'export_ui') {
+    return 'plugins/' . $plugin;
+  }
+}
