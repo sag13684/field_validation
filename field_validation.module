@@ -274,3 +274,14 @@ function field_validation_ctools_plugin_directory($module, $plugin) {
     return 'plugins/' . $plugin;
   }
 }
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ *
+ * Tell Ctools that we support the default_field_validation_rules API.
+ */
+function field_validation_ctools_plugin_api($owner, $api) {
+  if ($owner == 'field_validation' && $api == 'default_field_validation_rules') {
+    return array('version' => 1);
+  }
+}
