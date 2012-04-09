@@ -195,7 +195,7 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
     '#type' => 'select',
 	'#options' => $validator_options,
     '#title' => t('Validator'),
-    '#description' => t('A column defined in the hook_field_schema() of this field.'),
+   // '#description' => t('A column defined in the hook_field_schema() of this field.'),
     '#default_value' => $default_validator,
     '#required' => TRUE,
     '#weight' => 3,
