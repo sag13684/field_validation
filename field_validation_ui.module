@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Add validation rules to field instance.
+ */
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function field_validation_ui_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && $plugin == 'export_ui') {
+    return 'plugins/' . $plugin;
+  }
+}
