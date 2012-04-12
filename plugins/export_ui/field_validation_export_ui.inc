@@ -91,8 +91,8 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   }
   $form['entity_type'] = array(
     '#type' => 'select', 
-	'#options' => $entity_type_options,
-	'#title' => t('Entity type'),
+    '#options' => $entity_type_options,
+    '#title' => t('Entity type'),
     '#default_value' => $default_entity_type,
     '#required' => TRUE,
     '#ajax' => array(      
@@ -116,8 +116,8 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   }
   $form['bundle'] = array(
     '#type' => 'select',
-	'#options' => $bundle_options,
-	'#title' => t('Bundle name'),
+    '#options' => $bundle_options,
+    '#title' => t('Bundle name'),
     '#default_value' => $default_bundle,
     '#required' => TRUE,
     '#prefix' => '<div id="bundle-wrapper-div">',
@@ -134,7 +134,7 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
     '' => 'Choose a field',
   );
   $instances = array();
-  if(!empty($default_entity_type) && !empty($default_bundle)){
+  if (!empty($default_entity_type) && !empty($default_bundle)) {
     $instances = field_info_instances($default_entity_type, $default_bundle);
   }
   //$instances = field_info_instances('node', 'article');
@@ -142,12 +142,12 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   foreach ($instances as $key => $instance) {
     $field_name_options[$key] = $instance['label'];  
   }
-  if(!in_array($default_field_name, array_keys($field_name_options))){
+  if (!in_array($default_field_name, array_keys($field_name_options))) {
     $default_field_name = '';
   }
   $form['field_name'] = array(
     '#type' => 'select',
-	'#options' => $field_name_options,
+    '#options' => $field_name_options,
     '#title' => t('Field name'),
     '#default_value' => $default_field_name,
     '#required' => TRUE,
@@ -169,12 +169,12 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   foreach ($columns as $key => $column) {
     $col_options[$key] = $key;  
   }
-  if(!in_array($default_col, array_keys($col_options))){
+  if (!in_array($default_col, array_keys($col_options))) {
     $default_col = '';
   }  
   $form['col'] = array(
     '#type' => 'select',
-	'#options' => $col_options,
+    '#options' => $col_options,
     '#title' => t('Column'),
     '#description' => t('A column defined in the hook_field_schema() of this field.'),
     '#default_value' => $default_col,
@@ -193,9 +193,9 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   }
   $form['validator'] = array(
     '#type' => 'select',
-	'#options' => $validator_options,
+    '#options' => $validator_options,
     '#title' => t('Validator'),
-   // '#description' => t('A column defined in the hook_field_schema() of this field.'),
+    //'#description' => t('A column defined in the hook_field_schema() of this field.'),
     '#default_value' => $default_validator,
     '#required' => TRUE,
     '#weight' => 3,
@@ -216,14 +216,14 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
     '#default_value' => $default_data,
     '#weight' => 4,
     '#prefix' => '<div id="data-wrapper-div">',
-    '#suffix' => '</div>',	
+    '#suffix' => '</div>',
   );
   //$rule_validator = $validators[$default_validator];
   if (isset($validators[$default_validator]['custom_data']) && is_array($validators[$default_validator]['custom_data'])) {
     $required = isset($validators[$default_validator]['custom_data']['required']) ? $validators[$default_validator]['custom_data']['required'] : TRUE;
-	$form['data']['#title'] = isset($validators[$default_validator]['custom_data']['label']) ? $validators[$default_validator]['custom_data']['label'] : t('Config Data');
-	$form['data']['#description'] = isset($validators[$default_validator]['custom_data']['description']) ? $validators[$default_validator]['custom_data']['description'] : t('Config Data');
-	$form['data']['#required'] = ($required !== FALSE) ? TRUE : FALSE;
+    $form['data']['#title'] = isset($validators[$default_validator]['custom_data']['label']) ? $validators[$default_validator]['custom_data']['label'] : t('Config Data');
+    $form['data']['#description'] = isset($validators[$default_validator]['custom_data']['description']) ? $validators[$default_validator]['custom_data']['description'] : t('Config Data');
+    $form['data']['#required'] = ($required !== FALSE) ? TRUE : FALSE;
   }
   
   $form['error_message'] = array(
@@ -245,58 +245,31 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
  * Validation handler for the validation rule add/edit form.
  */
 function field_validation_ctools_export_ui_form_validate($form, &$form_state) {
-/*
-  if (!isset($form_state['values']['ffmpeg_wrapper'])) {
-    form_set_error('ffmpeg_wrapper', t('The FFmpeg Wrapper configuration is missing.'));
-  }
-	*/
-	
-	$values = $form_state['values'];
-//print debug($values);
-/*
-$rule = $form_state['item'];
-if(!empty($form_state['values']['entity_type'])){
-  $rule->entity_type = $form_state['values']['entity_type'];
-}
-if(!empty($form_state['values']['bundle'])){
-  $rule->bundle = $form_state['values']['bundle'];
-}
-if(!empty($form_state['values']['entity_type'])){
-  $rule->entity_type = $form_state['values']['entity_type'];
-}
-$form_state['item'] = $rule;
-//print debug($form_state['item']);
-*/
+  $values = $form_state['values'];
 }
 
 /**
  * Submit handler for the preset edit form.
  */
 function field_validation_ctools_export_ui_form_submit($form, &$form_state) {
-/*
-  // Flatten and serialize the ffmpeg_wrapper settings array.
-  $form_state['values']['ffmpeg_wrapper'] = serialize(_ffmpeg_converter_array_flatten($form_state['values']['ffmpeg_wrapper']));
-*/
-$values = $form_state['values'];
-//print debug($values);
+  $values = $form_state['values'];
+  //print debug($values);
 }
 
-function field_validation_entity_type_callback($form,&$form_state){
+function field_validation_entity_type_callback($form, &$form_state) {
  //drupal_set_message(print_r($form)); 
  //debug($form_state);
-
   return $form;
 }
 
-function field_validation_bundle_callback($form,&$form_state){
-
+function field_validation_bundle_callback($form, &$form_state) {
   return $form;
 }
 
-function field_validation_field_name_callback($form,&$form_state){
+function field_validation_field_name_callback($form, &$form_state) {
   return $form['col'];
 }
 
-function field_validation_validator_callback($form,&$form_state){
+function field_validation_validator_callback($form, &$form_state) {
   return $form['data'];
 }
