@@ -25,6 +25,6 @@ function field_validation_default_field_validation_rule() {
   $rule->data = '2';
   $rule->error_message = t('You should enter at least two words.');
   $export['body_min_words'] = $rule;
-	
+
   return $export;
 }

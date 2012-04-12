@@ -10,29 +10,34 @@
  */
 function field_validation_callback_dispatch($instance, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL) {
   $output = '';
-	if(empty($arg1)){
-      drupal_set_title(t('Validation'));
-      $output .= field_validation_manage($instance);
-	}elseif($arg1 == 'add'){
-	  drupal_set_title(t('Add validation'));
-	  $form = drupal_get_form('field_validation_manage_rule', $instance, 'add', $arg2);
-		$output .= drupal_render($form);
-	}elseif($arg1 == 'edit'){
-		drupal_set_title(t('Edit rule'));
-		$form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
-		$output .= drupal_render($form);
-	}elseif($arg1 == 'delete'){
-		drupal_set_title(t('Delete rule'));
-		$form = drupal_get_form('field_validation_delete_rule', $arg2);
-		$output .= drupal_render($form);
-	}elseif($arg1 == 'overwrite'){
-		drupal_set_title(t('Overwrite rule'));
-		$form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
-		$output .= drupal_render($form);
-	}else{
-	  drupal_set_title(t('Validation'));
-		$output .= field_validation_manage($instance);	
-	}
+  if (empty($arg1)) {
+    drupal_set_title(t('Validation'));
+    $output .= field_validation_manage($instance);
+  }
+  elseif ($arg1 == 'add') {
+    drupal_set_title(t('Add validation'));
+    $form = drupal_get_form('field_validation_manage_rule', $instance, 'add', $arg2);
+    $output .= drupal_render($form);
+  }
+  elseif ($arg1 == 'edit') {
+    drupal_set_title(t('Edit rule'));
+    $form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
+    $output .= drupal_render($form);
+  }
+  elseif ($arg1 == 'delete') {
+    drupal_set_title(t('Delete rule'));
+    $form = drupal_get_form('field_validation_delete_rule', $arg2);
+    $output .= drupal_render($form);
+  }
+  elseif ($arg1 == 'overwrite') {
+    drupal_set_title(t('Overwrite rule'));
+    $form = drupal_get_form('field_validation_manage_rule', $instance, 'edit', $arg2, $arg3);
+    $output .= drupal_render($form);
+  }
+  else{
+    drupal_set_title(t('Validation'));
+    $output .= field_validation_manage($instance);
+  }
 
   return $output;
 }
@@ -48,7 +53,7 @@ function field_validation_manage($instance) {
   $entity_type = $instance['entity_type'];
   $field_name = $instance['field_name'];
   ctools_include('export');
-  $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type'=>$entity_type, 'bundle' => $bundle, 'field_name' => $field_name));
+  $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $entity_type, 'bundle' => $bundle, 'field_name' => $field_name));
 
   $output .= theme('field_validation_manage_overview', array('rules' => $rules, 'instance' => $instance));
   $output .= theme('field_validation_manage_add_rule', array('instance' => $instance));
@@ -77,19 +82,20 @@ function theme_field_validation_manage_overview($variables) {
         'data' => $validators[$rule->validator],
       );
       $path = isset($_GET['q']) ? $_GET['q'] : '';
-	  if(!empty($rule->ruleid)){
+      if (!empty($rule->ruleid)) {
         $row[] = array(
-          'data' => l(t('Edit'), $path.'/edit/' . $rule->validator . '/' . $rule->ruleid, array("query" => drupal_get_destination())),
+          'data' => l(t('Edit'), $path . '/edit/' . $rule->validator . '/' . $rule->ruleid, array("query" => drupal_get_destination())),
         );
         $row[] = array(
-          'data' => l(t('Delete'), $path.'/delete/' . $rule->ruleid, array("query" => drupal_get_destination())),
+          'data' => l(t('Delete'), $path . '/delete/' . $rule->ruleid, array("query" => drupal_get_destination())),
         );
-	  }else{
+      }
+      else{
         $row[] = array(
-          'data' => l(t('Overwrite'), $path.'/overwrite/' . $rule->validator . '/' . $rule->name, array("query" => drupal_get_destination())),
-		  'colspan' => 2,
-        );	  
-	  }
+          'data' => l(t('Overwrite'), $path . '/overwrite/' . $rule->validator . '/' . $rule->name, array("query" => drupal_get_destination())),
+          'colspan' => 2,
+        );
+      }
       $rows[] = $row;
     }
   }
@@ -109,10 +115,11 @@ function theme_field_validation_manage_overview($variables) {
 function field_validation_manage_rule($form, $form_state, $instance, $action = 'add', $validator = 'regex', $ruleid = NULL) {
   $form = array();
   $rule_validator = field_validation_get_validator_info($validator);
-  if($action == 'overwrite'){
-	$rule = field_validation_rule_load($ruleid);
-	$rule = (array)$rule;
-  }else{
+  if ($action == 'overwrite') {
+    $rule = field_validation_rule_load($ruleid);
+    $rule = (array)$rule;
+  }
+  else{
     $rule = field_validation_get_rule($ruleid);
   }
   $form['rule'] = array(
@@ -142,13 +149,13 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
       '#type' => 'hidden',
       '#value' => $rule['field_name'],
     );
-		
-	  $form['rule']['entity_type'] = array(
+
+    $form['rule']['entity_type'] = array(
       '#type' => 'hidden',
       '#value' => $rule['entity_type'],
     );
-		
-	  $form['rule']['bundle'] = array(
+
+    $form['rule']['bundle'] = array(
       '#type' => 'hidden',
       '#value' => $rule['bundle'],
     );
@@ -158,13 +165,13 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
       '#type' => 'hidden',
       '#value' => $instance['field_name'],
     );
-		
-	  $form['rule']['entity_type'] = array(
+
+    $form['rule']['entity_type'] = array(
       '#type' => 'hidden',
       '#value' => $instance['entity_type'],
     );
-		
-	  $form['rule']['bundle'] = array(
+
+    $form['rule']['bundle'] = array(
       '#type' => 'hidden',
       '#value' => $instance['bundle'],
     );
@@ -182,10 +189,10 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
   $form['rule']['name'] = array(
     '#type' => 'machine_name',
     '#default_value' => (isset($rule['name'])) ? $rule['name'] : '',
-	'#machine_name' => array(
-	  'exists' => 'field_validation_rule_load',
-	  'source' => array('rulename'),
-	),
+    '#machine_name' => array(
+      'exists' => 'field_validation_rule_load',
+      'source' => array('rulename'),
+    ),
     '#weight' => 2,
   );
   $field = field_info_field($instance['field_name']);
@@ -198,7 +205,7 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
   }  
   $form['rule']['col'] = array(
     '#type' => 'select',
-	'#options' => $col_options,
+    '#options' => $col_options,
     '#title' => t('Column'),
     '#description' => t('A column defined in the hook_field_schema() of this field.'),
     '#default_value' => (isset($rule['col'])) ? $rule['col'] : '',
@@ -239,7 +246,7 @@ function field_validation_manage_rule($form, $form_state, $instance, $action = '
     '#weight' => 25,
   );
   
-  if($action == 'overwrite'){
+  if ($action == 'overwrite') {
     $form['rule']['submit']['#value'] = t('Overwrite rule');
   }
 
@@ -273,17 +280,17 @@ function field_validation_manage_rule_submit($form, &$form_state) {
 function field_validation_delete_rule($form, &$form_state, $ruleid) {
   $rule = array();
   if (isset($ruleid) && $ruleid > 0) {
-	  $rule = field_validation_get_rule($ruleid);
+    $rule = field_validation_get_rule($ruleid);
     $form['ruleid'] = array(
       '#type' => 'hidden',
       '#value' => $ruleid,
     );
   }
-	
-	if(empty($rule)){
-	  $source_path = isset($_GET['destination']) ? $_GET['destination']:"";
-		drupal_goto($source_path);
-	}
+
+  if (empty($rule)) {
+    $source_path = isset($_GET['destination']) ? $_GET['destination']:"";
+    drupal_goto($source_path);
+  }
 
   return confirm_form($form,
     t('Are you sure you want to delete the rule %name?', array('%name' => $rule['rulename'])),
