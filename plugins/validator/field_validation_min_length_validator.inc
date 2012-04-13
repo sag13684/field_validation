@@ -6,6 +6,7 @@
  */
 $plugin = array(
   'label' => t('Min length'),
+  'description' => t('Verifies that a user-entered value contains at least the specified number of characters.'),
   'handler' => array(
     'class' => 'field_validation_min_length_validator',
   ),
