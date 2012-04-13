@@ -22,12 +22,6 @@ $plugin = array(
   'title plural' => t('rules'),
   'title singular proper' => t('Field Validation rule'),
   'title plural proper' => t('Field Validation rules'),
-/*
-  'handler' => array(
-    'class' => 'ctools_export_ui',
-   // 'parent' => 'ctools_export_ui',
-  ),
-	*/
 
   'form' => array(
     'settings' => 'field_validation_ctools_export_ui_form',
@@ -71,19 +65,9 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
     '#maxlength' => 255,
    // '#weight' => 1,
   );
-  /*
-  $form['name'] = array(
-    '#type' => 'machine_name',
-    '#default_value' => $rule->name,
-	'#machine_name' => array(
-	  'exists' => 'field_validation_rule_load',
-	  'source' => array('rulename'),
-	),
 
-  );
-*/
   $entity_type_options = array(
-    '' => 'Choose an entity type',
+    '' => t('Choose an entity type'),
   );
   $entity_types = entity_get_info();
   foreach ($entity_types as $key => $entity_type) {
@@ -105,12 +89,10 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
 
 
   $bundle_options = array(
-    '' => 'Choose a bundle',
+    '' => t('Choose a bundle'),
   );
- // print debug($entity_types['node']);
+
   $bundles = !empty($entity_types[$default_entity_type]['bundles']) ? $entity_types[$default_entity_type]['bundles'] : array();
- // $bundles = !empty($entity_types['node']['bundles']) ? $entity_types['node']['bundles'] : array();
- // print debug($default_entity_type);
   foreach ($bundles as $key => $bundle) {
     $bundle_options[$key] = $bundle['label'];  
   }
@@ -131,13 +113,12 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   );
   
   $field_name_options = array(
-    '' => 'Choose a field',
+    '' => t('Choose a field'),
   );
   $instances = array();
   if (!empty($default_entity_type) && !empty($default_bundle)) {
     $instances = field_info_instances($default_entity_type, $default_bundle);
   }
-  //$instances = field_info_instances('node', 'article');
 
   foreach ($instances as $key => $instance) {
     $field_name_options[$key] = $instance['label'];  
@@ -185,7 +166,7 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   );
 
   $validator_options = array(
-    '' => 'Choose a validator',
+    '' => t('Choose a validator'),
   );
   $validators = field_validation_get_validators();
   foreach ($validators as $validator_key => $validator_info) {
@@ -253,12 +234,9 @@ function field_validation_ctools_export_ui_form_validate($form, &$form_state) {
  */
 function field_validation_ctools_export_ui_form_submit($form, &$form_state) {
   $values = $form_state['values'];
-  //print debug($values);
 }
 
 function field_validation_entity_type_callback($form, &$form_state) {
- //drupal_set_message(print_r($form)); 
- //debug($form_state);
   return $form;
 }
 
