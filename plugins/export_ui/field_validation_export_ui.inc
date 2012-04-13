@@ -71,7 +71,9 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
   );
   $entity_types = entity_get_info();
   foreach ($entity_types as $key => $entity_type) {
-    $entity_type_options[$key] = $entity_type['label'];  
+    if (!empty($entity_type['fieldable'])) {
+      $entity_type_options[$key] = $entity_type['label'];
+    }
   }
   $form['entity_type'] = array(
     '#type' => 'select', 
