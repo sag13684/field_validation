@@ -1,8 +1,8 @@
 <?php
 /**
- * Basic class for field validation validator.
+ * @file
+ * Field validation min length validator.
  *
- * All field validation validator classes should inherit this basic class.
  */
 $plugin = array(
   'label' => t('Min length'),
@@ -17,12 +17,12 @@ class field_validation_min_length_validator extends field_validation_validator {
    * Validate field. 
    */
   public function validate() {
-	$min_length = $this->rule->settings['data'];
-	if($this->value != '' && (drupal_strlen($this->value) < $min_length)){
-	  $error_element = $this->error_element();
-	  $error_message = $this->error_message();
-	  form_set_error($error_element,$error_message);
-	}
+    $min_length = $this->rule->settings['data'];
+    if ($this->value != '' && (drupal_strlen($this->value) < $min_length)) {
+      $error_element = $this->error_element();
+      $error_message = $this->error_message();
+      form_set_error($error_element,  check_plain($error_message));
+    }
   }
   
   /**
@@ -34,7 +34,7 @@ class field_validation_min_length_validator extends field_validation_validator {
       '#description' => t("Specify the minimum number of characters that have to be entered to pass validation."),
       '#type' => 'textfield',
       //'#default_value' => $this->options['link_to_user'],
-	  '#default_value' => '',
+      '#default_value' => '',
     );
   }
 

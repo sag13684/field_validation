@@ -14,39 +14,39 @@ function field_validation_field_attach_validate($entity_type, $entity, &$errors)
   //Using ctools to get validation rules of this bundle.
   ctools_include('export');
   $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $entity_type, 'bundle' => $bundle));
-  if($rules){
+  if ($rules) {
     foreach ($rules as $rule) {
-	  //Disabled by Ctools.
-	  if(!empty($rule->disabled)){
-	    continue;
-	  }
-	  ctools_include('plugins');
-	  $plugin = ctools_get_plugins('field_validation', 'validator', $rule->validator);
-	  $class = ctools_plugin_get_class($plugin, 'handler');
-	  if(empty($class)){
-	    continue;
-	  }
-	  if (!is_subclass_of($rule->validator, 'field_validation_validator')) {
-	    drupal_set_message(t("Plugin '@validator' should extends 'field_validation_validator'.", array('@validator' => $rule->validator)));
-	    continue;
-	  }
+      //Disabled by Ctools.
+      if (!empty($rule->disabled)) {
+        continue;
+      }
+      ctools_include('plugins');
+      $plugin = ctools_get_plugins('field_validation', 'validator', $rule->validator);
+      $class = ctools_plugin_get_class($plugin, 'handler');
+      if (empty($class)) {
+        continue;
+      }
+      if (!is_subclass_of($rule->validator, 'field_validation_validator')) {
+        drupal_set_message(t("Plugin '@validator' should extends 'field_validation_validator'.", array('@validator' => $rule->validator)));
+        continue;
+      }
       $field_name = $rule->field_name;
       $field = field_info_field($field_name);
-	  $instance = field_info_instance($entity_type, $field_name, $bundle);
+      $instance = field_info_instance($entity_type, $field_name, $bundle);
       $languages = field_available_languages($entity_type, $field);
       foreach ($languages as $langcode) {
         //debug($errors);
         $items = isset($entity->{$field_name}[$langcode]) ? $entity->{$field_name}[$langcode] : array();
-		//print debug($rule);
+        //print debug($rule);
     
-	    foreach($items as $delta => $item){
-		  $validator = new $class($entity_type, $entity, $field, $instance, $langcode, $items, $delta, $item, $rule, $errors);
-		  $break = $validator->validate();
-		  if(!empty($break)){
-		    break;
-		  }
-		}
-      }			
+        foreach ($items as $delta => $item) {
+          $validator = new $class($entity_type, $entity, $field, $instance, $langcode, $items, $delta, $item, $rule, $errors);
+          $break = $validator->validate();
+          if (!empty($break)) {
+            break;
+          }
+        }
+      }
     }
   }
 }

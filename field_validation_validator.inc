@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * Basic class for field validation validator.
  *
  * All field validation validator classes should inherit this basic class.
@@ -29,9 +30,9 @@ abstract class field_validation_validator {
     $this->instance = $instance;
     $this->langcode = $langcode;
     $this->items = $items;
-	$this->delta = $delta;
-	$this->item = $item;
-	$this->value = $item[$rule->col];
+    $this->delta = $delta;
+    $this->item = $item;
+    $this->value = $item[$rule->col];
     $this->rule = $rule;
     $this->errors = $errors;
   }
@@ -50,7 +51,7 @@ abstract class field_validation_validator {
       '#description' => t("Config data."),
       '#type' => 'textfield',
       //'#default_value' => $this->options['link_to_user'],
-	  '#default_value' => '',
+      '#default_value' => '',
     );
   }
   /**
@@ -65,7 +66,7 @@ abstract class field_validation_validator {
    * Return error element for the validation rule.
    */
   public function error_element() {
-    $error_element = $this->rule->field_name.']['.$this->langcode.']['.$this->delta.']['.$this->rule->col;
+    $error_element = $this->rule->field_name . '][' . $this->langcode . '][' . $this->delta . '][' . $this->rule->col;
     return  $error_element;
   }
 }

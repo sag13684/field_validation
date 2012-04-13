@@ -25,7 +25,7 @@ $plugin = array(
 
   'form' => array(
     'settings' => 'field_validation_ui_ctools_export_ui_form',
-	'submit' => 'field_validation_ui_ctools_export_ui_form_submit',
+    'submit' => 'field_validation_ui_ctools_export_ui_form_submit',
   ),
 );
 
@@ -46,14 +46,14 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
 
   $form['entity_type'] = array(
     '#type' => 'textfield', 
-	'#title' => t('Entity type'),
+    '#title' => t('Entity type'),
     '#default_value' => $rule->entity_type,
     '#required' => TRUE,
   );
 
   $form['bundle'] = array(
     '#type' => 'textfield',
-	'#title' => t('Bundle name'),
+    '#title' => t('Bundle name'),
     '#default_value' => $rule->bundle,
     '#required' => TRUE,
   );
@@ -83,7 +83,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   );
   $form['settings'] = array(
     '#type' => 'fieldset',
-	'#tree' => TRUE,
+    '#tree' => TRUE,
   );
   $form['settings']['data'] = array(
     '#type' => 'textfield',
