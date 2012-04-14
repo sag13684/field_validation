@@ -139,36 +139,6 @@ function field_validation_ui_module_implements_alter(&$implementations, $hook) {
 }
 
 /**
- * Theme the 'add rule' list
- */
-function theme_field_validation_ui_manage_add_rule($variables) {
-  $instance = $variables['instance'];
-  $output = '';
-  //$validators = field_validation_get_validators();
-  ctools_include('plugins');
-  $validators = ctools_get_plugins('field_validation', 'validator');
-  //print debug($instance);
-  if ($validators) {
-    $output = '<h3>' . t('Add a validation rule') . '</h3>';
-    $output .= '<dl>';
-    foreach ($validators as $validator_key => $validator_info) {
-      $item = '';
-      $path = isset($_GET['q']) ? $_GET['q'] : '';
-      $url = $path . '/add/' . $validator_key;
-      $item = '<dt>' . l($validator_info['label'], $url, array("query" => drupal_get_destination())) . '</dt>';
-      $item .= '<dd>';
-      if (!empty($validator_info['description'])) {
-        $item .= $validator_info['description'] . ' ';
-      }
-      $item .= '</dd>';
-      $output .= $item;
-    }
-    $output .= '</dl>';
-  }
-  return $output;
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  * Using hook_form_field_ui_field_overview_form_alter.
  */
@@ -200,27 +170,3 @@ function field_validation_ui_form_field_ui_field_overview_form_alter(&$form, &$f
   }
 }
 
-/**
- * Get a rule entry
- */
-function field_validation_ui_get_rule($ruleid) {
-  $result = db_query("SELECT * FROM {field_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_ASSOC));
-  $rule = $result->fetchObject();
-  return $rule;
-}
-
-/**
- * Get an array of rules assigned to a field instance
- */
-function field_validation_ui_get_field_rules($instance) {
-  $rules = array();
-  $bundle = $instance['bundle'];
-  $entity_type = $instance['entity_type'];
-  $field_name = $instance['field_name'];
-  $sql = "SELECT * FROM {field_validation_rule} WHERE field_name = :field_name AND entity_type = :entity_type AND bundle = :bundle ORDER BY ruleid DESC";
-  $result = db_query($sql, array(':field_name' => $field_name, ':entity_type' => $entity_type, ':bundle' => $bundle), array('fetch' => PDO::FETCH_ASSOC));
-  foreach ($result as $rule) {
-    $rules[$rule['ruleid']] = $rule;
-  }
-  return $rules;
-}
