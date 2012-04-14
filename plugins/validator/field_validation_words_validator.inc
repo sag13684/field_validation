@@ -18,7 +18,7 @@ class field_validation_words_validator extends field_validation_validator {
    * Validate field. 
    */
   public function validate() {
-    $settings = $rule->settings;
+    $settings = $this->rule->settings;
     if ($this->value != '') {
       $flag = TRUE;
       $count = count(explode(' ', trim(preg_replace('/\s+/', ' ', str_replace('&nbsp;', ' ', (strip_tags(str_replace('<', ' <', $this->value))))))));
