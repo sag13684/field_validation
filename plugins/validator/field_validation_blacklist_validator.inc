@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Field validation regex validator.
+ * Field validation blacklist validator.
  *
  */
 $plugin = array(
