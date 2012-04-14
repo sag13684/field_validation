@@ -34,8 +34,8 @@ class field_validation_numeric_validator extends field_validation_validator {
       }
       if (!$flag) {
         $token = array(
-          '[min]' => isset($settings['min']) ? $settings['min'] : '';
-          '[max]' => isset($settings['max']) ? $settings['max'] : '';
+          '[min]' => isset($settings['min']) ? $settings['min'] : '',
+          '[max]' => isset($settings['max']) ? $settings['max'] : '',
         );
         $this->set_error($token);
       }
