@@ -32,8 +32,8 @@ class field_validation_match_field_validator extends field_validation_validator 
       }
       if (!empty($settings['field_name']) && !empty($settings['column'])) {
         $query->fieldCondition($settings['field_name'], $settings['column'], $this->value);
-      }	  
-	  $flag = (bool)$query->range(0, 1)->count()->execute();
+      }
+      $flag = (bool)$query->range(0, 1)->count()->execute();
       if (!empty($settings['reverse'])) {
         $flag = $flag ? FALSE : TRUE;
       }     
@@ -74,7 +74,7 @@ class field_validation_match_field_validator extends field_validation_validator 
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['column']) ? $default_settings['column'] : '',
     );
-	$form['settings']['reverse'] = array(
+    $form['settings']['reverse'] = array(
       '#title' => t('Reverse'),
       '#description' => t("If it is checked, it means must not match the field."),
       '#type' => 'checkbox',
