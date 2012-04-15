@@ -8,11 +8,11 @@ $plugin = array(
   'label' => t('Numeric values'),
   'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
   'handler' => array(
-    'class' => 'field_validation_numeric_validator',
+    'class' => 'field_validation_numeric2_validator',
   ),
 );
 
-class field_validation_numeric_validator extends field_validation_validator {
+class field_validation_numeric2_validator extends field_validation_validator {
 
   /**
    * Validate field. 
