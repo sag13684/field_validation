@@ -1,0 +1,8 @@
+name = Date Validation
+description = "Add validation rules to date field."
+package = Fields
+core = 7.x
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = date
+dependencies[] = field_validation
