@@ -62,6 +62,15 @@ class field_validation_number_of_selections_validator extends field_validation_v
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
   }
+  
+  /**
+   * Return error element for the validation rule.
+   */
+  public function get_error_element() {
+    $error_element = $this->rule->field_name . '][' . $this->langcode;
+    return  $error_element;
+  }
+
   /**
    * Provide token help info for error message.
    */
