@@ -119,7 +119,7 @@ function field_validation_update_7004(&$sandbox) {
       'data' => $record->data,
     );
     $validator = 'field_validation_' . $record->validator . '_validator';
-    db_query("UPDATE {field_validation_rule} SET settings = :settings, validator = :validator WHERE ruleid = :ruleid", array(':settings' => $settings_data, ':validator' => $validator, ':ruleid' => $record->ruleid));
+    db_query("UPDATE {field_validation_rule} SET settings = :settings, validator = :validator WHERE ruleid = :ruleid", array(':settings' => serialize($settings_data), ':validator' => $validator, ':ruleid' => $record->ruleid));
   }
   db_drop_field('field_validation_rule', 'data');
 }
