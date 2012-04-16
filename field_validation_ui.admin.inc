@@ -186,6 +186,30 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
     '#weight' => 5,
   );
 
+  $output = '<p>' . t('The following tokens are available for error message.' . '</p>');
+  $token_help = $validator_class->token_help();
+  if (!empty($token_help)) {
+    $items = array();
+    foreach ($token_help as $key => $value) {
+      $items[] = $key . ' == ' . $value;
+    }
+    $output .= theme('item_list',
+      array(
+        'items' => $items,
+      ));
+  }
+
+  $form['token_help'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Replacement patterns'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#value' => $output,
+    '#id' => 'error-message-token-help',
+    '#prefix' => '<div>',
+    '#suffix' => '</div>',
+	'#weight' => 6,
+  );
 
   $form['submit'] = array(
     '#type' => 'submit',

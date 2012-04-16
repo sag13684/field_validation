@@ -82,5 +82,15 @@ class field_validation_unique_validator extends field_validation_validator {
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
   }
-
+  
+  /**
+   * Provide token help info for error message.
+   */
+  public function token_help(){
+    $token_help = parent::token_help();
+	$token_help += array(
+	  '[count]' => t('Count of duplicate'),	
+	);
+    return $token_help;
+  }
 }

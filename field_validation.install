@@ -116,7 +116,7 @@ function field_validation_update_7004(&$sandbox) {
   $result = db_query("SELECT * FROM {field_validation_rule}");
   foreach ($result as $record) {
     $settings_data = array(
-      'data' => $record->data;
+      'data' => $record->data,
     );
     $validator = 'field_validation_' . $record->validator . '_validator';
     db_query("UPDATE {field_validation_rule} SET settings = :settings, validator = :validator WHERE ruleid = :ruleid", array(':settings' => $settings_data, ':validator' => $validator, ':ruleid' => $record->ruleid));

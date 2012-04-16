@@ -61,5 +61,16 @@ class field_validation_numeric2_validator extends field_validation_validator {
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
   }
-
+  
+  /**
+   * Provide token help info for error message.
+   */
+  public function token_help(){
+    $token_help = parent::token_help();
+	$token_help += array(
+	  '[min]' => t('Minimum value'), 
+      '[max]' => t('Maximum value'), 	
+	);
+    return $token_help;
+  }
 }

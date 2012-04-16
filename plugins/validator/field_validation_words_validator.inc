@@ -60,4 +60,16 @@ class field_validation_words_validator extends field_validation_validator {
     );
   }
 
+  /**
+   * Provide token help info for error message.
+   */
+  public function token_help(){
+    $token_help = parent::token_help();
+	$token_help += array(
+	  '[min]' => t('Minimum number of words'), 
+      '[max]' => t('Maximum number of words'), 
+      '[count]' => t('The real number of words'), 	
+	);
+    return $token_help;
+  }
 }

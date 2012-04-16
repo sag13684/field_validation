@@ -33,6 +33,7 @@ class field_validation_number_of_selections_validator extends field_validation_v
       $token = array(
         '[min]' => isset($settings['min']) ? $settings['min'] : '',
         '[max]' => isset($settings['max']) ? $settings['max'] : '',
+        '[count]' => $total_items,
       );
       $this->set_error($token);
     }
@@ -61,5 +62,16 @@ class field_validation_number_of_selections_validator extends field_validation_v
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
   }
-
+  /**
+   * Provide token help info for error message.
+   */
+  public function token_help(){
+    $token_help = parent::token_help();
+	$token_help += array(
+	  '[min]' => t('Minimum number of selections'), 
+      '[max]' => t('Maximum number of selections'), 
+      '[count]' => t('The real number of selections'), 	
+	);
+    return $token_help;
+  }
 }

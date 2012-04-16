@@ -87,6 +87,25 @@ abstract class field_validation_validator {
   public function set_error($tokens = array()) {
     $error_element = $this->get_error_element();
     $error_message = $this->get_error_message();
+    $tokens += array(
+      '[entity-type]' => $this->rule->entity_type, 
+      '[bundle]' => $this->rule->bundle, 
+      '[field-name]' => $this->instance['label'], 
+      '[value]' => $this->value, 
+    );
+    $error_message = strtr($error_message, $tokens);
     form_set_error($error_element,  check_plain($error_message));
+  }
+  
+  /**
+   * Provide token help info for error message.
+   */
+  public function token_help(){
+    return array(
+	  '[entity-type]' => t('Machine name of entity type'), 
+      '[bundle]' => t('Machine name of bundle'), 
+      '[field-name]' => t('User readable name of current field'), 
+      '[value]' => t('Current value to be validated on'),  
+	);
   }
 }

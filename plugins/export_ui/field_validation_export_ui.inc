@@ -176,7 +176,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     //'#weight' => 3,
     '#ajax' => array(      
       'callback' => 'field_validation_ui_validator_callback',      
-      'wrapper' => 'settings-wrapper-div',      
+      'wrapper' => 'validation-rule-wrapper-div',      
       'method' => 'replace',      
       'effect' => 'fade',    
     ),
@@ -192,6 +192,31 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     $class = ctools_plugin_get_class($plugin, 'handler');
     $validator_class = new $class();
     $validator_class->settings_form($form, $form_state);
+	
+    $output = '<p>' . t('The following tokens are available for error message.' . '</p>');
+    $token_help = $validator_class->token_help();
+    if (!empty($token_help)) {
+      $items = array();
+      foreach ($token_help as $key => $value) {
+        $items[] = $key . ' == ' . $value;
+      }
+      $output .= theme('item_list',
+        array(
+          'items' => $items,
+        ));
+    }
+
+    $form['token_help'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Replacement patterns'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#value' => $output,
+      '#id' => 'error-message-token-help',
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
+	  '#weight' => 6,
+    );
   }
   /*
   $form['settings']['data'] = array(
@@ -237,5 +262,5 @@ function field_validation_ui_field_name_callback($form, &$form_state) {
 }
 
 function field_validation_ui_validator_callback($form, &$form_state) {
-  return $form['settings'];
+  return $form;
 }
