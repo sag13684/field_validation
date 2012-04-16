@@ -19,6 +19,7 @@ class field_validation_unique_validator extends field_validation_validator {
    */
   public function validate() {
     $flag = TRUE;
+    $scope = $this->rule->settings['data'];
     $count = 0;
     foreach ($this->items as $delta1 => $item1) {
       if ($this->delta != $delta1) {
