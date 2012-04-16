@@ -34,7 +34,7 @@ class field_validation_oneofseveral_validator extends field_validation_validator
         if ($other_group_rule->settings['data'] != $group_name || !empty($other_group_rule->disabled) || $other_group_rule->name == $this->rule->name ) {
           continue;
         }
-        $other_items = isset($this->entity->{$other_group_rule->field_name}[$langcode]) ? $this->entity->{$other_group_rule->field_name}[$langcode] : array();
+        $other_items = isset($this->entity->{$other_group_rule->field_name}[$this->langcode]) ? $this->entity->{$other_group_rule->field_name}[$this->langcode] : array();
         $other_field_values = $this->get_field_column_value($other_items, $other_group_rule->col);
         $other_field_values = array_flip($other_field_values);
         if (count($other_field_values) > 0) {
