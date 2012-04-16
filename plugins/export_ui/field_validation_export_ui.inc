@@ -192,7 +192,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     $class = ctools_plugin_get_class($plugin, 'handler');
     $validator_class = new $class();
     $validator_class->settings_form($form, $form_state);
-	
+
     $output = '<p>' . t('The following tokens are available for error message.' . '</p>');
     $token_help = $validator_class->token_help();
     if (!empty($token_help)) {
@@ -215,7 +215,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
       '#id' => 'error-message-token-help',
       '#prefix' => '<div>',
       '#suffix' => '</div>',
-	  '#weight' => 6,
+      '#weight' => 6,
     );
   }
   /*
