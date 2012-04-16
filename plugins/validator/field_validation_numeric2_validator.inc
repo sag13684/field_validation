@@ -65,12 +65,12 @@ class field_validation_numeric2_validator extends field_validation_validator {
   /**
    * Provide token help info for error message.
    */
-  public function token_help(){
+  public function token_help() {
     $token_help = parent::token_help();
-	$token_help += array(
-	  '[min]' => t('Minimum value'), 
-      '[max]' => t('Maximum value'), 	
-	);
+    $token_help += array(
+      '[min]' => t('Minimum value'), 
+      '[max]' => t('Maximum value'),
+    );
     return $token_help;
   }
 }

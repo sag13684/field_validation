@@ -63,13 +63,13 @@ class field_validation_length_validator extends field_validation_validator {
   /**
    * Provide token help info for error message.
    */
-  public function token_help(){
+  public function token_help() {
     $token_help = parent::token_help();
-	$token_help += array(
-	  '[min]' => t('Minimum length'), 
+    $token_help += array(
+      '[min]' => t('Minimum length'), 
       '[max]' => t('Maximum length'), 
-      '[length]' => t('Real length'), 	
-	);
+      '[length]' => t('Real length'),
+    );
     return $token_help;
   }
 }

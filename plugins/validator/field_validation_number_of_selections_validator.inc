@@ -74,13 +74,13 @@ class field_validation_number_of_selections_validator extends field_validation_v
   /**
    * Provide token help info for error message.
    */
-  public function token_help(){
+  public function token_help() {
     $token_help = parent::token_help();
-	$token_help += array(
-	  '[min]' => t('Minimum number of selections'), 
+    $token_help += array(
+      '[min]' => t('Minimum number of selections'), 
       '[max]' => t('Maximum number of selections'), 
-      '[count]' => t('The real number of selections'), 	
-	);
+      '[count]' => t('The real number of selections'),
+    );
     return $token_help;
   }
 }

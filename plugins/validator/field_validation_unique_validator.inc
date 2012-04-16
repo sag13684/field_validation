@@ -87,11 +87,11 @@ class field_validation_unique_validator extends field_validation_validator {
   /**
    * Provide token help info for error message.
    */
-  public function token_help(){
+  public function token_help() {
     $token_help = parent::token_help();
-	$token_help += array(
-	  '[count]' => t('Count of duplicate'),	
-	);
+    $token_help += array(
+      '[count]' => t('Count of duplicate'),
+    );
     return $token_help;
   }
 }
