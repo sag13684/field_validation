@@ -25,7 +25,7 @@ function field_validation_default_field_validation_rule() {
   $rule->validator = 'field_validation_words_validator';
   $rule->settings = array(
     'min' => '2',
-	'max' => '',
+    'max' => '',
   );
   $rule->error_message = t('You should enter at least two words.');
   $export['body_min_words'] = $rule;

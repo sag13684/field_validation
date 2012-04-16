@@ -208,7 +208,7 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
     '#id' => 'error-message-token-help',
     '#prefix' => '<div>',
     '#suffix' => '</div>',
-	'#weight' => 6,
+    '#weight' => 6,
   );
 
   $form['submit'] = array(

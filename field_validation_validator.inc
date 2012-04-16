@@ -100,12 +100,12 @@ abstract class field_validation_validator {
   /**
    * Provide token help info for error message.
    */
-  public function token_help(){
+  public function token_help() {
     return array(
-	  '[entity-type]' => t('Machine name of entity type'), 
+      '[entity-type]' => t('Machine name of entity type'), 
       '[bundle]' => t('Machine name of bundle'), 
       '[field-name]' => t('User readable name of current field'), 
       '[value]' => t('Current value to be validated on'),  
-	);
+    );
   }
 }
