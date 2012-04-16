@@ -147,6 +147,29 @@ class field_validation_date_range_validator extends field_validation_validator {
 
       //support php date format when unit = 'global'
       if ($date_range['unit'] == 'global') {
+        //Support token value and value2, for example "{global}[value + 1 day, value + 6 month]".
+        $value = isset($this->item['value']) ? $this->item['value'] : '';
+        $value2 = isset($this->item['value2']) ? $this->item['value2'] : '';
+        // support date, datetime
+        if (!is_numeric($value)) {
+          $value = strtotime($value);
+        }
+
+        $value = date("Y-m-d H:i:s", $value);
+
+        // support date, datetime
+        if (!is_numeric($value2)) {
+          $value2 = strtotime($value2);
+        }
+
+        $value2 = date("Y-m-d H:i:s", $value2);
+        $tokens = array(
+          'value' => $value,
+          'value2' => $value2,
+        );
+        $date_range['start'] = strtr($date_range['start'], $tokens);
+        $date_range['end'] = strtr($date_range['end'], $tokens);
+
         $date_range['start'] = strtotime($date_range['start']);
         $date_range['start'] = date("Y-m-d H:i:s", $date_range['start']);
 
