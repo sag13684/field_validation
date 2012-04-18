@@ -5,4 +5,3 @@ core = 7.x
 dependencies[] = field
 dependencies[] = ctools
 files[] = field_validation_validator.inc
-files[] = plugins/validator/field_validation_min_length_validator.inc
