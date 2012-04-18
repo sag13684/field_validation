@@ -53,21 +53,7 @@ function field_validation_field_attach_validate($entity_type, $entity, &$errors)
 }
 
 /**
- * Implements hook_field_delete().
- */
-function field_validation_field_delete($entity_type, $entity, $field, $instance, $langcode, &$items) {
-  //$rules = field_validation_get_field_rules($instance);
-  $rules = array();
-  if ($rules) {
-    foreach (array_keys($rules) as $ruleid) {
-      db_delete('field_validation_rule')->condition('ruleid', $ruleid)->execute();
-    }
-  }
-}
-
-/**
  * Implements hook_ctools_plugin_type().
- *
  */
 function field_validation_ctools_plugin_type() {
   return array(
@@ -96,4 +82,3 @@ function field_validation_ctools_plugin_api($owner, $api) {
     return array('version' => 2);
   }
 }
-
