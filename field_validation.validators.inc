@@ -526,6 +526,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
           $flag = TRUE;
         }
         if (!$flag) {
+          /*
           $other_group_rules = db_select('field_validation_rule', 'fvr')
             ->fields('fvr')
             ->condition('fvr.entity_type', $rule['entity_type'])
@@ -535,8 +536,20 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
             ->condition('fvr.ruleid', $rule['ruleid'], '!=')
             ->execute()
             ->fetchAll();
-
+          */
+          ctools_include('export');
+          $conditions = array(
+            'entity_type' => $rule['entity_type'], 
+            'bundle' => $rule['bundle'],
+            'validator' => $rule['validator'],
+            'data' => $group_name,
+          );
+          $other_group_rules = ctools_export_load_object('field_validation_rule', 'conditions', $conditions);
           foreach ($other_group_rules as $other_group_rule) {
+            // Skip when the rule is disabled, or equal to current rule.
+            if (!empty($other_group_rule->disabled) || $other_group_rule->name == $rule['name'] ) {
+              continue;
+            }
             $other_items = isset($entity->{$other_group_rule->field_name}[$langcode])?$entity->{$other_group_rule->field_name}[$langcode]: array();
             $other_field_values = _field_validation_get_field_column_value($other_items, $other_group_rule->col);
             $other_field_values = array_flip($other_field_values);
@@ -556,6 +569,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
       case "equal_values":
         $flag = FALSE;
         $group_name = $rule['data'];
+        /*
         $other_group_rules = db_select('field_validation_rule', 'fvr')
           ->fields('fvr')
           ->condition('fvr.entity_type', $rule['entity_type'])
@@ -565,8 +579,21 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
           ->condition('fvr.ruleid', $rule['ruleid'], '!=')
           ->execute()
           ->fetchAll();
+        */
+        ctools_include('export');
+        $conditions = array(
+          'entity_type' => $rule['entity_type'], 
+          'bundle' => $rule['bundle'],
+          'validator' => $rule['validator'],
+          'data' => $group_name,
+        );
+        $other_group_rules = ctools_export_load_object('field_validation_rule', 'conditions', $conditions);
         foreach ($items as $delta => $item) {
           foreach ($other_group_rules as $other_group_rule) {
+            // Skip when the rule is disabled, or equal to current rule.
+            if (!empty($other_group_rule->disabled) || $other_group_rule->name == $rule['name'] ) {
+              continue;
+            }
             if (isset($entity->{$other_group_rule->field_name}[$langcode][$delta])) {
               if ($item[$rule['col']] == $entity->{$other_group_rule->field_name}[$langcode][$delta][$other_group_rule->col]) {
               }
@@ -601,6 +628,7 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
           $flag = TRUE;
         }
         if (!$flag) {
+          /*
           $other_group_rules = db_select('field_validation_rule', 'fvr')
             ->fields('fvr')
             ->condition('fvr.entity_type', $rule['entity_type'])
@@ -610,7 +638,20 @@ function field_validation_field_validation_validate($validator_name, $rule, $ent
             ->condition('fvr.ruleid', $rule['ruleid'], '!=')
             ->execute()
             ->fetchAll();
+          */
+          ctools_include('export');
+          $conditions = array(
+            'entity_type' => $rule['entity_type'], 
+            'bundle' => $rule['bundle'],
+            'validator' => $rule['validator'],
+            'data' => $group_name,
+          );
+          $other_group_rules = ctools_export_load_object('field_validation_rule', 'conditions', $conditions);
           foreach ($other_group_rules as $other_group_rule) {
+            // Skip when the rule is disabled, or equal to current rule.
+            if (!empty($other_group_rule->disabled) || $other_group_rule->name == $rule['name'] ) {
+              continue;
+            }
             if (isset($entity->{$other_group_rule->field_name}[$langcode])) {
               $other_items = $entity->{$other_group_rule->field_name}[$langcode];
               $other_field_values = _field_validation_get_field_column_value1($other_items, $other_group_rule->col);
