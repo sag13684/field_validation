@@ -39,6 +39,7 @@ class field_validation_blacklist_validator extends field_validation_validator {
       '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
 
 }

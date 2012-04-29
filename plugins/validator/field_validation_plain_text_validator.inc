@@ -22,12 +22,5 @@ class field_validation_plain_text_validator extends field_validation_validator {
       $this->set_error();
     }
   }
-  
-  /**
-   * Provide settings option
-   */
-  function settings_form(&$form, &$form_state) {
-    //Do not need any setting form element.
-  }
 
 }

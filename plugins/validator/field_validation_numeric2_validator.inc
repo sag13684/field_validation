@@ -60,6 +60,7 @@ class field_validation_numeric2_validator extends field_validation_validator {
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
   
   /**

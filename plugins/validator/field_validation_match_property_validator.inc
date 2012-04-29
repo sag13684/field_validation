@@ -74,6 +74,7 @@ class field_validation_match_property_validator extends field_validation_validat
       '#type' => 'checkbox',
       '#default_value' => isset($default_settings['reverse']) ? $default_settings['reverse'] : FALSE,
     );
+    parent::settings_form($form, $form_state);
   }
 
 }

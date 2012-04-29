@@ -22,12 +22,5 @@ class field_validation_must_be_empty_validator extends field_validation_validato
       $this->set_error();
     }
   }
-  
-  /**
-   * Provide settings option
-   */
-  function settings_form(&$form, &$form_state) {
-    //Do not need any setting form element.
-  }
 
 }

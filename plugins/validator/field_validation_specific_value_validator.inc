@@ -38,6 +38,7 @@ class field_validation_specific_value_validator extends field_validation_validat
       '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
 
 }

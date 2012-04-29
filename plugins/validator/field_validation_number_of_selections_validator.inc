@@ -61,6 +61,7 @@ class field_validation_number_of_selections_validator extends field_validation_v
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
   
   /**

@@ -70,6 +70,7 @@ class field_validation_unique_values_validator extends field_validation_validato
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
   
   /**

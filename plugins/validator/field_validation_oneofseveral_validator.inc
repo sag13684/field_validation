@@ -63,6 +63,7 @@ class field_validation_oneofseveral_validator extends field_validation_validator
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
+    parent::settings_form($form, $form_state);
   }
   
   /**

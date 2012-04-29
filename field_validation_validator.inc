@@ -23,7 +23,7 @@ abstract class field_validation_validator {
   /**
    * Save arguments locally.
    */
-  function __construct($entity_type = 'node', $entity = NULL, $field = '', $instance = NULL, $langcode = 'und', $items = array(), $delta = 0, $item = array(), $value = '', $rule = NULL, $errors = array()) {
+  function __construct($entity_type = 'node', $entity = NULL, $field = '', $instance = NULL, $langcode = 'und', $items = array(), $delta = 0, $item = array(), $value = '', $rule = NULL, &$errors = array()) {
     $this->entity_type = $entity_type;
     $this->entity = $entity;
     $this->field = $field;
@@ -34,7 +34,7 @@ abstract class field_validation_validator {
     $this->item = $item;
     $this->value = $value;
     $this->rule = $rule;
-    $this->errors = $errors;
+    $this->errors = &$errors;
   }
 
   /**
@@ -48,11 +48,11 @@ abstract class field_validation_validator {
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
     //print debug($default_settings);
-    $form['settings']['data'] = array(
-      '#title' => t('Config data'),
-      '#description' => t("Config data."),
-      '#type' => 'textfield',
-      '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
+    $form['settings']['errors'] = array(
+      '#title' => t('Set errors using field API'),
+      '#description' => t("There are two methods to set error: using form_set_error provided by form api, using errors provided by field api. form_set_error does not work correctly when a sub form embed into another form. errors does not work correctly when current field does not support hook_field_widget_error."),
+      '#type' => 'checkbox',
+      '#default_value' => isset($default_settings['errors']) ? $default_settings['errors'] : FALSE,
     );
   }
   /**
@@ -86,7 +86,7 @@ abstract class field_validation_validator {
    */
   public function set_error($tokens = array()) {
     $error_element = $this->get_error_element();
-    $error_message = $this->get_error_message();
+    $error_message = t($this->get_error_message());
     $tokens += array(
       '[entity-type]' => $this->rule->entity_type, 
       '[bundle]' => $this->rule->bundle, 
@@ -94,7 +94,18 @@ abstract class field_validation_validator {
       '[value]' => $this->value, 
     );
     $error_message = strtr($error_message, $tokens);
-    form_set_error($error_element,  check_plain($error_message));
+    //We support two methods to set error: using form_set_error provided by form api, using errors provided by field api.
+    //form_set_error does not work correctly when a sub form embed into another form; 
+    //errors does not work correctly when current field does not support hook_field_widget_error.
+    if (empty($this->rule->settings['errors'])) {
+      form_set_error($error_element,  check_plain($error_message));
+    }
+    else{
+      $this->errors[$this->rule->field_name][$this->langcode][$this->delta][] = array(
+        'error' => $this->rule->col,
+        'message' => $error_message,
+      );
+    }
   }
   
   /**

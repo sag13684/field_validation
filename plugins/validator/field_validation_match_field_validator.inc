@@ -80,6 +80,7 @@ class field_validation_match_field_validator extends field_validation_validator 
       '#type' => 'checkbox',
       '#default_value' => isset($default_settings['reverse']) ? $default_settings['reverse'] : FALSE,
     );
+    parent::settings_form($form, $form_state);
   }
 
 }
