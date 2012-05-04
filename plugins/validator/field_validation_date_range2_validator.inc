@@ -107,7 +107,7 @@ class field_validation_date_range2_validator extends field_validation_validator 
     $default_settings = $this->get_default_settings($form, $form_state);
     //print debug($default_settings);
     $form['settings']['cycle'] = array(
-      '#title' => t('Sycle of date'),
+      '#title' => t('Cycle of date'),
       '#description' => t("Specify the cycle of date, support: global, year, month, week, day, hour, minute."),
       '#type' => 'select',
       '#options' => array(
@@ -136,7 +136,7 @@ class field_validation_date_range2_validator extends field_validation_validator 
     $form['settings']['help'] = array(
       '#markup' => t('For minimum and maximum time, we only support date format "Y-m-d H:i:s", here is the relation between cycle and minimum/maximum date format:')
       . theme('item_list', array('items' => array(t('global - [Y-m-d H:i:s]'), t('year - [m-d H:i:s]'), t('month - [d H:i:s]'), t('week - [w H:i:s]'), t('day - [H:i:s]'), t('hour - [i:s]'), t('minute - [s]'))))
-	  . t('If sycle is "global", it support more date formats which could be converted through strtotime(), such as "now", "+1 month", "+1 day", it also support "value + 1 day", "value2 - 1 day", at here "value" means start date of user input, "value2" means end date'),
+	  . t('If cycle is "global", it support more date formats which could be converted through strtotime(), such as "now", "+1 month", "+1 day", it also support "value + 1 day", "value2 - 1 day", at here "value" means start date of user input, "value2" means end date'),
     );
     $form['settings']['reverse'] = array(
       '#title' => t('Reverse'),
