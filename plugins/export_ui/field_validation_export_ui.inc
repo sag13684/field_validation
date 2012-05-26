@@ -229,6 +229,9 @@ function field_validation_ctools_export_ui_form(&$form, &$form_state) {
  */
 function field_validation_ctools_export_ui_form_validate($form, &$form_state) {
   $values = $form_state['values'];
+  if (strlen($values['name']) > 32) {
+    form_set_error('name', t('Name must be 32 characters or less in length.'));
+  }
 }
 
 /**
