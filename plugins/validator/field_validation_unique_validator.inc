@@ -45,6 +45,9 @@ class field_validation_unique_validator extends field_validation_validator {
       if ($this->rule->entity_type == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)) {
         $id = arg(1);
       }
+      if ($this->rule->entity_type == 'field_collection_item' && arg(0) == 'field-collection' && arg(3) =='edit' && empty($id)) {
+        $id = arg(2); 
+      }
       if (!empty($id)) {
         $query->entityCondition('entity_id', $id, '!=');
       }
