@@ -48,6 +48,8 @@ class field_validation_unique_validator extends field_validation_validator {
       if (!empty($id)) {
         $query->entityCondition('entity_id', $id, '!=');
       }
+      //Always bypass all access checkings.
+      $query->addMetaData('account', user_load(1));
       $count = $query->fieldCondition($this->rule->field_name, $this->rule->col, $this->value)
         ->count()
         ->execute();
