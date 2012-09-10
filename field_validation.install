@@ -123,3 +123,30 @@ function field_validation_update_7004(&$sandbox) {
   }
   db_drop_field('field_validation_rule', 'data');
 }
+
+/**
+ * Add missing field from upgrade.
+ */
+function field_validation_update_7005(&$sandbox) {
+  if (!db_field_exists('field_validation_rule', 'name')) {
+    // add missing column.
+    $settings = array(
+      'type' => 'varchar',
+      'description' => 'Machine name of the validation rule',
+      'not null' => TRUE,
+      'default' => '',
+      'length' => 32,
+    );
+    db_add_field('field_validation_rule', 'name', $settings);
+  }
+  if (!db_field_exists('field_validation_rule', 'col')) {
+    // add missing column.
+    $settings = array(
+      'type' => 'varchar',
+      'length' => 32,
+      'not null' => TRUE,
+      'default' => 'value',
+    );
+    db_add_field('field_validation_rule', 'col', $settings);
+  }
+}
