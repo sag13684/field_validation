@@ -122,6 +122,8 @@ function field_validation_update_7004(&$sandbox) {
     db_query("UPDATE {field_validation_rule} SET settings = :settings, validator = :validator WHERE ruleid = :ruleid", array(':settings' => serialize($settings_data), ':validator' => $validator, ':ruleid' => $record->ruleid));
   }
   db_drop_field('field_validation_rule', 'data');
+
+  module_enable(array('field_validation_ui'), FALSE);
 }
 
 /**
