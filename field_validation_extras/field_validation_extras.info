@@ -1,0 +1,3 @@
+name = Field validation extras
+description = Extra validators for Field validation 7.x-2.x.
+dependencies[] = field_validation
