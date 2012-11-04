@@ -23,7 +23,7 @@ class field_validation_someofseveral_validator extends field_validation_validato
     $group_name = $this->rule->settings['data'];
     
     $required_fields = $this->rule->settings['required_fields'];
-    if(!is_numeric($required_fields) || $required_fields < 0) {
+    if (!is_numeric($required_fields) || $required_fields < 0) {
       return TRUE;
     }
     
