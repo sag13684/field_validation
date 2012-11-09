@@ -10,6 +10,7 @@
  * @see field_feeds_processor_targets_alter().
  */
 function field_validation_feeds_processor_targets_alter(&$targets, $entity_type, $bundle_name) {
+  module_load_include('inc', 'ctools', 'includes/export');
   $rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $entity_type, 'bundle' => $bundle_name, 'validator' => 'field_validation_unique_validator'));
   foreach ($rules as $rule) {
     if (!empty($rule->disabled)) {
@@ -40,6 +41,7 @@ function field_validation_feeds_processor_targets_alter(&$targets, $entity_type,
  * @see FeedsProcessor::existingEntityId()
  */
 function field_validation_feeds_existing_entity_id($target, $value, $entity_type, $bundle_name) {
+  module_load_include('inc', 'ctools', 'includes/export');
   $unique_rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $entity_type, 'bundle' => $bundle_name, 'field_name' => $target, 'validator' => 'field_validation_unique_validator'));
   $unique_rule = reset($unique_rules);
   if (!empty($unique_rule)) {
