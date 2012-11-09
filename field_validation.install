@@ -151,4 +151,13 @@ function field_validation_update_7005(&$sandbox) {
     );
     db_add_field('field_validation_rule', 'col', $settings);
   }
+  
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'field_validation'");
+}
+
+/**
+ * Implements hook_install().
+ */
+function field_validation_install() {
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'field_validation'");
 }
