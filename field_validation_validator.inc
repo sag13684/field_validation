@@ -93,12 +93,12 @@ abstract class field_validation_validator {
       '[field-name]' => $this->instance['label'], 
       '[value]' => $this->value, 
     );
-    $error_message = strtr($error_message, $tokens);
+    $error_message = field_filter_xss(strtr($error_message, $tokens));
     //We support two methods to set error: using form_set_error provided by form api, using errors provided by field api.
     //form_set_error does not work correctly when a sub form embed into another form; 
     //errors does not work correctly when current field does not support hook_field_widget_error.
     if (empty($this->rule->settings['errors'])) {
-      form_set_error($error_element,  check_plain($error_message));
+      form_set_error($error_element, $error_message);
     }
     else{
       $this->errors[$this->rule->field_name][$this->langcode][$this->delta][] = array(
