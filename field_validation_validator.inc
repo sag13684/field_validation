@@ -48,6 +48,24 @@ abstract class field_validation_validator {
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
     //print debug($default_settings);
+    $form['settings']['bypass'] = array(
+      '#title' => t('By pass validation'),
+      '#type' => 'checkbox',
+      '#default_value' => isset($default_settings['bypass']) ? $default_settings['bypass'] : FALSE,
+    );
+    $roles_options = user_roles(TRUE);
+    $form['settings']['roles'] = array(
+      '#title' => t('Roles'),
+      '#description' => t("Only the checked roles will be able to by pass this validation rule."),
+      '#type' => 'checkboxes',
+      '#options' => $roles_options,
+      '#default_value' => isset($default_settings['roles']) ? $default_settings['roles'] : array(),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="settings[bypass]"]' => array('checked' => TRUE),
+        ), 
+      ),
+    );
     $form['settings']['errors'] = array(
       '#title' => t('Set errors using field API'),
       '#description' => t("There are two methods to set error: using form_set_error provided by form api, using errors provided by field api. form_set_error does not work correctly when a sub form embed into another form. errors does not work correctly when current field does not support hook_field_widget_error."),
@@ -55,6 +73,7 @@ abstract class field_validation_validator {
       '#default_value' => isset($default_settings['errors']) ? $default_settings['errors'] : FALSE,
     );
   }
+
   /**
    * Return error message string for the validation rule.
    */
@@ -118,5 +137,22 @@ abstract class field_validation_validator {
       '[field-name]' => t('User readable name of current field'), 
       '[value]' => t('Current value to be validated on'),  
     );
+  }
+  
+  /**
+   * Bypass validation.
+   */
+  public function bypass_validation() {
+    global $user;
+    if (!empty($this->rule->settings['bypass']) && !empty($this->rule->settings['roles'])) {
+      $roles = array_filter($this->rule->settings['roles']);
+      $user_roles = array_keys($user->roles);
+      foreach ($roles as $role) {
+        if (in_array($role, $user_roles)) {
+          return TRUE;
+        }
+      }
+    }
+    return FALSE;
   }
 }
