@@ -49,14 +49,14 @@ abstract class field_validation_validator {
     $default_settings = $this->get_default_settings($form, $form_state);
     //print debug($default_settings);
     $form['settings']['bypass'] = array(
-      '#title' => t('By pass validation'),
+      '#title' => t('Bypass validation'),
       '#type' => 'checkbox',
       '#default_value' => isset($default_settings['bypass']) ? $default_settings['bypass'] : FALSE,
     );
     $roles_options = user_roles(TRUE);
     $form['settings']['roles'] = array(
       '#title' => t('Roles'),
-      '#description' => t("Only the checked roles will be able to by pass this validation rule."),
+      '#description' => t("Only the checked roles will be able to bypass this validation rule."),
       '#type' => 'checkboxes',
       '#options' => $roles_options,
       '#default_value' => isset($default_settings['roles']) ? $default_settings['roles'] : array(),
