@@ -48,6 +48,20 @@ class field_validation_unique_validator extends field_validation_validator {
       if ($this->rule->entity_type == 'field_collection_item' && arg(0) == 'field-collection' && arg(3) =='edit' && empty($id)) {
         $id = arg(2); 
       }
+      if ($this->rule->entity_type == 'profile2' && empty($id)) {
+        $arg_index = 1;
+        if (module_exists('profile2_page')) {
+          $profile_type = profile2_type_load($this->entity->type);
+          $path = profile2_page_get_base_path($profile_type);
+          $arg_index = count(explode('/', $path));
+        }
+        $uid = arg($arg_index);
+        if (arg($arg_index + 1) == 'edit' && is_numeric($uid) && $account = user_load($uid)) {
+          if ($profile = profile2_load_by_user($account, $this->entity->type)) {
+            $id = $profile->pid;
+          }
+        }
+      }
       if (!empty($id)) {
         $query->entityCondition('entity_id', $id, '!=');
       }
