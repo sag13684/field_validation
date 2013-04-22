@@ -69,6 +69,12 @@ class field_validation_unique_validator extends field_validation_validator {
       $query->addMetaData('account', user_load(1));
       $query->fieldCondition($this->rule->field_name, $this->rule->col, $this->value);
 
+      // Do the check per user
+      if (isset($this->rule->settings['per_user']) && $this->rule->settings['per_user'] && $scope != 'global') {
+        global $user;
+        $query->propertyCondition('uid', $user->uid);
+      }
+
       // Store a copy of our matched entities for our use in tokens later.
       $matched_entities = $query->execute();
 
@@ -134,6 +140,14 @@ class field_validation_unique_validator extends field_validation_validator {
         'bundle' => t('Bundle'),
       ),  
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
+    );
+    $form['settings']['per_user'] = array(
+      '#title' => t('Per user'),
+      '#type' => 'checkbox', 
+      '#default_value' => isset($default_settings['per_user']) ? $default_settings['per_user'] : FALSE,
+      '#states' => array(
+        'invisible' => array(':input[name="settings[data]"]' => array('value' => 'global')),
+      ),
     );
     parent::settings_form($form, $form_state);
   }
