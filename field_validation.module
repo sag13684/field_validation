@@ -59,6 +59,7 @@ function field_validation_ctools_plugin_type() {
   return array(
     'validator' => array(
       'use hooks' => FALSE,
+      'cache' => TRUE,
     ),
   );
 }
