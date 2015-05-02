@@ -183,6 +183,10 @@ class field_validation_phone_validator extends field_validation_validator {
         'name' => t('Pakistan'),
         'regex' => "/^(\+)?([9]{1}[2]{1})?-? ?(\()?([0]{1})?[1-9]{2,4}(\))?-? ??(\()?[1-9]{4,7}(\))?$/i",
       ),
+     'in' => array(
+        'name' => t('India'),
+        'regex' => "/^((\+*)((0[ -]+)*|(91 )*)(\d{12}+|\d{10}+))|\d{5}([- ]*)\d{6}$/i",
+     ),
     );
   
     return $countries;
