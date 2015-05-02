@@ -249,8 +249,8 @@ abstract class field_validation_validator {
           return $condition_field <= $condition_value;
           break;		  
       }  
-      
+      return FALSE;
     }
-    return FALSE;
+    return TRUE;
   }
 }
