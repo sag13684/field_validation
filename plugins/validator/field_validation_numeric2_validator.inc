@@ -25,17 +25,23 @@ class field_validation_numeric2_validator extends field_validation_validator {
         $flag = FALSE;
       }
       else{
-        if (isset($settings['min']) && $settings['min'] != '' && $this->value < $settings['min']) {
-          $flag = FALSE;
+        if (isset($settings['min']) && $settings['min'] != '' ) {
+          $min = token_replace($settings['min'], array($this->get_token_type() => $this->entity));
+		  if ($this->value < $min) {
+            $flag = FALSE;
+          }
         }
-        if (isset($settings['max']) && $settings['max'] != '' && $this->value > $settings['max']) {
-          $flag = FALSE;
+        if (isset($settings['max']) && $settings['max'] != '') {
+          $max = token_replace($settings['max'], array($this->get_token_type() => $this->entity));
+		  if ($this->value > $max) {
+            $flag = FALSE;
+          }
         }       
       }
       if (!$flag) {
         $token = array(
-          '[min]' => isset($settings['min']) ? $settings['min'] : '',
-          '[max]' => isset($settings['max']) ? $settings['max'] : '',
+          '[min]' => isset($min) ? $min : '',
+          '[max]' => isset($max) ? $max : '',
         );
         $this->set_error($token);
       }
@@ -60,6 +66,18 @@ class field_validation_numeric2_validator extends field_validation_validator {
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
+	if(module_exists("token")) {  
+      $form['settings']['tokens'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Replacement patterns'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+      $form['settings']['tokens']['help'] = array(
+        '#theme' => 'token_tree',
+        '#token_types' => array($this->get_token_type()),
+      );
+    }	
     parent::settings_form($form, $form_state);
   }
   

@@ -179,7 +179,8 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
   ctools_include('plugins');
   $plugin = ctools_get_plugins('field_validation', 'validator', $validator);
   $class = ctools_plugin_get_class($plugin, 'handler');
-  $validator_class = new $class();
+  $entity_type = $instance['entity_type'];
+  $validator_class = new $class($entity_type);
   $validator_class->settings_form($form, $form_state);
 
   $form['error_message'] = array(

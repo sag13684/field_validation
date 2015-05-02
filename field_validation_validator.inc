@@ -159,4 +159,15 @@ abstract class field_validation_validator {
     }
     return FALSE;
   }
+  
+  /**
+   * Get token type.
+   */ 
+  public function get_token_type() {
+    $mappings = token_get_entity_mapping('entity');
+	//print debug($mappings);
+    $token_type = isset($mappings[$this->entity_type]) ? $mappings[$this->entity_type] : "";
+    return $token_type;
+  } 
+
 }
