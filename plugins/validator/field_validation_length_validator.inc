@@ -63,19 +63,7 @@ class field_validation_length_validator extends field_validation_validator {
       '#description' => t("Optionally specify the maximum length to validate the user-entered value against."),
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
-    );
-	if (module_exists("token")) {  
-      $form['settings']['tokens'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Replacement patterns'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
-      $form['settings']['tokens']['help'] = array(
-        '#theme' => 'token_tree',
-        '#token_types' => array($this->get_token_type()),
-      );
-    }	
+    );	
     parent::settings_form($form, $form_state);
   }
   

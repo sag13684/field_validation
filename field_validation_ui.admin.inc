@@ -218,7 +218,17 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
     '#suffix' => '</div>',
     '#weight' => 6,
   );
-
+  
+	if (module_exists("token")) {  
+    $mappings = token_get_entity_mapping('entity');
+	//print debug($mappings);
+    $token_type = isset($mappings[$instance['entity_type']]) ? $mappings[$instance['entity_type']] : "";	
+      $form['token_help']['tokens'] = array(
+        '#theme' => 'token_tree',
+        '#token_types' => array($token_type),
+      );
+    }
+	
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => (isset($rule->ruleid)) ? t('Save rule') : t('Add rule'),

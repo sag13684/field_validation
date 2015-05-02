@@ -64,18 +64,6 @@ class field_validation_words_validator extends field_validation_validator {
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
-	if (module_exists("token")) {  
-      $form['settings']['tokens'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Replacement patterns'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
-      $form['settings']['tokens']['help'] = array(
-        '#theme' => 'token_tree',
-        '#token_types' => array($this->get_token_type()),
-      );
-    }
     parent::settings_form($form, $form_state);
   }
 
