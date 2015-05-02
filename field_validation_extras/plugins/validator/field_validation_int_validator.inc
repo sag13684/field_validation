@@ -57,7 +57,7 @@ class field_validation_int_validator extends field_validation_validator {
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
     );
-	if(module_exists("token")) {  
+	if (module_exists("token")) {  
       $form['settings']['tokens'] = array(
         '#type' => 'fieldset',
         '#title' => t('Replacement patterns'),
