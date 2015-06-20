@@ -3,5 +3,6 @@ description = "Add validation rules to fields."
 package = Fields
 core = 7.x
 dependencies[] = field
+dependencies[] = token
 dependencies[] = ctools
 files[] = field_validation_validator.inc
