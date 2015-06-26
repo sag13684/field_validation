@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation specific value validator.
- *
  */
 $plugin = array(
   'label' => t('Specific value(s)'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_specific_value_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_specific_value_validator extends property_validation_validator {
 
   /**
-   * Validate property. 
+   * Validate property.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -25,13 +26,13 @@ class property_validation_specific_value_validator extends property_validation_v
       $this->set_error();
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('(Key) value'),
       '#description' => t("Specify the specific value(s) you want the property to contain. Separate multiple options by a comma."),

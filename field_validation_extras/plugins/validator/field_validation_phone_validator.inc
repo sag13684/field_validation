@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation phone validator. The code is ported from phone module.
- *
  */
 $plugin = array(
   'label' => t('Phone'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_phone_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_phone_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -29,13 +30,13 @@ class field_validation_phone_validator extends field_validation_validator {
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $countries = $this->phone_countries();
     $country_options = array();
     foreach ($countries as $country_code => $country) {
@@ -45,14 +46,17 @@ class field_validation_phone_validator extends field_validation_validator {
     $form['settings']['country'] = array(
       '#title' => t('Country'),
       '#type' => 'select',
-      '#options' => $country_options, 
+      '#options' => $country_options,
       '#default_value' => isset($default_settings['country']) ? $default_settings['country'] : 'cn',
     );
     parent::settings_form($form, $form_state);
   }
-  
+
+  /**
+   *
+   */
   function phone_countries() {
-   $countries = array(
+    $countries = array(
       'fr' => array(
         'name' => t('France'),
         'regex' => '/(\+33|0)([1-9]\d{8}|85\d{7}|87[0-57-9]\d{6})$/',
@@ -157,7 +161,7 @@ class field_validation_phone_validator extends field_validation_validator {
       'hk' => array(
         'name' => t('Hong-Kong'),
         'regex' => '',
-      ), 
+      ),
       'mo' => array(
         'name' => t('Macao'),
         'regex' => '',
@@ -192,7 +196,8 @@ class field_validation_phone_validator extends field_validation_validator {
         'regex' => "/^(([+]\d{2}[ ][1-9]\d{0,2}[ ])|([0]\d{1,3}[-]))((\d{2}([ ]\d{2}){2})|(\d{3}([ ]\d{3})*([ ]\d{2})+))$/i",
       ),
     );
-  
+
     return $countries;
   }
+
 }

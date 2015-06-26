@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation numeric validator.
- *
  */
 $plugin = array(
   'label' => t('Numeric(HTML5)'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_numeric_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_numeric_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -24,16 +25,16 @@ class field_validation_numeric_validator extends field_validation_validator {
       if (!is_numeric($this->value)) {
         $flag = FALSE;
       }
-      else{
+      else {
         if (isset($settings['min']) && $settings['min'] != '') {
           $min = token_replace($settings['min'], array($this->get_token_type() => $this->entity));
-		  if ($this->value < $min) {
+          if ($this->value < $min) {
             $flag = FALSE;
           }
         }
         if (isset($settings['max']) && $settings['max'] != '') {
           $max = token_replace($settings['max'], array($this->get_token_type() => $this->entity));
-		  if ($this->value > $max) {
+          if ($this->value > $max) {
             $flag = FALSE;
           }
         }
@@ -42,9 +43,9 @@ class field_validation_numeric_validator extends field_validation_validator {
           // #min is set).
           $offset = isset($settings['min']) ? $settings['min'] : 0.0;
           $step = token_replace($settings['step'], array($this->get_token_type() => $this->entity));
-          //The logic code was copied from Drupal 8 core.
+          // The logic code was copied from Drupal 8 core.
           if ($step > 0 && !$this->valid_number_step($this->value, $step, $offset)) {
-           $flag = FALSE;
+            $flag = FALSE;
           }
         }
       }
@@ -58,13 +59,13 @@ class field_validation_numeric_validator extends field_validation_validator {
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['min'] = array(
       '#title' => t('Minimum value'),
       '#description' => t("Optionally specify the minimum value to validate the user-entered numeric value against."),
@@ -85,14 +86,14 @@ class field_validation_numeric_validator extends field_validation_validator {
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */
   public function token_help() {
     $token_help = parent::token_help();
     $token_help += array(
-      '[min]' => t('Minimum value'), 
+      '[min]' => t('Minimum value'),
       '[max]' => t('Maximum value'),
       '[step]' => t('Step'),
     );
@@ -139,8 +140,9 @@ class field_validation_numeric_validator extends field_validation_validator {
     // can't be represented with single precision floats are acceptable. The
     // fractional part of a float has 24 bits. That means remainders smaller than
     // $step * 2^-24 are acceptable.
-    $computed_acceptable_error = (double)($step / pow(2.0, 24));
+    $computed_acceptable_error = (double) ($step / pow(2.0, 24));
 
     return $computed_acceptable_error >= $remainder || $remainder >= ($step - $computed_acceptable_error);
   }
+
 }

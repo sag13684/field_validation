@@ -1,8 +1,7 @@
 <?php
 /**
  * @file
- * property validation length validator.
- *
+ * Property validation length validator.
  */
 $plugin = array(
   'label' => t('Length'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_length_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_length_validator extends property_validation_validator {
 
   /**
-   * Validate property. 
+   * Validate property.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -27,7 +28,7 @@ class property_validation_length_validator extends property_validation_validator
       }
       if (isset($settings['max']) && $settings['max'] != '' && $length > $settings['max']) {
         $flag = FALSE;
-      }       
+      }
 
       if (!$flag) {
         $token = array(
@@ -39,13 +40,13 @@ class property_validation_length_validator extends property_validation_validator
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['min'] = array(
       '#title' => t('Minimum length'),
       '#description' => t("Optionally specify the minimum length to validate the user-entered value against."),
@@ -60,17 +61,18 @@ class property_validation_length_validator extends property_validation_validator
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */
   public function token_help() {
     $token_help = parent::token_help();
     $token_help += array(
-      '[min]' => t('Minimum length'), 
-      '[max]' => t('Maximum length'), 
+      '[min]' => t('Minimum length'),
+      '[max]' => t('Maximum length'),
       '[length]' => t('Real length'),
     );
     return $token_help;
   }
+
 }

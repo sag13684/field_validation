@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation number of selections validator.
- *
  */
 $plugin = array(
   'label' => t('Number of selections'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_number_of_selections_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_number_of_selections_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -27,7 +28,7 @@ class field_validation_number_of_selections_validator extends field_validation_v
     }
     if (isset($settings['max']) && $settings['max'] != '' && $total_items > $settings['max']) {
       $flag = FALSE;
-    }       
+    }
 
     if (!$flag) {
       $token = array(
@@ -37,18 +38,18 @@ class field_validation_number_of_selections_validator extends field_validation_v
       );
       $this->set_error($token);
     }
-    //Do not need to validate other items.
+    // Do not need to validate other items.
     $break = TRUE;
     return $break;
 
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['min'] = array(
       '#title' => t('Minimum number of selections'),
       '#description' => t("Optionally specify the minimum number of options a user should select."),
@@ -63,13 +64,13 @@ class field_validation_number_of_selections_validator extends field_validation_v
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Return error element for the validation rule.
    */
   public function get_error_element() {
     $error_element = $this->rule->field_name . '][' . $this->langcode;
-    return  $error_element;
+    return $error_element;
   }
 
   /**
@@ -78,10 +79,11 @@ class field_validation_number_of_selections_validator extends field_validation_v
   public function token_help() {
     $token_help = parent::token_help();
     $token_help += array(
-      '[min]' => t('Minimum number of selections'), 
-      '[max]' => t('Maximum number of selections'), 
+      '[min]' => t('Minimum number of selections'),
+      '[max]' => t('Maximum number of selections'),
       '[count]' => t('The real number of selections'),
     );
     return $token_help;
   }
+
 }

@@ -2,18 +2,18 @@
 
 /**
  * @file
- * Provides default property validation rules
+ * Provides default property validation rules.
  */
- 
+
 /**
  * Implementation of hook_default_property_validation_rule().
- * 
+ *
  * Provide default validation rules.
  */
 function property_validation_default_property_validation_rule() {
   $export = array();
 
-  $rule = new stdClass;
+  $rule = new stdClass();
   $rule->disabled = TRUE;
   $rule->api_version = 2;
   $rule->name = 'title_min_words';

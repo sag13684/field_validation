@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation regex validator.
- *
  */
 $plugin = array(
   'label' => t('Regular expression'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_regex_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_regex_validator extends property_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     mb_regex_encoding('UTF-8');
@@ -24,13 +25,13 @@ class property_validation_regex_validator extends property_validation_validator 
       $this->set_error();
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Regex code'),
       '#description' => t("Specify regex code to validate the user input against."),

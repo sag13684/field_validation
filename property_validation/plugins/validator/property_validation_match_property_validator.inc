@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation match against a property validator.
- *
  */
 $plugin = array(
   'label' => t('Match against a property'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_match_property_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_match_property_validator extends property_validation_validator {
 
   /**
-   * Validate property. 
+   * Validate property.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -33,25 +34,25 @@ class property_validation_match_property_validator extends property_validation_v
       if (!empty($settings['property'])) {
         $query->propertyCondition($settings['property'], $this->value);
       }
-      //Always bypass all access checkings.
+      // Always bypass all access checkings.
       $query->addMetaData('account', user_load(1));
-      $flag = (bool)$query->range(0, 1)->count()->execute();
+      $flag = (bool) $query->range(0, 1)->count()->execute();
       if (!empty($settings['reverse'])) {
         $flag = $flag ? FALSE : TRUE;
-      }     
+      }
 
       if (!$flag) {
         $this->set_error();
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['entity_type'] = array(
       '#title' => t('Entity type'),
       '#description' => t("Machine name. Entity type of the property that to be matched against."),

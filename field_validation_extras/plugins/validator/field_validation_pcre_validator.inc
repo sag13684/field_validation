@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation PCRE validator.
- *
  */
 $plugin = array(
   'label' => t('Regular expression (Perl-Compatible)'),
@@ -11,7 +10,9 @@ $plugin = array(
     'class' => 'field_validation_pcre_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_pcre_validator extends field_validation_validator {
 
   /**
@@ -25,11 +26,11 @@ class field_validation_pcre_validator extends field_validation_validator {
   }
 
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Pattern'),
       '#description' => t("Specify the Perl-compatible regular expression pattern to validate the user input against."),
@@ -38,4 +39,5 @@ class field_validation_pcre_validator extends field_validation_validator {
     );
     parent::settings_form($form, $form_state);
   }
+
 }

@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation specific value validator.
- *
  */
 $plugin = array(
   'label' => t('Specific value(s)'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_specific_value_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_specific_value_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -25,13 +26,13 @@ class field_validation_specific_value_validator extends field_validation_validat
       $this->set_error();
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('(Key) value'),
       '#description' => t("Specify the specific value(s) you want the field to contain. Separate multiple options by a comma. For fields that have keys, use the key value instead."),

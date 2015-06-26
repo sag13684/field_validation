@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation unique validator.
- *
  */
 $plugin = array(
   'label' => t('Unique values'),
@@ -11,7 +10,9 @@ $plugin = array(
     'class' => 'field_validation_unique_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_unique_validator extends field_validation_validator {
 
   /**
@@ -42,10 +43,10 @@ class field_validation_unique_validator extends field_validation_validator {
       }
 
       list($id, $vid, $bundle) = entity_extract_ids($this->rule->entity_type, $this->entity);
-      if ($this->rule->entity_type == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)) {
+      if ($this->rule->entity_type == 'user' && arg(0) == 'user' && arg(2) == 'edit' && empty($id)) {
         $id = arg(1);
       }
-      if ($this->rule->entity_type == 'field_collection_item' && arg(0) == 'field-collection' && arg(3) =='edit' && empty($id)) {
+      if ($this->rule->entity_type == 'field_collection_item' && arg(0) == 'field-collection' && arg(3) == 'edit' && empty($id)) {
         $id = arg(2);
       }
       if ($this->rule->entity_type == 'profile2' && empty($id)) {
@@ -65,11 +66,11 @@ class field_validation_unique_validator extends field_validation_validator {
       if (!empty($id)) {
         $query->entityCondition('entity_id', $id, '!=');
       }
-      //Always bypass all access checkings.
+      // Always bypass all access checkings.
       $query->addMetaData('account', user_load(1));
       $query->fieldCondition($this->rule->field_name, $this->rule->col, $this->value);
 
-      // Do the check per user
+      // Do the check per user.
       if (isset($this->rule->settings['per_user']) && $this->rule->settings['per_user'] && $scope != 'global') {
         global $user;
         $query->propertyCondition('uid', $user->uid);
@@ -125,11 +126,11 @@ class field_validation_unique_validator extends field_validation_validator {
   }
 
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Scope of unique'),
       '#description' => t("Specify the scope of unique values, support: global, entity, bundle."),
@@ -164,4 +165,5 @@ class field_validation_unique_validator extends field_validation_validator {
     );
     return $token_help;
   }
+
 }

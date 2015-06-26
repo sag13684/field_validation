@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation color validator.
- *
  */
 $plugin = array(
   'label' => t('Color(HTML5)'),
@@ -11,15 +10,17 @@ $plugin = array(
     'class' => 'field_validation_color_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_color_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     if ($this->value !== '' && !is_null($this->value)) {
-      //The logic is copied from Drupal 8 core.
+      // The logic is copied from Drupal 8 core.
       if (!self::validateHex($this->value)) {
         $this->set_error();
       }
@@ -48,4 +49,5 @@ class field_validation_color_validator extends field_validation_validator {
     $valid = $valid && ctype_xdigit($hex);
     return $valid;
   }
+
 }

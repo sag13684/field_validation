@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation url validator.
- *
  */
 $plugin = array(
   'label' => t('URL'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_url_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_url_validator extends property_validation_validator {
 
   /**
-   * Validate property. 
+   * Validate property.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -33,26 +34,26 @@ class property_validation_url_validator extends property_validation_validator {
       if (!$flag && !empty($settings['internal'])) {
         $normal_path = drupal_get_normal_path($this->value);
         if (!url_is_external($normal_path)) {
-          $parsed_link = parse_url($normal_path); 
+          $parsed_link = parse_url($normal_path);
           if ($normal_path != $parsed_link['path']) {
             $normal_path = $parsed_link['path'];
           }
           $flag = drupal_valid_path($normal_path);
         }
       }
-      
+
       if (!$flag) {
         $this->set_error();
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['external'] = array(
       '#title' => t('External URL'),
       '#description' => t("Limit allowed input to absolute/external url."),

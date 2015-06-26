@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation numeric validator.
- *
  */
 $plugin = array(
   'label' => t('Numeric values'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_numeric2_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_numeric2_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -24,19 +25,19 @@ class field_validation_numeric2_validator extends field_validation_validator {
       if (!is_numeric($this->value)) {
         $flag = FALSE;
       }
-      else{
-        if (isset($settings['min']) && $settings['min'] != '' ) {
+      else {
+        if (isset($settings['min']) && $settings['min'] != '') {
           $min = token_replace($settings['min'], array($this->get_token_type() => $this->entity));
-		  if ($this->value < $min) {
+          if ($this->value < $min) {
             $flag = FALSE;
           }
         }
         if (isset($settings['max']) && $settings['max'] != '') {
           $max = token_replace($settings['max'], array($this->get_token_type() => $this->entity));
-		  if ($this->value > $max) {
+          if ($this->value > $max) {
             $flag = FALSE;
           }
-        }       
+        }
       }
       if (!$flag) {
         $token = array(
@@ -47,13 +48,13 @@ class field_validation_numeric2_validator extends field_validation_validator {
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['min'] = array(
       '#title' => t('Minimum value'),
       '#description' => t("Optionally specify the minimum value to validate the user-entered numeric value against."),
@@ -65,19 +66,20 @@ class field_validation_numeric2_validator extends field_validation_validator {
       '#description' => t("Optionally specify the maximum value to validate the user-entered numeric value against."),
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['max']) ? $default_settings['max'] : '',
-    );	
+    );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */
   public function token_help() {
     $token_help = parent::token_help();
     $token_help += array(
-      '[min]' => t('Minimum value'), 
+      '[min]' => t('Minimum value'),
       '[max]' => t('Maximum value'),
     );
     return $token_help;
   }
+
 }

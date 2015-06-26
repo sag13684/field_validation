@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation numeric validator.
- *
  */
 $plugin = array(
   'label' => t('Numeric values'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_numeric_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_numeric_validator extends property_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -24,13 +25,13 @@ class property_validation_numeric_validator extends property_validation_validato
       if (!is_numeric($this->value)) {
         $flag = FALSE;
       }
-      else{
+      else {
         if (isset($settings['min']) && $settings['min'] != '' && $this->value < $settings['min']) {
           $flag = FALSE;
         }
         if (isset($settings['max']) && $settings['max'] != '' && $this->value > $settings['max']) {
           $flag = FALSE;
-        }       
+        }
       }
       if (!$flag) {
         $token = array(
@@ -41,13 +42,13 @@ class property_validation_numeric_validator extends property_validation_validato
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['min'] = array(
       '#title' => t('Minimum value'),
       '#description' => t("Optionally specify the minimum value to validate the user-entered numeric value against."),
@@ -62,16 +63,17 @@ class property_validation_numeric_validator extends property_validation_validato
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */
   public function token_help() {
     $token_help = parent::token_help();
     $token_help += array(
-      '[min]' => t('Minimum value'), 
+      '[min]' => t('Minimum value'),
       '[max]' => t('Maximum value'),
     );
     return $token_help;
   }
+
 }

@@ -2,18 +2,18 @@
 
 /**
  * @file
- * Provides default field validation rules
+ * Provides default field validation rules.
  */
- 
+
 /**
  * Implementation of hook_default_field_validation_rule().
- * 
+ *
  * Provide default validation rules.
  */
 function field_validation_default_field_validation_rule() {
   $export = array();
 
-  $rule = new stdClass;
+  $rule = new stdClass();
   $rule->disabled = TRUE;
   $rule->api_version = 2;
   $rule->name = 'body_min_words';

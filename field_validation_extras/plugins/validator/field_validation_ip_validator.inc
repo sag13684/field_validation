@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation ip validator. The code is ported from symfony Validator.
- *
  */
 $plugin = array(
   'label' => t('IP'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_ip_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_ip_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $settings = $this->rule->settings;
@@ -69,20 +70,20 @@ class field_validation_ip_validator extends field_validation_validator {
         default:
           $flag = NULL;
           break;
-        }
+      }
 
       if (!filter_var($this->value, FILTER_VALIDATE_IP, $flag)) {
         $this->set_error();
       }
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['version'] = array(
       '#title' => t('IP Version'),
       '#type' => 'select',
@@ -99,7 +100,7 @@ class field_validation_ip_validator extends field_validation_validator {
         '4_public' => t('V4_ONLY_PUBLIC'),
         '6_public' => t('V6_ONLY_PUBLIC'),
         'all_public' => t('ALL_ONLY_PUBLIC'),
-      ),  
+      ),
       '#default_value' => isset($default_settings['version']) ? $default_settings['version'] : 'all',
     );
     parent::settings_form($form, $form_state);

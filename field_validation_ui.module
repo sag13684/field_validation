@@ -125,7 +125,7 @@ function field_validation_ui_theme() {
 
 /**
  * Implements hook_module_implements_alter().
- * 
+ *
  * Ensures the call to field_validation_ui_form_field_ui_field_overview_form_alter()
  * function runs after any invocation of the form_alter() by other modules, e.g.
  * Field Group module.
@@ -181,4 +181,3 @@ function field_validation_ui_form_field_ui_field_overview_form_alter(&$form, &$f
     }
   }
 }
-

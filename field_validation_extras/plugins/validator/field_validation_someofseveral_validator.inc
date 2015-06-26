@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation some of several validator.
- *
  */
 $plugin = array(
   'label' => t('Require some of several fields'),
@@ -11,25 +10,27 @@ $plugin = array(
     'class' => 'field_validation_someofseveral_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_someofseveral_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $flag = FALSE;
 
     $group_name = $this->rule->settings['data'];
-    
+
     $required_fields = $this->rule->settings['required_fields'];
     if (!is_numeric($required_fields) || $required_fields < 0) {
       return TRUE;
     }
-    
+
     $field_values = $this->get_field_column_value($this->items, $this->rule->col);
     $field_values = count(array_flip($field_values));
-    
+
     if ($field_values >= $required_fields) {
       $flag = TRUE;
     }
@@ -38,7 +39,7 @@ class field_validation_someofseveral_validator extends field_validation_validato
       $other_group_rules = ctools_export_load_object('field_validation_rule', 'conditions', array('entity_type' => $this->rule->entity_type, 'bundle' => $this->rule->bundle, 'validator' => $this->rule->validator));
       foreach ($other_group_rules as $other_group_rule) {
         // Skip when do not have the same group name, rule is disabled, equal to current rule.
-        if ($other_group_rule->settings['data'] != $group_name || !empty($other_group_rule->disabled) || $other_group_rule->name == $this->rule->name ) {
+        if ($other_group_rule->settings['data'] != $group_name || !empty($other_group_rule->disabled) || $other_group_rule->name == $this->rule->name) {
           continue;
         }
         $other_items = isset($this->entity->{$other_group_rule->field_name}[$this->langcode]) ? $this->entity->{$other_group_rule->field_name}[$this->langcode] : array();
@@ -57,13 +58,13 @@ class field_validation_someofseveral_validator extends field_validation_validato
     $break = TRUE;
     return $break;
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Group name'),
       '#description' => t("Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together."),
@@ -78,14 +79,14 @@ class field_validation_someofseveral_validator extends field_validation_validato
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
-   * helper function to get field values
+   * Helper function to get field values.
    */
-  function get_field_column_value($items, $column ='value') {
+  function get_field_column_value($items, $column = 'value') {
     $field_values = array();
     foreach ($items as $delta => $item) {
-      if (isset($item[$column]) && $item[$column] !='') {
+      if (isset($item[$column]) && $item[$column] != '') {
         $field_values[] = $item[$column];
       }
     }

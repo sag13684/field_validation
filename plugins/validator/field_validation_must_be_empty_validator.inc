@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation must be empty validator.
- *
  */
 $plugin = array(
   'label' => t('Must be empty'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_must_be_empty_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_must_be_empty_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     if ($this->value != '') {

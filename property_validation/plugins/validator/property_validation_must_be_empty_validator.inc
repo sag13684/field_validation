@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation must be empty validator.
- *
  */
 $plugin = array(
   'label' => t('Must be empty'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_must_be_empty_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_must_be_empty_validator extends property_validation_validator {
 
   /**
-   * Validate property. 
+   * Validate property.
    */
   public function validate() {
     if ($this->value != '') {

@@ -2,9 +2,9 @@
 
 /**
  * @file
- * Manages validation rules administration UI
+ * Manages validation rules administration UI.
  */
- 
+
 /**
  * Menu callback function using to dispatch.
  */
@@ -34,7 +34,7 @@ function field_validation_ui_callback_dispatch($instance, $arg1 = NULL, $arg2 = 
     $form = drupal_get_form('field_validation_ui_manage_rule', $instance, 'edit', $arg2, $arg3);
     $output .= drupal_render($form);
   }
-  else{
+  else {
     drupal_set_title(t('Validation'));
     $output .= field_validation_manage($instance);
   }
@@ -43,12 +43,11 @@ function field_validation_ui_callback_dispatch($instance, $arg1 = NULL, $arg2 = 
 }
 
 /**
- * Menu callback function to show an overview of the existing validation rules, and the option to add a rule
+ * Menu callback function to show an overview of the existing validation rules, and the option to add a rule.
  */
 function field_validation_ui_manage($instance) {
   $output = '';
-  //$rules = field_validation_get_field_rules($instance);
-  
+  // $rules = field_validation_get_field_rules($instance);
   $bundle = $instance['bundle'];
   $entity_type = $instance['entity_type'];
   $field_name = $instance['field_name'];
@@ -62,11 +61,11 @@ function field_validation_ui_manage($instance) {
 
 
 /**
- * Callback function to add or edit a validation rule
+ * Callback function to add or edit a validation rule.
  */
 function field_validation_ui_manage_rule($form, $form_state, $instance, $action = 'add', $validator = 'regex', $ruleid = NULL) {
- // $form = array();
-  //$rule_validator = field_validation_get_validator_info($validator);
+  // $form = array();
+  // $rule_validator = field_validation_get_validator_info($validator);
   $rule_validator = array();
   if ($action == 'overwrite') {
     $rule = field_validation_ui_rule_load($ruleid);
@@ -74,7 +73,7 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
   elseif ($action == 'edit') {
     $rule = field_validation_ui_get_rule($ruleid);
   }
-  else{
+  else {
     $rule = new stdClass();
   }
   $form_state['item'] = $rule;
@@ -152,7 +151,7 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
   );
   $columns = !empty($field['columns']) ? $field['columns'] : array();
   foreach ($columns as $key => $column) {
-    $col_options[$key] = $key;  
+    $col_options[$key] = $key;
   }
 
   // Support free tagging.
@@ -175,7 +174,7 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
     '#tree' => TRUE,
     '#weight' => 4,
   );
-  
+
   ctools_include('plugins');
   $plugin = ctools_get_plugins('field_validation', 'validator', $validator);
   $class = ctools_plugin_get_class($plugin, 'handler');
@@ -218,23 +217,23 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
     '#suffix' => '</div>',
     '#weight' => 6,
   );
-  
-	if (module_exists("token")) {  
+
+  if (module_exists("token")) {
     $mappings = token_get_entity_mapping('entity');
-	//print debug($mappings);
-    $token_type = isset($mappings[$instance['entity_type']]) ? $mappings[$instance['entity_type']] : "";	
-      $form['token_help']['tokens'] = array(
-        '#theme' => 'token_tree',
-        '#token_types' => array($token_type),
-      );
-    }
-	
+    // Print debug($mappings);
+    $token_type = isset($mappings[$instance['entity_type']]) ? $mappings[$instance['entity_type']] : "";
+    $form['token_help']['tokens'] = array(
+      '#theme' => 'token_tree',
+      '#token_types' => array($token_type),
+    );
+  }
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => (isset($rule->ruleid)) ? t('Save rule') : t('Add rule'),
     '#weight' => 25,
   );
-  
+
   if ($action == 'overwrite') {
     $form['submit']['#value'] = t('Overwrite rule');
   }
@@ -243,7 +242,7 @@ function field_validation_ui_manage_rule($form, $form_state, $instance, $action 
 }
 
 /**
- * Validation handler to add / edit a rule
+ * Validation handler to add / edit a rule.
  */
 function field_validation_ui_manage_rule_validate($form, &$form_state) {
   $values = $form_state['values'];
@@ -256,7 +255,7 @@ function field_validation_ui_manage_rule_validate($form, &$form_state) {
 
 
 /**
- * Submit handler to add / edit a rule
+ * Submit handler to add / edit a rule.
  */
 function field_validation_ui_manage_rule_submit($form, &$form_state) {
   $values = $form_state['values'];
@@ -271,7 +270,7 @@ function field_validation_ui_manage_rule_submit($form, &$form_state) {
 }
 
 /**
- * Confirmation form to delete a rule
+ * Confirmation form to delete a rule.
  */
 function field_validation_ui_delete_rule($form, &$form_state, $ruleid) {
   $rule = new stdClass();
@@ -284,7 +283,7 @@ function field_validation_ui_delete_rule($form, &$form_state, $ruleid) {
   }
 
   if (empty($rule)) {
-    $source_path = isset($_GET['destination']) ? $_GET['destination']:"";
+    $source_path = isset($_GET['destination']) ? $_GET['destination'] : "";
     drupal_goto($source_path);
   }
 
@@ -298,7 +297,7 @@ function field_validation_ui_delete_rule($form, &$form_state, $ruleid) {
 }
 
 /**
- * Submit handler to delete a rule
+ * Submit handler to delete a rule.
  */
 function field_validation_ui_delete_rule_submit($form, &$form_state) {
   $ruleid = $form_state['values']['ruleid'];
@@ -312,6 +311,7 @@ function field_validation_ui_delete_rule_submit($form, &$form_state) {
  *
  * @param $name
  *   This validation rule's name value.
+ *
  * @return
  *   An array of options for the specified validation rule.
  */
@@ -325,7 +325,7 @@ function field_validation_ui_rule_load($name) {
 }
 
 /**
- * Get a rule entry
+ * Get a rule entry.
  */
 function field_validation_ui_get_rule($ruleid) {
   $result = db_query("SELECT * FROM {field_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_OBJ));
@@ -335,15 +335,15 @@ function field_validation_ui_get_rule($ruleid) {
 }
 
 /**
- * Theme the 'add rule' list
+ * Theme the 'add rule' list.
  */
 function theme_field_validation_ui_manage_add_rule($variables) {
   $instance = $variables['instance'];
   $output = '';
-  //$validators = field_validation_get_validators();
+  // $validators = field_validation_get_validators();
   ctools_include('plugins');
   $validators = ctools_get_plugins('field_validation', 'validator');
-  //print debug($instance);
+  // Print debug($instance);
   if ($validators) {
     $output = '<h3>' . t('Add a validation rule') . '</h3>';
     $output .= '<dl>';
@@ -366,7 +366,7 @@ function theme_field_validation_ui_manage_add_rule($variables) {
 
 
 /**
- * Themable function to list the rules assigned to a field instance
+ * Themable function to list the rules assigned to a field instance.
  */
 function theme_field_validation_ui_manage_overview($variables) {
   $rules = $variables['rules'];
@@ -375,7 +375,8 @@ function theme_field_validation_ui_manage_overview($variables) {
   $header = array(t('Rule name'), t('Validator'), array(
       'data' => t('Operations'),
       'colspan' => 2,
-    ));
+    ),
+  );
   ctools_include('plugins');
   $validators = ctools_get_plugins('field_validation', 'validator');
   if (!empty($rules)) {
@@ -396,7 +397,7 @@ function theme_field_validation_ui_manage_overview($variables) {
           'data' => l(t('Delete'), $path . '/delete/' . $rule->ruleid, array("query" => drupal_get_destination())),
         );
       }
-      else{
+      else {
         $row[] = array(
           'data' => l(t('Overwrite'), $path . '/overwrite/' . $rule->validator . '/' . $rule->name, array("query" => drupal_get_destination())),
           'colspan' => 2,

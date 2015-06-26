@@ -2,7 +2,7 @@
 
 /**
  * @file
- * field_validation installation file
+ * Field_validation installation file.
  */
 
 /**
@@ -15,7 +15,7 @@ function field_validation_schema() {
       'key' => 'name',
       'key name' => 'Name',
       'primary key' => 'ruleid',
-      'identifier' => 'rule', 
+      'identifier' => 'rule',
       'default hook' => 'default_field_validation_rule',
       'api' => array(
         'owner' => 'field_validation',
@@ -50,25 +50,25 @@ function field_validation_schema() {
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'col' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => 'value'
+        'default' => 'value',
       ),
       'entity_type' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'bundle' => array(
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'validator' => array(
         'type' => 'varchar',
@@ -131,7 +131,7 @@ function field_validation_update_7004(&$sandbox) {
  */
 function field_validation_update_7005(&$sandbox) {
   if (!db_field_exists('field_validation_rule', 'name')) {
-    // add missing column.
+    // Add missing column.
     $settings = array(
       'type' => 'varchar',
       'description' => 'Machine name of the validation rule',
@@ -142,7 +142,7 @@ function field_validation_update_7005(&$sandbox) {
     db_add_field('field_validation_rule', 'name', $settings);
   }
   if (!db_field_exists('field_validation_rule', 'col')) {
-    // add missing column.
+    // Add missing column.
     $settings = array(
       'type' => 'varchar',
       'length' => 32,
@@ -151,7 +151,7 @@ function field_validation_update_7005(&$sandbox) {
     );
     db_add_field('field_validation_rule', 'col', $settings);
   }
-  
+
   db_query("UPDATE {system} SET weight = 10 WHERE name = 'field_validation'");
 }
 

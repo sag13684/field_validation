@@ -2,7 +2,7 @@
 
 /**
  * @file
- * property_validation installation file
+ * Property_validation installation file.
  */
 
 /**
@@ -15,7 +15,7 @@ function property_validation_schema() {
       'key' => 'name',
       'key name' => 'Name',
       'primary key' => 'ruleid',
-      'identifier' => 'rule', 
+      'identifier' => 'rule',
       'default hook' => 'default_property_validation_rule',
       'api' => array(
         'owner' => 'property_validation',
@@ -50,19 +50,19 @@ function property_validation_schema() {
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'entity_type' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'bundle' => array(
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'validator' => array(
         'type' => 'varchar',

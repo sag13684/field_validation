@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation unique values validator.
- *
  */
 $plugin = array(
   'label' => t('Unique values on multiple fields'),
@@ -11,7 +10,9 @@ $plugin = array(
     'class' => 'field_validation_unique_values_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_unique_values_validator extends field_validation_validator {
 
   /**
@@ -34,7 +35,7 @@ class field_validation_unique_values_validator extends field_validation_validato
 
       foreach ($other_group_rules as $other_group_rule) {
         // Skip when do not have the same group name, rule is disabled, equal to current rule.
-        if ($other_group_rule->settings['data'] != $group_name || !empty($other_group_rule->disabled) || $other_group_rule->name == $this->rule->name ) {
+        if ($other_group_rule->settings['data'] != $group_name || !empty($other_group_rule->disabled) || $other_group_rule->name == $this->rule->name) {
           continue;
         }
 
@@ -63,11 +64,11 @@ class field_validation_unique_values_validator extends field_validation_validato
   }
 
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Group name'),
       '#description' => t("Specify the group name for those fields, it should be the same across those fields. Validation rules with the same group name work together."),
@@ -78,9 +79,9 @@ class field_validation_unique_values_validator extends field_validation_validato
   }
 
   /**
-   * helper function to get field values
+   * Helper function to get field values.
    */
-  function get_field_column_value1($items, $column ='value') {
+  function get_field_column_value1($items, $column = 'value') {
     $field_values = array();
     foreach ($items as $delta => $item) {
       if (isset($item[$column])) {

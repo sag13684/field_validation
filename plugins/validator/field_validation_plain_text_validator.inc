@@ -2,7 +2,6 @@
 /**
  * @file
  * Field validation plain text validator.
- *
  */
 $plugin = array(
   'label' => t('Plain text (disallow tags)'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'field_validation_plain_text_validator',
   ),
 );
-
+/**
+ *
+ */
 class field_validation_plain_text_validator extends field_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     if ($this->value != '' && (strcmp($this->value, strip_tags($this->value)))) {

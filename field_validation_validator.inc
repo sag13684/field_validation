@@ -5,7 +5,9 @@
  *
  * All field validation validator classes should inherit this basic class.
  */
-
+/**
+ *
+ */
 abstract class field_validation_validator {
   // Variables associated with validation.
   protected $entity_type;
@@ -38,16 +40,17 @@ abstract class field_validation_validator {
   }
 
   /**
-   * Validate field. 
+   * Validate field.
    */
-  public function validate() {}
+  public function validate() {
+  }
 
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['bypass'] = array(
       '#title' => t('Bypass validation'),
       '#type' => 'checkbox',
@@ -63,7 +66,7 @@ abstract class field_validation_validator {
       '#states' => array(
         'visible' => array(
           ':input[name="settings[bypass]"]' => array('checked' => TRUE),
-        ), 
+        ),
       ),
     );
     $form['settings']['errors'] = array(
@@ -79,14 +82,14 @@ abstract class field_validation_validator {
     );
     $form['settings']['condition_wrapper'] = array(
       '#type' => 'fieldset',
-      //'#collapsible' => TRUE,
+      // '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-	  //'#tree' => TRUE,
-	  //'#title' => t('Replacement patterns'),
+    // '#tree' => TRUE,
+    // '#title' => t('Replacement patterns'),
       '#states' => array(
         'visible' => array(
           ':input[name="settings[condition]"]' => array('checked' => TRUE),
-        ), 
+        ),
       ),
     );
     $form['settings']['condition_wrapper']['condition_field'] = array(
@@ -101,7 +104,7 @@ abstract class field_validation_validator {
       'less_than' => t('less than'),
       'greater_or_equal' => t('greater or equal'),
       'less_or_equal' => t('less or equal'),
-	);
+    );
     $form['settings']['condition_wrapper']['condition_operator'] = array(
       '#type' => 'select',
       '#options' => $operator_options,
@@ -111,7 +114,7 @@ abstract class field_validation_validator {
     $form['settings']['condition_wrapper']['condition_value'] = array(
       '#type' => 'textfield',
       '#default_value' => isset($default_settings['condition_wrapper']['condition_value']) ? $default_settings['condition_wrapper']['condition_value'] : '',
-    );	
+    );
   }
 
   /**
@@ -121,7 +124,7 @@ abstract class field_validation_validator {
     $error_message = $this->rule->error_message;
     return $error_message;
   }
-  
+
   /**
    * Return error element for the validation rule.
    */
@@ -131,9 +134,9 @@ abstract class field_validation_validator {
     if (!empty($this->field['type']) && $this->field['type'] == 'taxonomy_term_reference') {
       $error_element = $this->rule->field_name . '][' . $this->langcode;
     }
-    return  $error_element;
+    return $error_element;
   }
-  
+
   /**
    * Return default settingsfor the validator.
    */
@@ -141,9 +144,9 @@ abstract class field_validation_validator {
     $rule = isset($form_state['item']) ? $form_state['item'] : new stdClass();
     $default_settings = isset($rule->settings) ? $rule->settings : array();
     $default_settings = isset($form_state['values']['settings']) ? $form_state['values']['settings'] : $default_settings;
-    return  $default_settings;
+    return $default_settings;
   }
-  
+
   /**
    * Set error message.
    */
@@ -151,38 +154,38 @@ abstract class field_validation_validator {
     $error_element = $this->get_error_element();
     $error_message = t($this->get_error_message());
     $tokens += array(
-      '[entity-type]' => $this->rule->entity_type, 
-      '[bundle]' => $this->rule->bundle, 
-      '[field-name]' => $this->instance['label'], 
-      '[value]' => $this->value, 
+      '[entity-type]' => $this->rule->entity_type,
+      '[bundle]' => $this->rule->bundle,
+      '[field-name]' => $this->instance['label'],
+      '[value]' => $this->value,
     );
     $error_message = field_filter_xss(strtr($error_message, $tokens));
-    //We support two methods to set error: using form_set_error provided by form api, using errors provided by field api.
-    //form_set_error does not work correctly when a sub form embed into another form; 
-    //errors does not work correctly when current field does not support hook_field_widget_error.
+    // We support two methods to set error: using form_set_error provided by form api, using errors provided by field api.
+    // form_set_error does not work correctly when a sub form embed into another form;
+    // errors does not work correctly when current field does not support hook_field_widget_error.
     if (empty($this->rule->settings['errors'])) {
       form_set_error($error_element, $error_message);
     }
-    else{
+    else {
       $this->errors[$this->rule->field_name][$this->langcode][$this->delta][] = array(
         'error' => $this->rule->col,
         'message' => $error_message,
       );
     }
   }
-  
+
   /**
    * Provide token help info for error message.
    */
   public function token_help() {
     return array(
-      '[entity-type]' => t('Machine name of entity type'), 
-      '[bundle]' => t('Machine name of bundle'), 
-      '[field-name]' => t('User readable name of current field'), 
-      '[value]' => t('Current value to be validated on'),  
+      '[entity-type]' => t('Machine name of entity type'),
+      '[bundle]' => t('Machine name of bundle'),
+      '[field-name]' => t('User readable name of current field'),
+      '[value]' => t('Current value to be validated on'),
     );
   }
-  
+
   /**
    * Bypass validation.
    */
@@ -199,58 +202,65 @@ abstract class field_validation_validator {
     }
     return FALSE;
   }
-  
+
   /**
    * Get token type.
-   */ 
+   */
   public function get_token_type() {
     $mappings = token_get_entity_mapping('entity');
-	//print debug($mappings);
+    // Print debug($mappings);
     $token_type = isset($mappings[$this->entity_type]) ? $mappings[$this->entity_type] : "";
     return $token_type;
   }
-  
+
   /**
-   * pass condition.
+   * Pass condition.
    */
   public function pass_condition() {
     $settings = $this->rule->settings;
-    //print debug($settings);
+    // Print debug($settings);
     if (!empty($settings['condition'])) {
-	  $condition_field = "";
-      if (isset($settings['condition_wrapper']['condition_field']) && $settings['condition_wrapper']['condition_field'] != '' ) {
+      $condition_field = "";
+      if (isset($settings['condition_wrapper']['condition_field']) && $settings['condition_wrapper']['condition_field'] != '') {
         $condition_field = token_replace($settings['condition_wrapper']['condition_field'], array($this->get_token_type() => $this->entity));
       }
-	  $condition_operator = "equals";
-      if (isset($settings['condition_wrapper']['condition_operator']) && $settings['condition_wrapper']['condition_operator'] != '' ) {
+      $condition_operator = "equals";
+      if (isset($settings['condition_wrapper']['condition_operator']) && $settings['condition_wrapper']['condition_operator'] != '') {
         $condition_operator = $settings['condition_wrapper']['condition_operator'];
       }
-	  $condition_value = "";
-      if (isset($settings['condition_wrapper']['condition_value']) && $settings['condition_wrapper']['condition_value'] != '' ) {
+      $condition_value = "";
+      if (isset($settings['condition_wrapper']['condition_value']) && $settings['condition_wrapper']['condition_value'] != '') {
         $condition_value = token_replace($settings['condition_wrapper']['condition_value'], array($this->get_token_type() => $this->entity));
       }
-      switch ($condition_operator){
+      switch ($condition_operator) {
         case 'equals':
           return $condition_field == $condition_value;
-          break;  
+
+        break;
         case 'not_equals':
           return $condition_field != $condition_value;
-          break;
+
+        break;
         case 'greater_than':
           return $condition_field > $condition_value;
-          break;  
+
+        break;
         case 'less_than':
           return $condition_field != $condition_value;
-          break;
+
+        break;
         case 'greater_or_equal':
           return $condition_field >= $condition_value;
-          break;  
+
+        break;
         case 'less_or_equal':
           return $condition_field <= $condition_value;
-          break;		  
-      }  
+
+        break;
+      }
       return FALSE;
     }
     return TRUE;
   }
+
 }

@@ -10,13 +10,13 @@
  */
 function property_validation_field_attach_validate($entity_type, $entity, &$errors) {
   list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
-  
-  //Using ctools to get validation rules of this bundle.
+
+  // Using ctools to get validation rules of this bundle.
   ctools_include('export');
   $rules = ctools_export_load_object('property_validation_rule', 'conditions', array('entity_type' => $entity_type, 'bundle' => $bundle));
   if ($rules) {
     foreach ($rules as $rule) {
-      //Disabled by Ctools.
+      // Disabled by Ctools.
       if (!empty($rule->disabled)) {
         continue;
       }
@@ -71,4 +71,3 @@ function property_validation_ctools_plugin_api($owner, $api) {
     return array('version' => 2);
   }
 }
-

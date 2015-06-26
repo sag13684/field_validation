@@ -2,7 +2,6 @@
 /**
  * @file
  * Property validation unique validator.
- *
  */
 $plugin = array(
   'label' => t('Unique values'),
@@ -11,11 +10,13 @@ $plugin = array(
     'class' => 'property_validation_unique_validator',
   ),
 );
-
+/**
+ *
+ */
 class property_validation_unique_validator extends property_validation_validator {
 
   /**
-   * Validate field. 
+   * Validate field.
    */
   public function validate() {
     $flag = TRUE;
@@ -32,13 +33,13 @@ class property_validation_unique_validator extends property_validation_validator
       }
 
       list($id, $vid, $bundle) = entity_extract_ids($this->rule->entity_type, $this->entity);
-      if ($this->rule->entity_type == 'user' && arg(0) =='user' && arg(2) =='edit' && empty($id)) {
+      if ($this->rule->entity_type == 'user' && arg(0) == 'user' && arg(2) == 'edit' && empty($id)) {
         $id = arg(1);
       }
       if (!empty($id)) {
         $query->entityCondition('entity_id', $id, '!=');
       }
-      //Always bypass all access checkings.
+      // Always bypass all access checkings.
       $query->addMetaData('account', user_load(1));
       $count = $query->propertyCondition($this->rule->property_name, $this->value)
         ->count()
@@ -56,13 +57,13 @@ class property_validation_unique_validator extends property_validation_validator
       $this->set_error($token);
     }
   }
-  
+
   /**
-   * Provide settings option
+   * Provide settings option.
    */
   function settings_form(&$form, &$form_state) {
     $default_settings = $this->get_default_settings($form, $form_state);
-    //print debug($default_settings);
+    // Print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Scope of unique'),
       '#description' => t("Specify the scope of unique values, support: entity, bundle."),
@@ -70,12 +71,12 @@ class property_validation_unique_validator extends property_validation_validator
       '#options' => array(
         'entity' => t('Entity'),
         'bundle' => t('Bundle'),
-      ),  
+      ),
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
     parent::settings_form($form, $form_state);
   }
-  
+
   /**
    * Provide token help info for error message.
    */
@@ -86,4 +87,5 @@ class property_validation_unique_validator extends property_validation_validator
     );
     return $token_help;
   }
+
 }

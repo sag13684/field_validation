@@ -44,7 +44,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   $default_validator = isset($rule->validator) ? $rule->validator : '';
   $default_settings = isset($rule->settings) ? $rule->settings : array();
   $default_error_message = isset($rule->error_message) ? $rule->error_message : '';
-  
+
   $default_rulename = isset($form_state['values']['rulename']) ? $form_state['values']['rulename'] : $default_rulename;
   $default_entity_type = isset($form_state['values']['entity_type']) ? $form_state['values']['entity_type'] : $default_entity_type;
   $default_bundle = isset($form_state['values']['bundle']) ? $form_state['values']['bundle'] : $default_bundle;
@@ -53,7 +53,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   $default_validator = isset($form_state['values']['validator']) ? $form_state['values']['validator'] : $default_validator;
   $default_settings = isset($form_state['values']['settings']) ? $form_state['values']['settings'] : $default_settings;
   $default_error_message = isset($form_state['values']['error_message']) ? $form_state['values']['error_message'] : $default_error_message;
-  
+
   $form['rulename'] = array(
     '#type' => 'textfield',
     '#title' => t('Rule name'),
@@ -63,7 +63,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     '#size' => 60,
     '#maxlength' => 255,
   );
-  
+
   $entity_type_options = array(
     '' => t('Choose an entity type'),
   );
@@ -79,11 +79,11 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     '#title' => t('Entity type'),
     '#default_value' => $default_entity_type,
     '#required' => TRUE,
-    '#ajax' => array(      
-      'callback' => 'field_validation_ui_entity_type_callback',      
-      'wrapper' => 'validation-rule-wrapper-div',      
-      'method' => 'replace',      
-      'effect' => 'fade',    
+    '#ajax' => array(
+      'callback' => 'field_validation_ui_entity_type_callback',
+      'wrapper' => 'validation-rule-wrapper-div',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
   );
 
@@ -92,19 +92,19 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   );
   $bundles = !empty($entity_types[$default_entity_type]['bundles']) ? $entity_types[$default_entity_type]['bundles'] : array();
   foreach ($bundles as $key => $bundle) {
-    $bundle_options[$key] = $bundle['label'];  
-  }  
+    $bundle_options[$key] = $bundle['label'];
+  }
   $form['bundle'] = array(
     '#type' => 'select',
     '#options' => $bundle_options,
     '#title' => t('Bundle name'),
     '#default_value' => $default_bundle,
     '#required' => TRUE,
-    '#ajax' => array(      
-      'callback' => 'field_validation_ui_bundle_callback',      
-      'wrapper' => 'validation-rule-wrapper-div',      
-      'method' => 'replace',      
-      'effect' => 'fade',    
+    '#ajax' => array(
+      'callback' => 'field_validation_ui_bundle_callback',
+      'wrapper' => 'validation-rule-wrapper-div',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
   );
 
@@ -117,24 +117,24 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   }
 
   foreach ($instances as $key => $instance) {
-    $field_name_options[$key] = $instance['label'];  
+    $field_name_options[$key] = $instance['label'];
   }
   if (!in_array($default_field_name, array_keys($field_name_options))) {
     $default_field_name = '';
-  }  
+  }
   $form['field_name'] = array(
     '#type' => 'select',
     '#options' => $field_name_options,
     '#title' => t('Field name'),
     '#default_value' => $default_field_name,
     '#required' => TRUE,
-    '#ajax' => array(      
-      'callback' => 'field_validation_ui_field_name_callback',      
-      'wrapper' => 'col-wrapper-div',      
-      'method' => 'replace',      
-      'effect' => 'fade',    
+    '#ajax' => array(
+      'callback' => 'field_validation_ui_field_name_callback',
+      'wrapper' => 'col-wrapper-div',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
-  ); 
+  );
 
   $field = field_info_field($default_field_name);
   $col_options = array(
@@ -142,7 +142,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   );
   $columns = !empty($field['columns']) ? $field['columns'] : array();
   foreach ($columns as $key => $column) {
-    $col_options[$key] = $key;  
+    $col_options[$key] = $key;
   }
 
   // Support free tagging.
@@ -152,7 +152,7 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
 
   if (!in_array($default_col, array_keys($col_options))) {
     $default_col = '';
-  }   
+  }
   $form['col'] = array(
     '#type' => 'select',
     '#options' => $col_options,
@@ -163,14 +163,14 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     '#prefix' => '<div id="col-wrapper-div">',
     '#suffix' => '</div>',
   );
-  
+
   $validator_options = array(
     '' => t('Choose a validator'),
   );
   ctools_include('plugins');
   $validators = ctools_get_plugins('field_validation', 'validator');
-  //$validators = field_validation_get_validators();
-  //print debug($validators);
+  // $validators = field_validation_get_validators();
+  // print debug($validators);
   foreach ($validators as $validator_key => $validator) {
     $validator_options[$validator_key] = $validator['label'];
   }
@@ -180,12 +180,12 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
     '#title' => t('Validator'),
     '#default_value' => $default_validator,
     '#required' => TRUE,
-    //'#weight' => 3,
-    '#ajax' => array(      
-      'callback' => 'field_validation_ui_validator_callback',      
-      'wrapper' => 'validation-rule-wrapper-div',      
-      'method' => 'replace',      
-      'effect' => 'fade',    
+    // '#weight' => 3,
+    '#ajax' => array(
+      'callback' => 'field_validation_ui_validator_callback',
+      'wrapper' => 'validation-rule-wrapper-div',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
   );
   $form['settings'] = array(
@@ -227,16 +227,16 @@ function field_validation_ui_ctools_export_ui_form(&$form, &$form_state) {
   }
   /*
   $form['settings']['data'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Config Data'),
-    '#required' => FALSE,
-    '#size' => 60,
-    '#maxlength' => 255,
-    '#default_value' => isset($rule->settings['data']) ? $rule->settings['data'] : '',
-    //'#weight' => 4,
+  '#type' => 'textfield',
+  '#title' => t('Config Data'),
+  '#required' => FALSE,
+  '#size' => 60,
+  '#maxlength' => 255,
+  '#default_value' => isset($rule->settings['data']) ? $rule->settings['data'] : '',
+  //'#weight' => 4,
   );
-  */
-  
+   */
+
   $form['error_message'] = array(
     '#type' => 'textfield',
     '#title' => t('Custom error message'),
@@ -261,23 +261,38 @@ function field_validation_ui_ctools_export_ui_form_validate($form, &$form_state)
     form_set_error('name', t('Name must be 32 characters or less in length.'));
   }
 }
+/**
+ *
+ */
 function field_validation_ui_ctools_export_ui_form_submit(&$form, &$form_state) {
-  //$form_state['item']->settings['data'] = $form_state['values']['data'];
-  //$form_state['item']->settings = $form_state['values']['settings'];
+  // $form_state['item']->settings['data'] = $form_state['values']['data'];
+  // $form_state['item']->settings = $form_state['values']['settings'];
 }
 
+/**
+ *
+ */
 function field_validation_ui_entity_type_callback($form, &$form_state) {
   return $form;
 }
 
+/**
+ *
+ */
 function field_validation_ui_bundle_callback($form, &$form_state) {
   return $form;
 }
 
+/**
+ *
+ */
 function field_validation_ui_field_name_callback($form, &$form_state) {
   return $form['col'];
 }
 
+/**
+ *
+ */
 function field_validation_ui_validator_callback($form, &$form_state) {
   return $form;
 }
