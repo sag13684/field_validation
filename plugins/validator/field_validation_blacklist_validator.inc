@@ -35,7 +35,7 @@ class field_validation_blacklist_validator extends field_validation_validator {
     //print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('Blacklisted words'),
-      '#description' => t("Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character."),
+      '#description' => t("Specify illegal words, separated by commas. Make sure to escape reserved regex characters with an escape (\) character."),
       '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );

@@ -6,7 +6,7 @@
  */
 $plugin = array(
   'label' => t('PHP code'),
-  'description' => t("Be carefull, it is powerful and also dangerous."),
+  'description' => t("Be careful, it is powerful and also dangerous."),
   'handler' => array(
     'class' => 'property_validation_php_validator',
   ),
@@ -29,7 +29,7 @@ class property_validation_php_validator extends property_validation_validator {
     //print debug($default_settings);
     $form['settings']['data'] = array(
       '#title' => t('PHP code'),
-      '#description' => t("Be carefull, it is powerful and also dangerous. Do not use &lt;?php ?&gt; at here, for document: http://drupal.org/node/1537028."),
+      '#description' => t("Be careful, it is powerful and also dangerous. Do not use &lt;?php ?&gt; at here, for document: http://drupal.org/node/1537028."),
       '#type' => 'textarea',
       '#default_value' => isset($default_settings['data']) ? $default_settings['data'] : '',
     );
