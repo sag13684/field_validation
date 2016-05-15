@@ -1,5 +1,0 @@
-name = Field Validation
-description = "Add validation rules to fields."
-package = Fields
-core = 8.x
-dependencies[] = field

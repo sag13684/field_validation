@@ -1,76 +1,33 @@
 <?php
-use Drupal\field_validation\Plugins\Type\Validator;
-
 
 /**
- * Implements hook_field_attach_validate().
+ * @file
+ * field validation.
  */
-function field_validation_field_attach_validate($entity_type, $entity, &$errors) {
-  list($id, $vid, $bundle) = entity_extract_ids($entity_type, $entity);
-  
-  $sql = 'SELECT * FROM {field_validation_rule} WHERE entity_type = :entity_type AND bundle = :bundle';
-  $rules = db_query($sql, array(':entity_type' => $entity_type, ':bundle' => $bundle))->fetchAll();
-  if ($rules) {
-    foreach ($rules as $rule) {
-      $rule->settings = unserialize($rule->settings);
+function field_validation_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type, $bundle) {
 
-	  //drupal_set_message('123456');
-	  //debug($rule);
-      $field_name = $rule->field_name;
-      $field = field_info_field($field_name);
-      $instance = field_info_instance($entity_type, $field_name, $bundle);
-      $languages = field_available_languages($entity_type, $field);
-      foreach ($languages as $langcode) {
-        //debug($errors);
-        $items = isset($entity->{$field_name}[$langcode]) ? $entity->{$field_name}[$langcode] : array();
-        //print debug($rule);
-    
-        foreach ($items as $delta => $item) {
-          $value = $item[$rule->col];
-          //$validator = new $class($entity_type, $entity, $field, $instance, $langcode, $items, $delta, $item, $value, $rule, $errors);
-		  $configuration = array(
-            'entity_type' => $entity_type,
-            'entity' => $entity,
-            'field' => $field,
-            'instance' => $instance,
-            'langcode' => $langcode,
-            'items' => $items,
-            'delta' => $delta,
-            'item' => $item,
-            'value' => $value,
-            'rule' => $rule,
-            'errors' => &$errors,
-		  );
+  $ruleset_name = $entity_type->id() . '_' . $bundle;
+  $ruleset = \Drupal::entityManager()->getStorage('field_validation_rule_set')->load($ruleset_name);
 
-		  $validator_factory = new Validator();
-		  $validator = $validator_factory->createPluginInstance($rule->validator,$configuration);
-		  //$validator_definition = $validator_factory->getPluginDefinition($rule->validator);
-		  //debug($validator);
-          $break = $validator->validate();
-		  //debug($errors);
-          if (!empty($break)) {
-            break;
-          }
-        }
-      }
+  if($ruleset){
+    foreach ($fields as $field) {
+	  $field->addConstraint('FieldValidationConstraint', [
+        'ruleset_name' => $ruleset_name,
+        'rule_uuid' => '',
+      ]);
+	}
+    /*
+    $rules = $ruleset->getFieldValidationRules();
+    foreach ($rules as $field_validation_rule) {
+	  $field_name = $field_validation_rule->getFieldName();
+	  if(isset($fields[$field_name])){
+      $fields[$field_validation_rule->getFieldName()]->addConstraint('FieldValidationConstraint', [
+        'ruleset_name' => $ruleset_name,
+        'rule_uuid' =>$field_validation_rule->getUuid(),
+      ]);
+	  }
     }
-  }
-}
-
-/**
- * Implements hook_messenger_info().
- */
-function field_validation_validator_info() {
-  return array(
-    'email' => array(
-      'label' => t('Email'),
-      'description' => t('Verifies that user-entered data is a valid email address.'),
-      'class' => 'Drupal\field_validation\Plugins\field_validation\validator\FieldValidationEmailValidator',
-    ),
-    'regex' => array(
-      'label' => t('Regular expression'),
-      'description' => t('Validates user-entered text against a specified regular expression.'),
-      'class' => 'Drupal\field_validation\Plugins\field_validation\validator\FieldValidationRegexValidator',
-    ),
-  );
+	*/
+  }  
+ 
 }
