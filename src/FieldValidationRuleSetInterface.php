@@ -75,5 +75,43 @@ interface FieldValidationRuleSetInterface extends ConfigEntityInterface {
    * @return $this
    */
   public function deleteFieldValidationRule(FieldValidationRuleInterface $field_validation_rule);
+  
+  /**
+   * Returns the entity type of FieldValidationRuleSet.
+   *
+   * @return string
+   *   The entity type of the FieldValidationRuleSet.
+   */
+  public function getAttachedEntityType();
+
+  /**
+   * Sets the entity_type of the FieldValidationRuleSet.
+   *
+   * @param string $entity_type
+   *   The entity type of the FieldValidationRuleSet.
+   *
+   * @return \Drupal\field_validation\FieldValidationRuleSetInterface
+   *   The class instance this method is called on.
+   */
+  public function setAttachedEntityType($entity_type);  
+  
+  /**
+   * Returns the bundle of FieldValidationRuleSet.
+   *
+   * @return string
+   *   The bundle of the FieldValidationRuleSet.
+   */
+  public function getAttachedBundle();
+
+  /**
+   * Sets the bundle of the FieldValidationRuleSet.
+   *
+   * @param string $bundle
+   *   The bundle of the FieldValidationRuleSet.
+   *
+   * @return \Drupal\field_validation\FieldValidationRuleSetInterface
+   *   The class instance this method is called on.
+   */
+  public function setAttachedBundle($bundle);   
 
 }

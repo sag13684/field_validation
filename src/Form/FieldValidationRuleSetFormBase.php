@@ -69,7 +69,19 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
       '#default_value' => $this->entity->id(),
       '#required' => TRUE,
     );
-
+    $form['entity_type'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Entity Type'),
+      '#default_value' => $this->entity->getAttachedEntityType(),
+      '#required' => TRUE,
+    );
+	
+    $form['bundle'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Bundle'),
+      '#default_value' => $this->entity->getAttachedBundle(),
+      '#required' => TRUE,
+    );
     return parent::form($form, $form_state);
   }
 

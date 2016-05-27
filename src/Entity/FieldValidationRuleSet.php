@@ -42,6 +42,8 @@ use Drupal\field_validation\FieldValidationRulePluginCollection;
  *   config_export = {
  *     "name",
  *     "label",
+ *     "entity_type",
+ *     "bundle", 
  *     "field_validation_rules",
  *   }
  * )
@@ -62,6 +64,20 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
    * @var string
    */
   protected $label;
+
+  /**
+   * The entity type of FieldValidationRuleSet.
+   *
+   * @var string
+   */
+  protected $entity_type;
+  
+  /**
+   * The bundle of FieldValidationRuleSet.
+   *
+   * @var string
+   */
+  protected $bundle;
 
   /**
    * The array of fieldValidationRules for this FieldValidationRuleSet.
@@ -183,6 +199,33 @@ class FieldValidationRuleSet extends ConfigEntityBase implements FieldValidation
     return \Drupal::service('plugin.manager.field_validation.field_validation_rule');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getAttachedEntityType() {
+    return $this->get('entity_type');
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function setAttachedEntityType($entity_type) {
+    $this->set('entity_type', $entity_type);
+    return $this;
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getAttachedBundle() {
+    return $this->get('bundle');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAttachedBundle($bundle) {
+    $this->set('bundle', $bundle);
+    return $this;
+  }  
 }
