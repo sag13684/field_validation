@@ -133,10 +133,15 @@ abstract class FieldValidationRuleFormBase extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // The fieldValidationRule configuration is stored in the 'data' key in the form,
     // pass that through for validation.
-    $field_validation_rule_data = (new FormState())->setValues($form_state->getValue('data'));
-    $this->fieldValidationRule->validateConfigurationForm($form, $field_validation_rule_data);
-    // Update the original form values.
-    $form_state->setValue('data', $field_validation_rule_data->getValues());
+	$data = $form_state->getValue('data');
+	if(empty($data)){
+	  $data = array();
+	}
+      $field_validation_rule_data = (new FormState())->setValues($data);
+      $this->fieldValidationRule->validateConfigurationForm($form, $field_validation_rule_data);
+      // Update the original form values.
+      $form_state->setValue('data', $field_validation_rule_data->getValues());
+
   }
 
   /**
