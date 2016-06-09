@@ -54,7 +54,7 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-
+    /*
     $form['label'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Field validation rule set name'),
@@ -82,6 +82,7 @@ abstract class FieldValidationRuleSetFormBase extends EntityForm {
       '#default_value' => $this->entity->getAttachedBundle(),
       '#required' => TRUE,
     );
+	*/
     return parent::form($form, $form_state);
   }
 
